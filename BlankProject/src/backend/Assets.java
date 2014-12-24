@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Assets implements AssetErrorListener {
 	public static Assets instance = new Assets();
+	public static Assets characterimages = new Assets();
 	private AssetManager assetManager;
 	
 	public Background background;
@@ -19,7 +20,7 @@ public class Assets implements AssetErrorListener {
 		
 	}
 	
-	public void init(AssetManager assetManager){
+	public void characterInit(AssetManager assetManager){
 		
 		this.assetManager = assetManager;
 		assetManager.setErrorListener(this);
@@ -28,8 +29,26 @@ public class Assets implements AssetErrorListener {
 		
 		TextureAtlas atlas = assetManager.get("images/blank.pack");
 		
-		background = new Background(atlas);
 		planes = new Planes(atlas);
+
+	}
+	
+	//making the assets a little more flexible than the backend.  You can pass in which type of map
+	//so you can load specific types of maps with the same code.  Strings will be adjusted in menus before
+	//World 
+	public void readyMap(String path){
+		assetManager = new AssetManager();
+		assetManager.setErrorListener(this);
+		assetManager.load(path, TextureAtlas.class);
+		assetManager.finishLoading();
+		
+		TextureAtlas atlas = assetManager.get(path);
+		
+		background = new Background(atlas);
+		
+		//add all types of objects for the stage here. eg platform, walls, traps, etc
+	/*	
+		planes = new Planes(atlas);*/
 	}
 	
 	

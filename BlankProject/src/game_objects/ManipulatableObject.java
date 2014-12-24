@@ -54,7 +54,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		baseMovement = true;
 		isPlayerObject = true;
 		accelerationPerSecond = new Vector2(10, 10);
-		setAnimation(Assets.instance.planes.bluePlane);
+		setAnimation(Assets.characterimages.planes.bluePlane);
 		currentFrameDimension = new Vector2();
 	}
 
@@ -259,9 +259,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		moveX(deltaTime);
 		moveY(deltaTime);
-
-		// Just to clarify where the rectangle ended
-		bounds.setPosition(position);
 
 	}
 

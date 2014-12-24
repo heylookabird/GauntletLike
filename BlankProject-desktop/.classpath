@@ -7,8 +7,8 @@
 	<classpathentry kind="lib" path="libs/gdx-backend-lwjgl.jar" sourcepath="libs/gdx-backend-lwjgl-sources.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-backend-lwjgl-natives.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="C:/libgdx/extensions/gdx-controllers/gdx-controllers.jar"/>
-	<classpathentry kind="lib" path="C:/libgdx/extensions/gdx-controllers/gdx-controllers-desktop.jar"/>
-	<classpathentry kind="lib" path="C:/libgdx/extensions/gdx-controllers/gdx-controllers-desktop-natives.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Joey/Documents/GitHub/GauntletLike-master/BlankProject/libs/gdx-controllers.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Joey/Documents/GitHub/GauntletLike-master/BlankProject/libs/gdx-controllers-desktop.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Joey/Documents/GitHub/GauntletLike-master/BlankProject/libs/gdx-controllers-desktop-natives.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

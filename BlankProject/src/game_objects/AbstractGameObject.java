@@ -150,6 +150,8 @@ public abstract class AbstractGameObject {
 		updateMotionX(deltaTime);
 		updateMotionY(deltaTime);
 		updateRotation(deltaTime);
+		
+		bounds.setPosition(position);
 
 	}
 

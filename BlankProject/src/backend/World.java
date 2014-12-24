@@ -20,11 +20,27 @@ public class World {
 		
 	}
 	public void show() {
-		init();
+		testInit();
+	}
+	
+	public void testInit(){
+		LevelStage.setHeader("images/blank");
+		
+		Assets.characterimages.characterInit(new AssetManager());
+		
+		WorldRenderer.renderer.init();
+		
+		InputManager.inputManager.init();
+		cameraHelper = new CameraHelper();
+		cameraHelper.setZoom(Constants.defaultZoom, true);
+		
+		ControllerHandler.init();
+		
+		LevelStage.loadTest(false);
 	}
 	public void init(){
-		//
-		Assets.instance.init(new AssetManager());
+		LevelStage.setHeader("images/blank");
+		Assets.characterimages.characterInit(new AssetManager());
 		
 		WorldRenderer.renderer.init();
 		//AudioManager.init();
@@ -33,9 +49,9 @@ public class World {
 		cameraHelper.setZoom(Constants.defaultZoom, true);
 		
 		ControllerHandler.init();
-		Ranger player = new Ranger(true);
+		Ranger player = new Ranger(false);
 		player.setButtons(19, 21, 20, 22, 62);
-		Ranger player2 = new Ranger(true);
+		Ranger player2 = new Ranger(false);
 
 		LevelStage.addPlayer(player);
 		LevelStage.addPlayer(player2);
