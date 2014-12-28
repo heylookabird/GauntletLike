@@ -11,33 +11,35 @@ import com.badlogic.gdx.utils.Array;
 
 public class Assets implements AssetErrorListener {
 	public static Assets instance = new Assets();
-	public static Assets characterimages = new Assets();
 	private AssetManager assetManager;
 	
 	public Background background;
 	public Planes planes;
+	public Mage mage;
 	private Assets(){
 		
 	}
 	
+	//so we have all character art initialized
 	public void characterInit(AssetManager assetManager){
 		
 		this.assetManager = assetManager;
 		assetManager.setErrorListener(this);
-		assetManager.load("images/blank.pack", TextureAtlas.class);
+		assetManager.load("images/mage.pack", TextureAtlas.class);
 		assetManager.finishLoading();
 		
-		TextureAtlas atlas = assetManager.get("images/blank.pack");
+		TextureAtlas atlas = assetManager.get("images/mage.pack");
 		
-		planes = new Planes(atlas);
+		mage = new Mage(atlas);
+		//planes = new Planes(atlas);
 
 	}
 	
 	//making the assets a little more flexible than the backend.  You can pass in which type of map
 	//so you can load specific types of maps with the same code.  Strings will be adjusted in menus before
 	//World 
-	public void readyMap(String path){
-		assetManager = new AssetManager();
+	public void loadMapObjects(String path){
+		//assetManager = new AssetManager();
 		assetManager.setErrorListener(this);
 		assetManager.load(path, TextureAtlas.class);
 		assetManager.finishLoading();
@@ -47,8 +49,8 @@ public class Assets implements AssetErrorListener {
 		background = new Background(atlas);
 		
 		//add all types of objects for the stage here. eg platform, walls, traps, etc
-	/*	
-		planes = new Planes(atlas);*/
+		
+		planes = new Planes(atlas);//just BS art to use for tests
 	}
 	
 	
@@ -85,6 +87,34 @@ public class Assets implements AssetErrorListener {
 			whitePlane = new Animation(.1f, whitePlaneImgs);
 			yellowPlane = new Animation(.1f, yellowPlaneImgs);
 			greenPlane = new Animation(.1f, greenPlaneImgs);
+		}
+	}
+	
+	public class Mage{
+		public final Array<AtlasRegion> walkingEastAni;
+		public final Array<AtlasRegion> walkingWestAni;
+		public final Array<AtlasRegion> walkingNorthAni;
+		public final Array<AtlasRegion> walkingSouthAni;
+		
+		public final Animation west, east, north, south;
+		public final AtlasRegion facingWest, facingEast, facingNorth, facingSouth;
+		
+		public Mage(TextureAtlas atlas){
+			walkingEastAni = atlas.findRegions("mage_walking_east");
+			walkingWestAni = atlas.findRegions("mage_walking_west");
+			walkingNorthAni = atlas.findRegions("mage_walking_north");
+			walkingSouthAni = atlas.findRegions("mage_walking_south");
+			
+			west = new Animation(.1f, walkingWestAni, Animation.LOOP_PINGPONG);
+			south = new Animation(.1f, walkingSouthAni, Animation.LOOP_PINGPONG);
+			north = new Animation(.1f, walkingNorthAni, Animation.LOOP_PINGPONG);
+			east = new Animation(.1f, walkingEastAni, Animation.LOOP_PINGPONG);
+
+			facingWest = new AtlasRegion(atlas.findRegion("mage_standing_west"));
+			facingEast = new AtlasRegion(atlas.findRegion("mage_standing_east"));
+			facingNorth = new AtlasRegion(atlas.findRegion("mage_standing_north"));
+			facingSouth = new AtlasRegion(atlas.findRegion("mage_standing_south"));
+
 		}
 	}
 	

@@ -70,7 +70,6 @@ public class WorldRenderer {
 
 	public void writeToWorld(String string, float x, float y) {
 
-
 	}
 
 	public void updateScene(float deltaTime) {

@@ -2,14 +2,13 @@ package game_objects;
 
 import Controllers.Xbox360;
 import backend.Assets;
-import backend.Constants;
 import backend.LevelStage;
-import backend.World;
-import backend.WorldRenderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -33,6 +32,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	int keyUp, keyLeft, keyRight, keyDown;
 	protected int fire;
 	private boolean isPlayerObject;
+	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
+	public TextureRegion leftImg, rightImg, upImg, downImg, currentImg;
 
 	public enum VIEW_DIRECTION {
 		left, right;
@@ -54,7 +55,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		baseMovement = true;
 		isPlayerObject = true;
 		accelerationPerSecond = new Vector2(10, 10);
-		setAnimation(Assets.characterimages.planes.bluePlane);
+		//setAnimation(Assets.instance.planes.bluePlane);
 		currentFrameDimension = new Vector2();
 	}
 
@@ -62,7 +63,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			float width, float height) {
 
 		super(x, y, width, height);
-
+		this.controller = controller;
 	}
 
 	public void setButtons(int up, int left, int down, int right, int fire) {
@@ -101,6 +102,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		state = STATE.MOVING;
 		viewDirection = VIEW_DIRECTION.right;
 		acceleration.x = accelerationPerSecond.x;
+		this.setAnimation(walkingRight);
+		this.currentImg = rightImg;
 
 	}
 
@@ -116,6 +119,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		left = true;
 		viewDirection = VIEW_DIRECTION.left;
 		state = STATE.MOVING;
+		
+		this.setAnimation(walkingLeft);
+		this.currentImg = leftImg;
+
 
 		acceleration.x = -accelerationPerSecond.x;
 
@@ -128,6 +135,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		up = true;
 		state = STATE.MOVING;
 		acceleration.y = accelerationPerSecond.y;
+		
+		this.setAnimation(walkingUp);
+		this.currentImg = upImg;
+
 	}
 
 	protected void moveDown() {
@@ -137,6 +148,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		down = true;
 		state = STATE.MOVING;
 		acceleration.y = -accelerationPerSecond.y;
+		
+		this.setAnimation(walkingDown);
+		this.currentImg = downImg;
+
 	}
 
 	public void stopMoveRight() {
@@ -153,6 +168,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		acceleration.x = velocity.x > 0 ? -accelerationPerSecond.x
 				: accelerationPerSecond.x;
 
+	}
+	
+	public void stopMove(){
+		right =false;
+		left = false;
+		up = false;
+		down = false;
+		acceleration.set(0,0);
+		velocity.set(0,0);
+		state = STATE.NOT_MOVING;
 	}
 
 	public void stopMoveLeft() {
@@ -246,9 +271,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 			// if you did collide with something,
 			// you did in the Y AXIS ONLY
-		} else {
-
-		}
+		} 
 
 	}
 
@@ -259,7 +282,18 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		moveX(deltaTime);
 		moveY(deltaTime);
+		
 
+		
+		checkStopMove();
+
+	}
+	//inefficient as fuck with so many conditions but it was buggy otherwise..someone help me 
+	//tell it that it is standing when it isnt moving
+	private void checkStopMove() {
+		if(!left && !right && !up && !down){
+			state = STATE.NOT_MOVING;
+		}		
 	}
 
 	// To be overridden in subclasses
@@ -291,17 +325,19 @@ public class ManipulatableObject extends AbstractGameObject {
 			}
 		}
 		// Iterate through platforms
-		for (AbstractGameObject platform : LevelStage.frontObjects) {
+		for (AbstractGameObject platform : LevelStage.solidObjects) {
 
 			// If collision
 			if (bounds.overlaps(platform.bounds)) {
+
 				if (deltaX != 0) {
 					deltax = 0;
 				}
 				if (deltaY != 0) {
-
 					deltay = 0;
 				}
+				
+
 				return true;
 			}
 		}
@@ -315,13 +351,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		return false;
 
 	}
+	
 
 	@Override
 	public void render(SpriteBatch batch) {
 
 		// get correct image and draw the current proportions
-		if (animation != null) {
+		if (state == STATE.MOVING) {
 			image = animation.getKeyFrame(stateTime, looping);
+		}else{
+			image = currentImg;
 		}
 
 		// Draw

@@ -1,7 +1,8 @@
 package backend;
 
 import game_map_classes.TransitionBoundary;
-import game_objects.Ranger;
+import game_objects.Mage;
+import game_objects.Wall;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
@@ -48,17 +49,19 @@ public class LevelLoader {
 		init(fileName, false, false);
 	}
 	
-	public static void loadTestRoom(boolean players) {
+	public void loadTestRoom(boolean players) {
 		if(!players){
-			Ranger player = new Ranger(false);
+			Mage player = new Mage(false);
 			player.setButtons(19, 21, 20, 22, 62);
-			Ranger player2 = new Ranger(false);
+			Mage player2 = new Mage(false);
 
 			LevelStage.addPlayer(player);
 			LevelStage.addPlayer(player2);
 		}
 		
 		LevelStage.exitBounds.add(new TransitionBoundary(0, 5, 1, 1, false));
+		
+		this.makeTestBoundaries();
 	}
 
 	// method to be used that will automatically ensure that the players are there
@@ -134,8 +137,28 @@ public class LevelLoader {
 
 			}// inner for loop
 		}// outer for loop
+		
+		makeBoundaries(pixmap);
 	}// end of method
 
+	private void makeBoundaries(Pixmap map){
+		float height = map.getHeight();
+		float width = map.getWidth();
+		float wallThickness = 2;
+		
+		LevelStage.solidObjects.add(new Wall(-1,-1, width, wallThickness));//bottom bound
+		LevelStage.solidObjects.add(new Wall(-1, -1, wallThickness, height));//left bound
+		LevelStage.solidObjects.add(new Wall(-1,height, width, wallThickness));//top bound
+		LevelStage.solidObjects.add(new Wall(width,-1, wallThickness, height));//right bound
+	}
+	
+	private void makeTestBoundaries(){
+		float wallThickness = 2;
+		LevelStage.solidObjects.add(new Wall(-4,-4, 8, wallThickness));//bottom bound
+		LevelStage.solidObjects.add(new Wall(-4, -4, wallThickness, 8));//left bound
+		LevelStage.solidObjects.add(new Wall(-4, 4, 10, wallThickness));//top bound
+		LevelStage.solidObjects.add(new Wall(4,-4, wallThickness, 8));//right bound
+	}
 	private Vector2 getDimension(int pixelX, int pixelY, int currentPixel) {
 		// Gets the
 		Vector2 newPixelXY = extendPlatformDownRight(pixelX, pixelY,

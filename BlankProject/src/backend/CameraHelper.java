@@ -34,6 +34,10 @@ public class CameraHelper {
 		centerPoint = new Vector2();
 
 	}
+	
+	public Vector2 getCenterPoint(){
+		return centerPoint;
+	}
 
 	public void update(float deltaTime) {
 		float x = 0, y = 0;

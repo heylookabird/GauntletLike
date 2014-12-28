@@ -5,6 +5,7 @@ import game_objects.Ranger;
 import Controllers.ControllerHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,9 +25,11 @@ public class World {
 	}
 	
 	public void testInit(){
-		LevelStage.setHeader("images/blank");
 		
-		Assets.characterimages.characterInit(new AssetManager());
+		Assets.instance.characterInit(new AssetManager());
+		
+		LevelStage.setHeader("images/blank");
+		LevelStage.activateWaveManager();
 		
 		WorldRenderer.renderer.init();
 		
@@ -40,7 +43,7 @@ public class World {
 	}
 	public void init(){
 		LevelStage.setHeader("images/blank");
-		Assets.characterimages.characterInit(new AssetManager());
+		Assets.instance.characterInit(new AssetManager());
 		
 		WorldRenderer.renderer.init();
 		//AudioManager.init();
@@ -62,6 +65,7 @@ public class World {
 		//WorldRenderer.renderer.displayToWorld(0, "Welcome to Something Bitch!", new Vector2(800, 700));	
 	
 	}
+	
 	
 	public void render(float delta) {
 		
@@ -124,6 +128,10 @@ public class World {
 			obj.actOnInputKeyDown(keycode);
 		}
 		
+		if(keycode == Keys.X){
+			LevelStage.waveManager.destroyEnemy();
+		}
+		
 		return false;
 	}
 	public void render(SpriteBatch batch) {
@@ -148,4 +156,5 @@ public class World {
 				.joyStick(leftJoyStick, rightJoyStick);
 
 	}
+
 }

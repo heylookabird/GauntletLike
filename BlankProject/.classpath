@@ -5,7 +5,8 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry kind="lib" path="libs/tween-engine-api-sources.jar"/>
 	<classpathentry kind="lib" path="libs/tween-engine-api.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Harjit/Desktop/GauntletLike-master/BlankProject/libs/gdx-controllers.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Harjit/Desktop/GauntletLike-master/BlankProject/libs/gdx-controllers-desktop-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-controllers-desktop-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-controllers-desktop.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-controllers.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
