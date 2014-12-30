@@ -41,30 +41,7 @@ public class World {
 		
 		LevelStage.loadTest(false);
 	}
-	public void init(){
-		LevelStage.setHeader("images/blank");
-		Assets.instance.characterInit(new AssetManager());
-		
-		WorldRenderer.renderer.init();
-		//AudioManager.init();
-		InputManager.inputManager.init();
-		cameraHelper = new CameraHelper();
-		cameraHelper.setZoom(Constants.defaultZoom, true);
-		
-		ControllerHandler.init();
-		Ranger player = new Ranger(false);
-		player.setButtons(19, 21, 20, 22, 62);
-		Ranger player2 = new Ranger(false);
-
-		LevelStage.addPlayer(player);
-		LevelStage.addPlayer(player2);
-
-		
-		
-		
-		//WorldRenderer.renderer.displayToWorld(0, "Welcome to Something Bitch!", new Vector2(800, 700));	
 	
-	}
 	
 	
 	public void render(float delta) {

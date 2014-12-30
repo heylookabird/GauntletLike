@@ -52,6 +52,7 @@ public class LevelLoader {
 	public void loadTestRoom(boolean players) {
 		if(!players){
 			Mage player = new Mage(false);
+			player.position.x += 3;
 			player.setButtons(19, 21, 20, 22, 62);
 			Mage player2 = new Mage(false);
 
@@ -59,7 +60,7 @@ public class LevelLoader {
 			LevelStage.addPlayer(player2);
 		}
 		
-		LevelStage.exitBounds.add(new TransitionBoundary(0, 5, 1, 1, false));
+		//LevelStage.exitBounds.add(new TransitionBoundary(0, 5, 1, 1, false));
 		
 		this.makeTestBoundaries();
 	}

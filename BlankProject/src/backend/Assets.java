@@ -25,13 +25,18 @@ public class Assets implements AssetErrorListener {
 		
 		this.assetManager = assetManager;
 		assetManager.setErrorListener(this);
+	
 		assetManager.load("images/mage.pack", TextureAtlas.class);
+		assetManager.load("images/bg.pack", TextureAtlas.class);
+
 		assetManager.finishLoading();
 		
 		TextureAtlas atlas = assetManager.get("images/mage.pack");
+		TextureAtlas atlas2 = assetManager.get("images/bg.pack");
 		
+		background = new Background(atlas2);
 		mage = new Mage(atlas);
-		//planes = new Planes(atlas);
+		
 
 	}
 	
@@ -46,7 +51,6 @@ public class Assets implements AssetErrorListener {
 		
 		TextureAtlas atlas = assetManager.get(path);
 		
-		background = new Background(atlas);
 		
 		//add all types of objects for the stage here. eg platform, walls, traps, etc
 		
@@ -56,14 +60,15 @@ public class Assets implements AssetErrorListener {
 	
 	@Override
 	public void error(AssetDescriptor asset, Throwable throwable) {
-		
+	//	throwable.getCause();
 		
 	}
 	public class Background {
-		public final AtlasRegion bg;
-
+		public final Array<AtlasRegion> walls;
 		public Background(TextureAtlas atlas) {
-			bg = atlas.findRegion("water");
+			walls = new Array<AtlasRegion>();
+			for(int i = 1; i < 7; i++)
+				walls.add(atlas.findRegion("body" + i));
 		}
 	}
 	public class Planes{
@@ -99,16 +104,18 @@ public class Assets implements AssetErrorListener {
 		public final Animation west, east, north, south;
 		public final AtlasRegion facingWest, facingEast, facingNorth, facingSouth;
 		
+		private final float aniSpeed = .07f;
 		public Mage(TextureAtlas atlas){
 			walkingEastAni = atlas.findRegions("mage_walking_east");
 			walkingWestAni = atlas.findRegions("mage_walking_west");
 			walkingNorthAni = atlas.findRegions("mage_walking_north");
 			walkingSouthAni = atlas.findRegions("mage_walking_south");
 			
-			west = new Animation(.1f, walkingWestAni, Animation.LOOP_PINGPONG);
-			south = new Animation(.1f, walkingSouthAni, Animation.LOOP_PINGPONG);
-			north = new Animation(.1f, walkingNorthAni, Animation.LOOP_PINGPONG);
-			east = new Animation(.1f, walkingEastAni, Animation.LOOP_PINGPONG);
+			west = new Animation(aniSpeed, walkingWestAni, Animation.LOOP);
+			south = new Animation(aniSpeed, walkingSouthAni, Animation.LOOP);
+			north = new Animation(aniSpeed, walkingNorthAni, Animation.LOOP);
+			east = new Animation(aniSpeed, walkingEastAni, Animation.LOOP);
+			
 
 			facingWest = new AtlasRegion(atlas.findRegion("mage_standing_west"));
 			facingEast = new AtlasRegion(atlas.findRegion("mage_standing_east"));

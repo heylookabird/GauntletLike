@@ -164,6 +164,6 @@ public class CameraHelper {
 	}
 
 	public void render(SpriteBatch batch) {
-		batch.draw(Assets.instance.background.bg, rect.x, rect.y, rect.width, rect.height);
+		//batch.draw(Assets.instance.background.bg, rect.x, rect.y, rect.width, rect.height);
 	}
 }

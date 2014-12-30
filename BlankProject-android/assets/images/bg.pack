@@ -1,0 +1,47 @@
+
+bg.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+body1
+  rotate: false
+  xy: 1, 106
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body2
+  rotate: false
+  xy: 1, 85
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body3
+  rotate: false
+  xy: 1, 64
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body4
+  rotate: false
+  xy: 1, 43
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body5
+  rotate: false
+  xy: 1, 22
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body6
+  rotate: false
+  xy: 1, 1
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1

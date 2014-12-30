@@ -18,6 +18,7 @@ public class WaveManager {
 	private float waitTime;
 	private boolean clear;
 	private Array<TimingNode> spawns;
+	
 	private enum ENEMY_TYPE {
 		EMPTY(0, 0, 0), ENEMY1(255, 255, 255), ENEMY2(255,
 				0, 0), SPAWNER(255, 255, 0);

@@ -112,9 +112,8 @@ public abstract class AbstractGameObject {
 		rotation += rotationalVelocity * deltaTime;
 	}
 
-	public void interact(AbstractGameObject couple) {
-
-	}
+	//TO BE OVERRIDEN IN SUBCLASSES
+	public void interact(AbstractGameObject couple) {}
 
 	public void setAnimation(Animation animation) {
 		if (animation.getPlayMode() == Animation.NORMAL) {
@@ -125,10 +124,8 @@ public abstract class AbstractGameObject {
 		stateTime = 0;
 
 	}
-
-	public void animationComplete() {
-
-	}
+	//TO BE OVERRIDEN IN SUBCLASSES
+	public void animationComplete() {}
 
 	public void setImage(TextureRegion image) {
 		this.image = image;
@@ -171,12 +168,11 @@ public abstract class AbstractGameObject {
 	}
 
 	protected void updateMotionY(float deltaTime) {
-
+		//Apply acceleration
 		velocity.y += acceleration.y * deltaTime;
+		//Clamp it baby
 		velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y,
 				terminalVelocity.y);
-
-
 	}
 
 	public void render(SpriteBatch batch) {

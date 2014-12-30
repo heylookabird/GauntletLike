@@ -54,7 +54,7 @@ public class WorldRenderer {
 		guiCamera.setToOrtho(false);
 		guiCamera.update();
 
-		background_image = Assets.instance.background.bg;
+		background_image = Assets.instance.planes.bluePlane.getKeyFrame(0);
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 	}

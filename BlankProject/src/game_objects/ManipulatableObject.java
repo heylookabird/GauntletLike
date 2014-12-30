@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Vector2;
 public class ManipulatableObject extends AbstractGameObject {
 
 	public Vector2 spawnPoint;
-	public VIEW_DIRECTION viewDirection;
 	protected STATE state;
 
 	// This contains the current position of the joysticks, .x is x-coordinate,
@@ -30,14 +29,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	private boolean down;
 	protected boolean clampX, clampY;
 	int keyUp, keyLeft, keyRight, keyDown;
-	protected int fire;
 	private boolean isPlayerObject;
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
-	public TextureRegion leftImg, rightImg, upImg, downImg, currentImg;
-
-	public enum VIEW_DIRECTION {
-		left, right;
-	}
+	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg;
 
 	public enum STATE {
 		NOT_MOVING, MOVING
@@ -51,11 +45,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		this.controller = controller;
 		leftJoyStick = new Vector2();
 		rightJoyStick = new Vector2();
-		viewDirection = VIEW_DIRECTION.right;
 		baseMovement = true;
 		isPlayerObject = true;
 		accelerationPerSecond = new Vector2(10, 10);
-		//setAnimation(Assets.instance.planes.bluePlane);
+		// setAnimation(Assets.instance.planes.bluePlane);
 		currentFrameDimension = new Vector2();
 	}
 
@@ -71,7 +64,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		keyLeft = left;
 		keyRight = right;
 		keyDown = down;
-		this.fire = fire;
 	}
 
 	/*
@@ -94,16 +86,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		if (acceleration.x > 0 && right)
 			return;
 
-		if (left) {
-			stopMoveLeft();
+		if (state == STATE.NOT_MOVING) {
+			this.setAnimation(walkingRight);
+			this.currentDirImg = rightImg;
+
 		}
 		right = true;
 
 		state = STATE.MOVING;
-		viewDirection = VIEW_DIRECTION.right;
+
 		acceleration.x = accelerationPerSecond.x;
-		this.setAnimation(walkingRight);
-		this.currentImg = rightImg;
 
 	}
 
@@ -112,17 +104,15 @@ public class ManipulatableObject extends AbstractGameObject {
 			return;
 		// Set left to true so if we were holding right previous to this,
 		// when we let go of right, it will move us left
-		if (right) {
-			stopMoveRight();
+
+		if (state == STATE.NOT_MOVING) {
+			this.setAnimation(walkingLeft);
+			this.currentDirImg = leftImg;
 
 		}
 		left = true;
-		viewDirection = VIEW_DIRECTION.left;
-		state = STATE.MOVING;
-		
-		this.setAnimation(walkingLeft);
-		this.currentImg = leftImg;
 
+		state = STATE.MOVING;
 
 		acceleration.x = -accelerationPerSecond.x;
 
@@ -132,80 +122,78 @@ public class ManipulatableObject extends AbstractGameObject {
 		if (acceleration.y > 0 && up)
 			return;
 
+		if (state == STATE.NOT_MOVING) {
+			this.setAnimation(walkingUp);
+			this.currentDirImg = upImg;
+
+		}
 		up = true;
+
 		state = STATE.MOVING;
 		acceleration.y = accelerationPerSecond.y;
-		
-		this.setAnimation(walkingUp);
-		this.currentImg = upImg;
 
 	}
 
 	protected void moveDown() {
+		//Gets called every frame if holding down because the xbox
+		//Controller needs that functionality since xbox input is
+		//polled every frame
 		if (acceleration.y < 0 && down)
 			return;
 
+		//From walking to running.
+		if (state == STATE.NOT_MOVING) {
+			this.setAnimation(walkingDown);
+			this.currentDirImg = downImg;
+		}
+		//if this down = true line isn't run,
 		down = true;
+
 		state = STATE.MOVING;
 		acceleration.y = -accelerationPerSecond.y;
-		
-		this.setAnimation(walkingDown);
-		this.currentImg = downImg;
 
 	}
 
-	public void stopMoveRight() {
-
-		// Set velocity to 0, check if left might be pressed
+	public void stopMove() {
 		right = false;
-		/*
-		 * if (state == STATE.GROUNDED) { setAnimation(aniNormal); }
-		 */
-		if (left) {
-			moveLeft();
-		}
-		// Friction to slow down
-		acceleration.x = velocity.x > 0 ? -accelerationPerSecond.x
-				: accelerationPerSecond.x;
-
-	}
-	
-	public void stopMove(){
-		right =false;
 		left = false;
 		up = false;
 		down = false;
-		acceleration.set(0,0);
-		velocity.set(0,0);
+		acceleration.set(0, 0);
+		velocity.set(0, 0);
 		state = STATE.NOT_MOVING;
 	}
 
-	public void stopMoveLeft() {
-		left = false;
-
-		// Bug fix for if both buttons are down,
-		// Left is released, then character should move right
-		if (right) {
-			moveRight();
-		}
-
-		acceleration.x = velocity.x > 0 ? -accelerationPerSecond.x
-				: accelerationPerSecond.x;
-
-	}
-
 	public void stopMoveX() {
-
+		//Automatically Decelerates the character
+		
+		//ToDO: Make a de-acceleration variable instead of accelerationPerSecond variable
 		acceleration.x = velocity.x > 0 ? -accelerationPerSecond.x * 2
 				: accelerationPerSecond.x * 2;
 
-		// Set velocity.x to 0, check if right might be pressed
-
+		if (up) {
+			setAnimation(this.walkingUp);
+			currentDirImg = upImg;
+		} else if (down) {
+			setAnimation(walkingDown);
+			currentDirImg = downImg;
+		}
 	}
 
 	protected void stopMoveY() {
 		acceleration.y = velocity.y > 0 ? -accelerationPerSecond.y * 2
 				: accelerationPerSecond.y * 2;
+
+		// These if-else if block is for when you stop moving
+		// up and down, if you were holding left or right,
+		// the animation will correct itself.
+		if (right) {
+			setAnimation(this.walkingRight);
+			currentDirImg = rightImg;
+		} else if (left) {
+			setAnimation(walkingLeft);
+			currentDirImg = leftImg;
+		}
 	}
 
 	private void stopMoveUp() {
@@ -217,7 +205,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void moveX(float deltaTime) {
-
 
 		// If you're pressing right but moving left
 		if (right && velocity.x < 0)
@@ -256,8 +243,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		if (down && velocity.y > 0)
 			down = false;
 
-		// Stops the plane
+		//Go from de-accelerating to a complete stop
+		//In Y- direction only
 		if (!up && !down) {
+			//If you're close to 0 velocity
 			if (velocity.y < 1.5f && velocity.y > -1.5f) {
 				acceleration.y = 0;
 				velocity.y = 0;
@@ -268,10 +257,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		// add deltaY to the position.y
 		if (!collision(0, deltay)) {
 			position.y += deltay;
-
-			// if you did collide with something,
-			// you did in the Y AXIS ONLY
-		} 
+		}
 
 	}
 
@@ -282,25 +268,21 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		moveX(deltaTime);
 		moveY(deltaTime);
-		
 
-		
 		checkStopMove();
 
 	}
-	//inefficient as fuck with so many conditions but it was buggy otherwise..someone help me 
-	//tell it that it is standing when it isnt moving
+
+	// inefficient as fuck with so many conditions but it was buggy
+	// otherwise..someone help me
+	// tell it that it is standing when it isnt moving
 	private void checkStopMove() {
-		if(!left && !right && !up && !down){
+		if (!left && !right && !up && !down) {
 			state = STATE.NOT_MOVING;
-		}		
+		}
 	}
 
-	// To be overridden in subclasses
-	protected void ensureCorrectCollisionBounds() {
-
-	}
-
+	
 	protected boolean collision(float deltaX, float deltaY) {
 
 		// Set bounds to where this object will be after adding
@@ -325,24 +307,58 @@ public class ManipulatableObject extends AbstractGameObject {
 			}
 		}
 		// Iterate through platforms
+		for (AbstractGameObject obj : LevelStage.playerControlledObjects) {
+
+			// If collision
+			if (this != obj && bounds.overlaps(obj.bounds)) {
+				if (deltaX != 0) {
+
+					deltax = 0;
+				}
+				if (deltaY != 0) {
+
+					deltay = 0;
+				}
+				return true;
+			}
+		}
+		
+		// Iterate through platforms
+		for (AbstractGameObject enemyObjs : LevelStage.enemyControlledObjects) {
+
+			// If collision
+			if (this != enemyObjs && bounds.overlaps(enemyObjs.bounds)) {
+				if (deltaX != 0) {
+
+					deltax = 0;
+				}
+				if (deltaY != 0) {
+
+					deltay = 0;
+				}
+				return true;
+			}
+		}
+		
+		// Iterate through collidable Objects
 		for (AbstractGameObject platform : LevelStage.solidObjects) {
 
 			// If collision
 			if (bounds.overlaps(platform.bounds)) {
 
+				
 				if (deltaX != 0) {
 					deltax = 0;
 				}
 				if (deltaY != 0) {
 					deltay = 0;
 				}
-				
 
 				return true;
 			}
 		}
 
-		// Collide with bullets
+		// Collide with objects that have an effect on collision
 		for (AbstractGameObject interactable : LevelStage.interactables) {
 			if (bounds.overlaps(interactable.bounds)) {
 				interactable.interact(this);
@@ -351,7 +367,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		return false;
 
 	}
-	
 
 	@Override
 	public void render(SpriteBatch batch) {
@@ -359,8 +374,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		// get correct image and draw the current proportions
 		if (state == STATE.MOVING) {
 			image = animation.getKeyFrame(stateTime, looping);
-		}else{
-			image = currentImg;
+		} else {
+			image = currentDirImg;
 		}
 
 		// Draw
@@ -386,7 +401,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			} else if (Gdx.input.isKeyPressed(keyRight)) {
 				moveRight();
 			} else {
-				stopMoveX();
+				if (right || left)
+					stopMoveX();
 			}
 
 			// debug purposes only
@@ -402,7 +418,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			moveDown();
 
 		} else {
-			stopMoveY();
+			if (up || down)
+				stopMoveY();
 		}
 
 	}
@@ -536,8 +553,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void clampInRectangle(Rectangle rect) {
-		this.position.x = MathUtils.clamp(position.x, rect.x, rect.x + rect.width - dimension.x);
-		this.position.y = MathUtils.clamp(position.y, rect.y, rect.y + rect.height - dimension.y);
+		this.position.x = MathUtils.clamp(position.x, rect.x, rect.x
+				+ rect.width - dimension.x);
+		this.position.y = MathUtils.clamp(position.y, rect.y, rect.y
+				+ rect.height - dimension.y);
 		bounds.setPosition(position);
 
 	}

@@ -17,7 +17,10 @@ public class Mage extends ManipulatableObject {
 		walkingRight = Assets.instance.mage.east;
 		walkingLeft = Assets.instance.mage.west;
 		
-		this.currentImg = upImg;
+		terminalVelocity.set(4, 4);
+		accelerationPerSecond.set(20, 20);
+		
+		this.currentDirImg = upImg;
 		
 	}
 

@@ -9,12 +9,14 @@ import com.badlogic.gdx.math.Rectangle;
 public class TransitionBoundary extends AbstractGameObject{
 	public int mapMove;
 	public boolean xDirection;
-	public TransitionBoundary(float x, float y, float width, float height, int amount, boolean xDir){
+/*	public TransitionBoundary(float x, float y, float width, float height, int amount, boolean xDir){
 		xDirection = xDir;
 		mapMove = amount;
 		
 		bounds = new Rectangle(x,y,width,height);
 		printLocation();
+		
+	
 	}
 	
 	private void printLocation() {
@@ -49,7 +51,7 @@ public class TransitionBoundary extends AbstractGameObject{
 		LevelStage.reposition(this);;
 	}
 	
-
+*/
 	
 	
 

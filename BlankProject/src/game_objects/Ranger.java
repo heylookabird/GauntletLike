@@ -16,7 +16,7 @@ public class Ranger extends ManipulatableObject {
 		walkingRight = Assets.instance.planes.whitePlane;
 		walkingLeft = Assets.instance.planes.yellowPlane;
 		
-		this.currentImg = upImg;
+		this.currentDirImg = upImg;
 		
 	}
 
@@ -32,6 +32,6 @@ public class Ranger extends ManipulatableObject {
 		walkingRight = Assets.instance.planes.whitePlane;
 		walkingLeft = Assets.instance.planes.yellowPlane;
 		
-		this.currentImg = upImg;
+		this.currentDirImg = upImg;
 	}
 }
