@@ -1,13 +1,15 @@
 package backend;
 
-import game_map_classes.TransitionBoundary;
+import game_objects.GroundTile;
 import game_objects.Mage;
 import game_objects.Wall;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class LevelLoader {
 
@@ -79,6 +81,7 @@ public class LevelLoader {
 		// have to dispose to work
 		// just to be more efficient I wanted to try to get rid of the old
 		// pixmap from memory
+		
 		if (!players)
 			playerNum = 0;
 		else
@@ -147,6 +150,8 @@ public class LevelLoader {
 		float width = map.getWidth();
 		float wallThickness = 2;
 		
+		
+		
 		LevelStage.solidObjects.add(new Wall(-1,-1, width, wallThickness));//bottom bound
 		LevelStage.solidObjects.add(new Wall(-1, -1, wallThickness, height));//left bound
 		LevelStage.solidObjects.add(new Wall(-1,height, width, wallThickness));//top bound
@@ -154,10 +159,20 @@ public class LevelLoader {
 	}
 	
 	private void makeTestBoundaries(){
-		float wallThickness = 2;
+		
+		
+		Array <AtlasRegion> temp = Assets.instance.background.grass;
+		for(int i = (int) (-Constants.viewportWidth); i < Constants.bgViewportWidth; i += 2){
+			for(int j = (int) (-Constants.viewportHeight); j < (int) (Constants.viewportHeight); j += 2){
+				LevelStage.uncollidableObjects.add(new GroundTile(temp.get((int)(temp.size * Math.random())), i, j, 2, 2));
+				System.out.println("aoetuaoeuhso");
+			}
+		}
+		
+		float wallThickness = 1;
 		LevelStage.solidObjects.add(new Wall(-4,-4, 8, wallThickness));//bottom bound
 		LevelStage.solidObjects.add(new Wall(-4, -4, wallThickness, 8));//left bound
-		LevelStage.solidObjects.add(new Wall(-4, 4, 10, wallThickness));//top bound
+		LevelStage.solidObjects.add(new Wall(-4, 4, 8, wallThickness));//top bound
 		LevelStage.solidObjects.add(new Wall(4,-4, wallThickness, 8));//right bound
 	}
 	private Vector2 getDimension(int pixelX, int pixelY, int currentPixel) {

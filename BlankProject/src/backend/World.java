@@ -40,6 +40,8 @@ public class World {
 		ControllerHandler.init();
 		
 		LevelStage.loadTest(false);
+		
+		
 	}
 	
 	
@@ -47,7 +49,7 @@ public class World {
 	public void render(float delta) {
 		
 		update(delta);
-		Gdx.gl.glClearColor(0, 0, 189, 0);// Default background color
+		Gdx.gl.glClearColor(0, 0, 0, 0);// Default background color
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		WorldRenderer.renderer.render();

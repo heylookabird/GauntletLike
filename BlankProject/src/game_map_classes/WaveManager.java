@@ -103,6 +103,12 @@ public class WaveManager {
 		//System.out.println("spawned");
 	}
 	
+	private void addToSpawn(AbstractGameObject enemy, int time){
+		if(LevelStage.isAreaFree(enemy.bounds)){
+			spawns.add(new TimingNode(enemy, time));
+		}
+	}
+	
 	public void testWave(){
 	/*	LevelStage.enemyControlledObjects.add(new Ranger(false, 1, 1, 1, 1));
 		LevelStage.enemyControlledObjects.add(new Ranger(false, -2, -2, 1, 1));
@@ -135,11 +141,21 @@ public class WaveManager {
 	}
 
 	private void spawnToTiming(float statetime) {
+		int delay = 3;
 		for(int i = 0; i < spawns.size; i++){
 			if(stateTime > spawns.get(i).timing){
-				addEnemy(spawns.get(i).spawn);
-				spawns.removeIndex(i);
+				if(LevelStage.isAreaFree(spawns.get(i).spawn.bounds)){
+					addEnemy(spawns.get(i).spawn);
+					spawns.removeIndex(i);
+				}
+				//can be changed but makes it so that if you are delaying an enemy spawn by being on top of it, the enemy won't spawn instantly
+				//after you leave
+				else{
+					spawns.get(i).timing = (int) stateTime + delay;
+					System.out.println("Got here, timing :" + spawns.get(i).timing + " stateTime: " + stateTime);
+				}
 			}
+			
 		}
 	}
 

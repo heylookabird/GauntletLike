@@ -16,13 +16,11 @@ public class Wall extends AbstractGameObject{
 		
 		wallImages = new Array<TextureRegion>();
 		Array<AtlasRegion> reference = Assets.instance.background.walls;
-		for(int i = 0; i < dimension.x; i ++){
+		for(int i = 0; i < bounds.width; i ++){
 			wallImages.add(reference.get((int)(Math.random() * reference.size)));
 		}
 		
-		for(int i = 0; i < dimension.y; i ++){
-			wallImages.add(Assets.instance.mage.facingEast);
-
+		for(int i = 0; i < bounds.height; i ++){
 			wallImages.add(reference.get((int)(Math.random() * reference.size)));
 		}
 		
@@ -32,13 +30,17 @@ public class Wall extends AbstractGameObject{
 	@Override
 	public void render(SpriteBatch batch) {
 
-		for(int i = 0; i < dimension.x; i++){
+		for(int i = 0; i < bounds.width; i++){
 			
-			batch.draw(Assets.instance.mage.facingEast, position.x + i, position.y, 0, 0, 1, 1, 1, 1, rotation);
+			batch.draw(wallImages.get(i), position.x + i, position.y, bounds.width, bounds.height, 1, 1, 1, 1, rotation);
 		}
 		
-		for(int i = 0; i < dimension.y; i++){
-			batch.draw(Assets.instance.mage.facingEast, position.x, position.y + i, 0, 0, 1, 1, 1, 1, rotation);
+		for(int i = 0; i < bounds.height; i++){
+			batch.draw(wallImages.get(i), position.x, position.y + i, bounds.width, bounds.height, 1, 1, 1, 1, rotation);
+		}
+		
+		if(this.debug){
+			batch.draw(debugTex, position.x, position.y, bounds.width, bounds.height);
 		}
 	
 	}

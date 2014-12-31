@@ -7,6 +7,7 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class LevelStage {
@@ -56,6 +57,20 @@ public class LevelStage {
 	public static void loadTest(boolean players){
 		System.out.println("LoadTest");
 		loader.loadTestRoom(players);
+	}
+	
+	public static boolean isAreaFree(Rectangle bounds){
+		for(AbstractGameObject obj: enemyControlledObjects){
+			if(bounds.overlaps(obj.bounds))
+				return false;
+		}
+		
+		for(AbstractGameObject obj: playerControlledObjects){
+			if(bounds.overlaps(obj.bounds))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	public static void reposition(TransitionBoundary trigger) {
@@ -155,7 +170,9 @@ public class LevelStage {
 		InputManager.inputManager.addObject(obj);
 	}
 	public static void render(SpriteBatch batch){
-
+		for(AbstractGameObject uncollidable: uncollidableObjects){
+			uncollidable.render(batch);
+		}
 		//render portal
 		for(AbstractGameObject interactableObject: interactables){
 			interactableObject.render(batch);
@@ -179,9 +196,7 @@ public class LevelStage {
 		
 		
 		
-		for(AbstractGameObject uncollidable: uncollidableObjects){
-			uncollidable.render(batch);
-		}
+		
 	}
 	public static void destroy(){
 		//Clear all the arrays

@@ -65,10 +65,17 @@ public class Assets implements AssetErrorListener {
 	}
 	public class Background {
 		public final Array<AtlasRegion> walls;
+		public final Array<AtlasRegion> grass;
+		
 		public Background(TextureAtlas atlas) {
 			walls = new Array<AtlasRegion>();
+			grass = new Array<AtlasRegion>();
 			for(int i = 1; i < 7; i++)
 				walls.add(atlas.findRegion("body" + i));
+			
+			for(int i = 0; i < 5; i++){
+				grass.add(atlas.findRegion("grass" + i));
+			}
 		}
 	}
 	public class Planes{
@@ -104,7 +111,7 @@ public class Assets implements AssetErrorListener {
 		public final Animation west, east, north, south;
 		public final AtlasRegion facingWest, facingEast, facingNorth, facingSouth;
 		
-		private final float aniSpeed = .07f;
+		private final float aniSpeed = .085f;
 		public Mage(TextureAtlas atlas){
 			walkingEastAni = atlas.findRegions("mage_walking_east");
 			walkingWestAni = atlas.findRegions("mage_walking_west");

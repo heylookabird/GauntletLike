@@ -58,6 +58,7 @@ public abstract class AbstractGameObject {
 		terminalVelocity = new Vector2(1, 1);
 		bounds = new Rectangle(position.x, position.y, 1, 1);
 		accelerationPerSecond = new Vector2();
+		//this.initDebug();
 	}
 
 	public AbstractGameObject(float x, float y, float width, float height) {
