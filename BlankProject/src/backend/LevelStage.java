@@ -15,12 +15,12 @@ public class LevelStage {
 	public static Array<ManipulatableObject> playerControlledObjects = new Array<ManipulatableObject>();
 	public static Array<AbstractGameObject> solidObjects = new Array<AbstractGameObject>();
 	public static Array<AbstractGameObject> backObjects = new Array<AbstractGameObject>();
-	public static Array<AbstractGameObject> enemyControlledObjects = new Array<AbstractGameObject>();
+	public static Array<ManipulatableObject> enemyControlledObjects = new Array<ManipulatableObject>();
 	public static Array<AbstractGameObject> uncollidableObjects = new Array<AbstractGameObject>();
 	//For objects like the portal
 	public static Array<AbstractGameObject> interactables = new Array<AbstractGameObject>();
 	public static Array<TransitionBoundary> exitBounds = new Array<TransitionBoundary>();
-	public static WaveManager waveManager = new WaveManager();
+	public static WaveManager waveManager;
 	private static boolean waves;
 	//ints to keep track of where on the map the players are
 	public static int currentX = 0, currentY = 0;
@@ -29,14 +29,17 @@ public class LevelStage {
 	public static String header;
 	private static LevelLoader loader = new LevelLoader();
 	public static GameMap map = new GameMap();
+	private int levelNum;
+	private int waveNum;
 	
 	
 	public LevelStage(){
 		currentX = 0;
 		currentY = 0;
+		levelNum = 1;
 		
 		loader = new LevelLoader();
-		waveManager = new WaveManager();
+		waveManager = new WaveManager("levels/level" + levelNum + "/" + "wave");
 	}
 	
 	public static void setHeader(String head){
@@ -55,7 +58,6 @@ public class LevelStage {
 	}
 	
 	public static void loadTest(boolean players){
-		System.out.println("LoadTest");
 		loader.loadTestRoom(players);
 	}
 	
@@ -255,7 +257,7 @@ public class LevelStage {
 				bounds.update(deltaTime);
 			}
 		}
-		if(waves)
+		if(waveManager != null && waves)
 			waveManager.update(deltaTime);
 		
 		

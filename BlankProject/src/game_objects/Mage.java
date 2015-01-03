@@ -1,6 +1,9 @@
 package game_objects;
 
+import game_objects.weapons.Sword;
 import backend.Assets;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class Mage extends ManipulatableObject {
 
@@ -20,6 +23,8 @@ public class Mage extends ManipulatableObject {
 		terminalVelocity.set(4, 4);
 		accelerationPerSecond.set(20, 20);
 		
+
+		primaryWeapon = new Sword(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.currentDirImg = upImg;
 		
 	}

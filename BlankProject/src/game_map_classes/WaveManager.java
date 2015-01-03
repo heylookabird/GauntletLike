@@ -9,15 +9,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 public class WaveManager {
 	private String difficulty;
-	private int type; //int that allows us to randomly change what type of wave it is
+	private int type; //int that allows us to randomly change what type of wave it is... idk about this (joe)
 	private Pixmap pixmap;
 	private float stateTime;
-	private float waitTime;
+	private float waitTime; //TIME BETWEEN CLEARING WAVE AND NEXT WAVE I BELIEVE I DIDN'T CODE THIS BULLSHIT (joe)
 	private boolean clear;
 	private Array<TimingNode> spawns;
+	private int waveNum;
+	private String path;
 	
 	private enum ENEMY_TYPE {
 		EMPTY(0, 0, 0), ENEMY1(255, 255, 255), ENEMY2(255,
@@ -42,19 +45,19 @@ public class WaveManager {
 	
 	private class TimingNode{
 		public int timing;
-		public AbstractGameObject spawn;
+		public ManipulatableObject spawn;
 		
-		public TimingNode(AbstractGameObject spawn, int timing){
+		public TimingNode(ManipulatableObject spawn, int timing){
 			this.spawn = spawn;
 			this.timing = timing;
 		}
 	}
-	public WaveManager(){
-		difficulty = "easy";
-		type = MathUtils.random(2);
+	public WaveManager(String path){
 		stateTime = 0;
 		waitTime = 3;
+		waveNum = 1;
 		clear = true;
+		this.path = path;
 		spawns = new Array<TimingNode>();
 	}
 	
@@ -63,13 +66,14 @@ public class WaveManager {
 	}
 
 	
-	public void newWave(String path){
-		String fileLoc = path + "/" + difficulty + type;
+	public void newWave(){
+		String fileLoc = path + "" + waveNum + ".png";
 		
 		try {
 			pixmap = new Pixmap(Gdx.files.internal(fileLoc));
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			//LEVEL COMPLETETETETE
 			return;
 		}
 		
@@ -86,11 +90,11 @@ public class WaveManager {
 
 				if (ENEMY_TYPE.EMPTY.sameColor(currentPixel)) {
 					continue;
+					
 				}
 				
 				
 				
-				// wont check for enemies if map has been cleared before
 
 			}// inner for loop
 		}// outer for loop
@@ -98,21 +102,18 @@ public class WaveManager {
 		pixmap.dispose();
 	}
 	
-	private void addEnemy(AbstractGameObject enemy){
+	private void addEnemy(ManipulatableObject enemy){
 		LevelStage.enemyControlledObjects.add(enemy);
-		//System.out.println("spawned");
 	}
 	
-	private void addToSpawn(AbstractGameObject enemy, int time){
+	private void addToSpawn(ManipulatableObject enemy, int time){
 		if(LevelStage.isAreaFree(enemy.bounds)){
 			spawns.add(new TimingNode(enemy, time));
 		}
 	}
 	
-	public void testWave(){
-	/*	LevelStage.enemyControlledObjects.add(new Ranger(false, 1, 1, 1, 1));
-		LevelStage.enemyControlledObjects.add(new Ranger(false, -2, -2, 1, 1));
-		LevelStage.enemyControlledObjects.add(new Ranger(false, -3,-3, 1, 1));*/
+/*	public void testWave(){
+
 		spawns.add(new TimingNode(new Ranger(false, 1, 1, 1, 1), 1));
 		spawns.add(new TimingNode(new Ranger(false, -2, -2, 1, 1), 2));
 		spawns.add(new TimingNode(new Ranger(false, -3,-3, 1, 1), 3));
@@ -121,7 +122,7 @@ public class WaveManager {
 		stateTime = 0;
 		clear = false;
 
-	}
+	}*/
 	
 	public void destroyEnemy(){
 		if(!clear){
@@ -133,7 +134,7 @@ public class WaveManager {
 		stateTime += deltatime;
 		if(clear){
 			if(stateTime > waitTime)
-				testWave();
+				newWave();
 		}else{
 			checkClear();
 			spawnToTiming(deltatime);
@@ -143,14 +144,18 @@ public class WaveManager {
 	private void spawnToTiming(float statetime) {
 		int delay = 3;
 		for(int i = 0; i < spawns.size; i++){
+			
+			//WE S'PPOSED TO BE SPAWNING SOME MAH-FUCKAS
 			if(stateTime > spawns.get(i).timing){
+				
+				//NO MAH-FUCKAS IN THE WAY SO WE SPAWNING SOME SHIT
 				if(LevelStage.isAreaFree(spawns.get(i).spawn.bounds)){
 					addEnemy(spawns.get(i).spawn);
 					spawns.removeIndex(i);
-				}
+					i--;
 				//can be changed but makes it so that if you are delaying an enemy spawn by being on top of it, the enemy won't spawn instantly
-				//after you leave
-				else{
+				//after you leave (I'm harjit and i leave boring ass comments.. I <3 Pizza)
+				}else{
 					spawns.get(i).timing = (int) stateTime + delay;
 					System.out.println("Got here, timing :" + spawns.get(i).timing + " stateTime: " + stateTime);
 				}

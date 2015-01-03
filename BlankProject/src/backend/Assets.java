@@ -16,6 +16,7 @@ public class Assets implements AssetErrorListener {
 	public Background background;
 	public Planes planes;
 	public Mage mage;
+	public Weapons weapons;
 	private Assets(){
 		
 	}
@@ -28,14 +29,18 @@ public class Assets implements AssetErrorListener {
 	
 		assetManager.load("images/mage.pack", TextureAtlas.class);
 		assetManager.load("images/bg.pack", TextureAtlas.class);
+		assetManager.load("images/sword.pack", TextureAtlas.class);
 
 		assetManager.finishLoading();
 		
+		
 		TextureAtlas atlas = assetManager.get("images/mage.pack");
 		TextureAtlas atlas2 = assetManager.get("images/bg.pack");
+		TextureAtlas sword = assetManager.get("images/sword.pack");
 		
 		background = new Background(atlas2);
 		mage = new Mage(atlas);
+		weapons = new Weapons(sword);
 		
 
 	}
@@ -131,7 +136,14 @@ public class Assets implements AssetErrorListener {
 
 		}
 	}
-	
+	public class Weapons{
+		
+		public final AtlasRegion sword;
+		public Weapons(TextureAtlas atlas){
+			sword = atlas.findRegion("sword");
+			
+		}
+	}
 	
 
 }

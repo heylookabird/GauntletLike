@@ -47,24 +47,25 @@ public class LevelLoader {
 		init(fileName, false, false);
 	}
 
-	public void startLevel(String fileName) {
+	/*public void startLevel(String fileName) {
 		init(fileName, false, false);
-	}
+	}*/
 	
 	public void loadTestRoom(boolean players) {
 		if(!players){
 			Mage player = new Mage(false);
-			player.position.x += 3;
+			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
 			player.setButtons(19, 21, 20, 22, 62);
 			Mage player2 = new Mage(false);
+			player2.position.set(10, 10);
 
 			LevelStage.addPlayer(player);
-			LevelStage.addPlayer(player2);
 		}
 		
-		//LevelStage.exitBounds.add(new TransitionBoundary(0, 5, 1, 1, false));
 		
 		this.makeTestBoundaries();
+		
+		init("levels/level1/stage.png", false, false);
 	}
 
 	// method to be used that will automatically ensure that the players are there
@@ -90,8 +91,9 @@ public class LevelLoader {
 		// Load image file that represents level data
 		try {
 			pixmap = new Pixmap(Gdx.files.internal(fileName));
+			
 		} catch (Exception e) {
-
+			e.printStackTrace();
 			return;
 		}
 		// scan pixels from top-left to bottom right
@@ -105,6 +107,8 @@ public class LevelLoader {
 				// Get color of current pixel as 32-bit RGBA value
 				int currentPixel = pixmap.getPixel(pixelX, pixelY);
 
+				
+				//START LOOKING FOR SPECIFIC COLORS THAT MAP TO THE OBJECTS		
 				if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) {
 					continue;
 				}
@@ -113,25 +117,6 @@ public class LevelLoader {
 					
 				}
 				
-				if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-					if (Controllers.getControllers().size < playerNum)
-						continue;
-
-					if (itIsStartOfNewObject(pixelX, pixelY, currentPixel)) {
-
-						// Spawn player
-						/*
-						 * Mage rogue = new Mage(pixelX * 1, baseHeight, .19f,
-						 * .31f, Constants.ROGUE_SCALE,
-						 * Controllers.getControllers().size > 0); // Track him
-						 * in these arrays
-						 * LevelStage.playerControlledObjects.add(rogue);
-						 * InputManager.inputManager.addObject(rogue);
-						 * playerNum++;
-						 */
-					}
-				}// end of playerSpawn loop
-
 				// wont check for enemies if map has been cleared before
 				if (!cleared) {
 					if (BLOCK_TYPE.ENEMY_SPAWNPOINT.sameColor(currentPixel)) {
@@ -150,33 +135,28 @@ public class LevelLoader {
 		float width = map.getWidth();
 		float wallThickness = 2;
 		
+		//SET UP THE BACKGROUND FLOOR TEXTURES TO COVER THE LEVEL
+		Array <AtlasRegion> temp = Assets.instance.background.grass;
+		for(int i = (int) (-Constants.viewportWidth / 2); i < width + (int) (Constants.viewportWidth / 2); i += 2){
+			for(int j = (int) (-Constants.viewportHeight / 2); j < height + (int) (Constants.viewportHeight / 2); j += 2){
+				LevelStage.uncollidableObjects.add(new GroundTile(temp.get((int)(temp.size * Math.random())), i, j, 2, 2));
+			}
+		}
 		
 		
-		LevelStage.solidObjects.add(new Wall(-1,-1, width, wallThickness));//bottom bound
-		LevelStage.solidObjects.add(new Wall(-1, -1, wallThickness, height));//left bound
-		LevelStage.solidObjects.add(new Wall(-1,height, width, wallThickness));//top bound
-		LevelStage.solidObjects.add(new Wall(width,-1, wallThickness, height));//right bound
+		LevelStage.solidObjects.add(new Wall(wallThickness, 0, width, wallThickness));//bottom bound
+		LevelStage.solidObjects.add(new Wall(0, 0, wallThickness, height));//left bound
+		LevelStage.solidObjects.add(new Wall(0, height, width, wallThickness));//top bound
+		LevelStage.solidObjects.add(new Wall(width, wallThickness, wallThickness, height));//right bound
 	}
 	
 	private void makeTestBoundaries(){
 		
 		
-		Array <AtlasRegion> temp = Assets.instance.background.grass;
-		for(int i = (int) (-Constants.viewportWidth); i < Constants.bgViewportWidth; i += 2){
-			for(int j = (int) (-Constants.viewportHeight); j < (int) (Constants.viewportHeight); j += 2){
-				LevelStage.uncollidableObjects.add(new GroundTile(temp.get((int)(temp.size * Math.random())), i, j, 2, 2));
-				System.out.println("aoetuaoeuhso");
-			}
-		}
 		
-		float wallThickness = 1;
-		LevelStage.solidObjects.add(new Wall(-4,-4, 8, wallThickness));//bottom bound
-		LevelStage.solidObjects.add(new Wall(-4, -4, wallThickness, 8));//left bound
-		LevelStage.solidObjects.add(new Wall(-4, 4, 8, wallThickness));//top bound
-		LevelStage.solidObjects.add(new Wall(4,-4, wallThickness, 8));//right bound
 	}
 	private Vector2 getDimension(int pixelX, int pixelY, int currentPixel) {
-		// Gets the
+
 		Vector2 newPixelXY = extendPlatformDownRight(pixelX, pixelY,
 				currentPixel);
 		int lengthX = (int) (newPixelXY.x - pixelX) + 1;
@@ -226,17 +206,6 @@ public class LevelLoader {
 		return true;
 	}
 
-	private boolean isStartOfNewObject(int i, int j, int color, int color2) {
-		int lastPixelX = pixmap.getPixel(i - 1, j);
-		int lastPixelY = pixmap.getPixel(i, j - 1);
-
-		if (lastPixelX == color || lastPixelX == color2)
-			return false;
-		if (lastPixelY == color || lastPixelY == color2)
-			return false;
-
-		return true;
-	}
 
 	public void destroy() {
 
