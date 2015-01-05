@@ -61,6 +61,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		//
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
+		
+		hp = 10;
+		damage = 10;
+		movementSpeed = 10;
 	}
 
 	public ManipulatableObject(boolean controller, float x, float y,
@@ -83,9 +87,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		keyDown = down;
 	}
 
-	protected void removeThyself(boolean explosion) {
+	protected void removeThyself() {
 		teamObjects.removeValue(this, true);
-		
+		System.out.println("he's dead jim");
 	}
 
 	//Moves the object to the right
@@ -200,13 +204,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		velocity.x = 0;
 		
 		
+		//Continue upwards 
 		if (up) {
 			setAnimation(this.walkingUp);
 			currentDirImg = upImg;
 			
-			//Adjust weapon correctlys
+			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveUp();
+			
+		//Continue downwards
 		} else if (down) {
 			setAnimation(walkingDown);
 			currentDirImg = downImg;
@@ -231,7 +238,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			setAnimation(this.walkingRight);
 			currentDirImg = rightImg;
 			
-			//Adjust weapon correctlys
+			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveRight();
 			
@@ -239,7 +246,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			setAnimation(walkingLeft);
 			currentDirImg = leftImg;
 			
-			//Adjust weapon correctlys
+			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveLeft();
 		}else{
@@ -257,22 +264,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void moveX(float deltaTime) {
 
-	/*	// If you're pressing right but moving left
-		if (right && velocity.x < 0)
-			right = false;
-		if (left && velocity.x > 0)
-			left = false;
-
-		// Not pressing anything and you come to a stop
-		if (!left && !right) {
-			if (velocity.x < 1.5f && velocity.x > -1.5f) {
-				acceleration.x = 0;
-				velocity.x = 0;
-
-			}
-
-		}*/
-
 		// change in X axis this frame
 		deltax = velocity.x * deltaTime;
 
@@ -287,22 +278,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void moveY(float deltaTime) {
 		// change in y this frame
 		deltay = velocity.y * deltaTime;
-
-/*		// If you're pressing right but moving left
-		if (up && velocity.y < 0)
-			up = false;
-		if (down && velocity.y > 0)
-			down = false;
-
-		//Go from de-accelerating to a complete stop
-		//In Y- direction only
-		if (!up && !down) {
-			//If you're close to 0 velocity
-			if (velocity.y < 1.5f && velocity.y > -1.5f) {
-				acceleration.y = 0;
-				velocity.y = 0;
-			}
-		}*/
 
 		// If you didn't collide in y axis,
 		// add deltaY to the position.y
@@ -621,6 +596,14 @@ public class ManipulatableObject extends AbstractGameObject {
 				+ rect.height - dimension.y);
 		bounds.setPosition(position);
 
+	}
+
+	public void takeHitFor(int damage) {
+		this.hp -= damage;
+		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
+		
+		//if(hp < 0)
+			//removeThyself();
 	}
 	
 
