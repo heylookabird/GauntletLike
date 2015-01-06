@@ -58,6 +58,7 @@ public abstract class AbstractGameObject {
 		terminalVelocity = new Vector2(1, 1);
 		bounds = new Rectangle(position.x, position.y, 1, 1);
 		accelerationPerSecond = new Vector2();
+		//this.initDebug();
 	}
 
 	public AbstractGameObject(float x, float y, float width, float height) {
@@ -112,9 +113,8 @@ public abstract class AbstractGameObject {
 		rotation += rotationalVelocity * deltaTime;
 	}
 
-	public void interact(AbstractGameObject couple) {
-
-	}
+	//TO BE OVERRIDEN IN SUBCLASSES
+	public void interact(AbstractGameObject couple) {}
 
 	public void setAnimation(Animation animation) {
 		if (animation.getPlayMode() == Animation.NORMAL) {
@@ -125,10 +125,8 @@ public abstract class AbstractGameObject {
 		stateTime = 0;
 
 	}
-
-	public void animationComplete() {
-
-	}
+	//TO BE OVERRIDEN IN SUBCLASSES
+	public void animationComplete() {}
 
 	public void setImage(TextureRegion image) {
 		this.image = image;
@@ -137,55 +135,56 @@ public abstract class AbstractGameObject {
 	public void update(float deltaTime) {
 
 		// Update stateTime for animation to know which frame it's in
-		stateTime += deltaTime;
-		stateTime = stateTime > 0 ? stateTime : 0;
-
-		// Calls animationComplete which is specified on an object basis
-		if (animation != null && animation.isAnimationFinished(stateTime)) {
-			animationComplete();
-		}
+		stateTimeUpdate(deltaTime);
 		// onScreen = World.controller.cameraHelper.onScreen(this) ? true :
 		// false;
 
 		updateMotionX(deltaTime);
 		updateMotionY(deltaTime);
 		updateRotation(deltaTime);
+		
+		bounds.setPosition(position);
 
 	}
+	
+	private void stateTimeUpdate(float deltatime){
+		stateTime += deltatime;
+		stateTime = stateTime > 0 ? stateTime : 0;
 
-	protected void updateMotionX(float deltaTime) {
+		// Calls animationComplete which is specified on an object basis
+		if (animation != null && animation.isAnimationFinished(stateTime)) {
+			animationComplete();
+		}
+	}
+
+	public void updateMotionX(float deltaTime) {
 
 		// Apply acceleration
 		velocity.x += acceleration.x * deltaTime;
 		// Make sure the object's velocity does not exceed the terminal velocity
 		velocity.x = MathUtils.clamp(velocity.x, -terminalVelocity.x,
 				terminalVelocity.x);
-		
-		if(baseMovement)
-			position.x += velocity.x * deltaTime;
+
 
 	}
 
 	protected void updateMotionY(float deltaTime) {
-
+		//Apply acceleration
 		velocity.y += acceleration.y * deltaTime;
+		//Clamp it baby
 		velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y,
 				terminalVelocity.y);
-		if(baseMovement)
-			position.y += velocity.y * deltaTime;
-
 	}
 
 	public void render(SpriteBatch batch) {
 		// get correct image and draw the current proportions
-		image = null;
-		image = animation.getKeyFrame(stateTime, looping);
-		currentFrameDimension.set(image.getRegionWidth() / 10,
-				image.getRegionHeight() / 10);
-		// Draw
-		if (onScreen)
+		if(animation != null)
+			image = animation.getKeyFrame(stateTime);
+		
+				// Draw
+		//if (onScreen)
 			batch.draw(image.getTexture(), position.x, position.y, origin.x,
-					origin.y, currentFrameDimension.x, currentFrameDimension.y,
+					origin.y, dimension.x, dimension.y,
 					1, 1, rotation, image.getRegionX(), image.getRegionY(),
 					image.getRegionWidth(), image.getRegionHeight(), flipX,
 					flipY);

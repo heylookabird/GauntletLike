@@ -24,6 +24,7 @@ public class CameraHelper {
 	private boolean zooming;
 	Vector2 centerPoint;
 
+	
 	public CameraHelper() {
 		position = new Vector2();
 		zoom = Constants.defaultZoom;
@@ -34,37 +35,42 @@ public class CameraHelper {
 		centerPoint = new Vector2();
 
 	}
+	
+	public Vector2 getCenterPoint(){
+		return centerPoint;
+	}
 
 	public void update(float deltaTime) {
 		float x = 0, y = 0;
+		
+		//Keeps the center of the screen in the average of the players positions.
 		for (ManipulatableObject obj : LevelStage.playerControlledObjects) {
 			x += obj.position.x;
 			y += obj.position.y;
 		}
-		
 		centerPoint.set(x / LevelStage.playerControlledObjects.size, y
 				/ LevelStage.playerControlledObjects.size);
 
+		//After centerpoint is found, calculate a tenth of way towards centerpoint 
 		float deltaX = (centerPoint.x - position.x) / 10, deltaY = (centerPoint.y - position.y ) / 10;
+		
+		//Moving the camera and bounds
 		position.x += deltaX;
 		position.y += deltaY;
 		rect.x += deltaX;
 		rect.y += deltaY;
 
-		boolean allOnScreen = true;
+		//Clamp objects positions inside the rectangle.
+		//CURRENT BUG: IF MOVING IN POSITIVE X OR Y, CAMERA DOES NOT PULL OBJECTS 
+		//IF MOVING NEGATIVE X OR Y DIRECTION, CAMERA WILL PULL OTHER OBJECTS THAT 
+		//WERE OUTSIDE OF THE RECTANGLE BOUNDS
 		for (ManipulatableObject obj : LevelStage.playerControlledObjects) {
 			if (!rect.contains(obj.bounds)) {
-				allOnScreen = false;
 				obj.clampInRectangle(rect);
 
 			}
 		}
-		if (!allOnScreen) {
-			position.x -= deltaX;
-			position.y -= deltaY;
-			rect.x -= deltaX;
-			rect.y -= deltaY;
-		}
+		
 	}
 
 	
@@ -80,10 +86,6 @@ public class CameraHelper {
 
 	public void setPosition(float x, float y) {
 		this.position.set(x, y);
-		/*targetSpot = new Vector2(position);
-		rect.setPosition(x - Constants.viewportWidth / 2 - 5, y
-				- Constants.viewportHeight / 2);
-*/
 	}
 
 	public Vector2 getPosition() {
@@ -160,6 +162,6 @@ public class CameraHelper {
 	}
 
 	public void render(SpriteBatch batch) {
-		batch.draw(Assets.instance.background.bg, rect.x, rect.y, rect.width, rect.height);
+		//batch.draw(Assets.instance.background.walls.first(), rect.x, rect.y, rect.width, rect.height);
 	}
 }

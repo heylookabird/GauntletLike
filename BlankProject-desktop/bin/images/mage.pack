@@ -1,0 +1,215 @@
+
+mage.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+mage_standing_east
+  rotate: false
+  xy: 1, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: -1
+mage_standing_north
+  rotate: false
+  xy: 1, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: -1
+mage_standing_south
+  rotate: false
+  xy: 19, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: -1
+mage_standing_west
+  rotate: false
+  xy: 1, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: -1
+mage_walking_east
+  rotate: false
+  xy: 19, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 0
+mage_walking_east
+  rotate: false
+  xy: 37, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 1
+mage_walking_east
+  rotate: false
+  xy: 1, 22
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 2
+mage_walking_east
+  rotate: false
+  xy: 19, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 3
+mage_walking_north
+  rotate: false
+  xy: 37, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 0
+mage_walking_north
+  rotate: false
+  xy: 55, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 1
+mage_walking_north
+  rotate: false
+  xy: 19, 22
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 2
+mage_walking_north
+  rotate: false
+  xy: 37, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 3
+mage_walking_north
+  rotate: false
+  xy: 55, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 4
+mage_walking_north
+  rotate: false
+  xy: 73, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 5
+mage_walking_south
+  rotate: false
+  xy: 37, 22
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 0
+mage_walking_south
+  rotate: false
+  xy: 55, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 1
+mage_walking_south
+  rotate: false
+  xy: 73, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 2
+mage_walking_south
+  rotate: false
+  xy: 91, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 3
+mage_walking_south
+  rotate: false
+  xy: 55, 22
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 4
+mage_walking_south
+  rotate: false
+  xy: 73, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 5
+mage_walking_west
+  rotate: false
+  xy: 91, 74
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 0
+mage_walking_west
+  rotate: false
+  xy: 109, 100
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 1
+mage_walking_west
+  rotate: false
+  xy: 73, 22
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 2
+mage_walking_west
+  rotate: false
+  xy: 91, 48
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: 3
+body1
+  rotate: false
+  xy: 1, 1
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body2
+  rotate: false
+  xy: 23, 1
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body3
+  rotate: false
+  xy: 45, 1
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body4
+  rotate: false
+  xy: 67, 1
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body5
+  rotate: false
+  xy: 91, 27
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body6
+  rotate: false
+  xy: 91, 6
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1

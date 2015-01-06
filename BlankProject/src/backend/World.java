@@ -5,6 +5,7 @@ import game_objects.Ranger;
 import Controllers.ControllerHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,37 +21,35 @@ public class World {
 		
 	}
 	public void show() {
-		init();
+		testInit();
 	}
-	public void init(){
-		//
-		Assets.instance.init(new AssetManager());
+	
+	public void testInit(){
+		
+		Assets.instance.characterInit(new AssetManager());
+		
+		LevelStage.setHeader("images/blank");
+		LevelStage.activateWaveManager();
 		
 		WorldRenderer.renderer.init();
-		//AudioManager.init();
+		
 		InputManager.inputManager.init();
 		cameraHelper = new CameraHelper();
 		cameraHelper.setZoom(Constants.defaultZoom, true);
 		
 		ControllerHandler.init();
-		Ranger player = new Ranger(true);
-		player.setButtons(19, 21, 20, 22, 62);
-		Ranger player2 = new Ranger(true);
-
-		LevelStage.addPlayer(player);
-		LevelStage.addPlayer(player2);
-
+		
+		LevelStage.loadTest(false);
 		
 		
-		
-		//WorldRenderer.renderer.displayToWorld(0, "Welcome to Something Bitch!", new Vector2(800, 700));	
-	
 	}
+	
+	
 	
 	public void render(float delta) {
 		
 		update(delta);
-		Gdx.gl.glClearColor(0, 0, 189, 0);// Default background color
+		Gdx.gl.glClearColor(0, 0, 0, 0);// Default background color
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		WorldRenderer.renderer.render();
@@ -108,6 +107,10 @@ public class World {
 			obj.actOnInputKeyDown(keycode);
 		}
 		
+		if(keycode == Keys.X){
+			LevelStage.waveManager.destroyEnemy();
+		}
+		
 		return false;
 	}
 	public void render(SpriteBatch batch) {
@@ -132,4 +135,5 @@ public class World {
 				.joyStick(leftJoyStick, rightJoyStick);
 
 	}
+
 }
