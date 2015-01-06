@@ -3,9 +3,9 @@ package backend;
 import game_objects.GroundTile;
 import game_objects.Mage;
 import game_objects.Wall;
+import ai_classes.AbstractAi;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -58,6 +58,11 @@ public class LevelLoader {
 			player.setButtons(19, 21, 20, 22, 62);
 			Mage player2 = new Mage(false);
 			player2.position.set(10, 10);
+			player2.position.set(Constants.viewportWidth/2 + 10, Constants.viewportHeight/2 + 10);
+			
+			player2.setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
+			player2.activateAI();
+			LevelStage.enemyControlledObjects.add(player2);
 
 			LevelStage.addPlayer(player);
 		}
@@ -72,6 +77,7 @@ public class LevelLoader {
 	public void goToNextRoom(String file, boolean cleared) {
 		init(file, true, cleared);
 	}
+
 
 	// changed constructor for init so that if players already exist, it will
 	// know that.

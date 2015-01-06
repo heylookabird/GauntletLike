@@ -182,13 +182,13 @@ public abstract class AbstractGameObject {
 			image = animation.getKeyFrame(stateTime);
 		
 				// Draw
-		//if (onScreen)
-		if(image != null)
+		if(image != null){
 			batch.draw(image.getTexture(), position.x, position.y, origin.x,
 					origin.y, dimension.x, dimension.y,
 					1, 1, rotation, image.getRegionX(), image.getRegionY(),
 					image.getRegionWidth(), image.getRegionHeight(), flipX,
 					flipY);
+		}
 			
 			if(debug){
 				batch.draw(debugTex, bounds.x, bounds.y, bounds.width, bounds.height);
