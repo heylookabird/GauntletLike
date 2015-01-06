@@ -1,0 +1,82 @@
+
+bg.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+grass3
+  rotate: false
+  xy: 1, 1
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+grass0
+  rotate: false
+  xy: 30, 7
+  size: 21, 20
+  orig: 21, 20
+  offset: 0, 0
+  index: -1
+grass4
+  rotate: false
+  xy: 53, 6
+  size: 20, 21
+  orig: 20, 21
+  offset: 0, 0
+  index: -1
+body1
+  rotate: false
+  xy: 75, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body2
+  rotate: false
+  xy: 97, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body3
+  rotate: false
+  xy: 119, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body4
+  rotate: false
+  xy: 141, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body5
+  rotate: false
+  xy: 163, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+body6
+  rotate: false
+  xy: 185, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+grass2
+  rotate: false
+  xy: 207, 8
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+grass1
+  rotate: false
+  xy: 229, 9
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1

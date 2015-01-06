@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -23,6 +24,8 @@ public class WorldRenderer {
 	public boolean weatherBool;
 	private Array<SceneObject> sceneObjects;
 	private Array<FontManager> fontManagers;
+	
+	private Array<TextureRegion> bgTextures;
 
 	private WorldRenderer() {
 
@@ -31,6 +34,11 @@ public class WorldRenderer {
 	public void init() {
 
 		batch = new SpriteBatch();
+		bgTextures = new Array<TextureRegion>();
+		
+		
+		
+		
 		fontManagers = new Array<FontManager>();
 		sceneObjects = new Array<SceneObject>();
 		fontManagers.add(new FontManager(batch));
@@ -54,7 +62,7 @@ public class WorldRenderer {
 		guiCamera.setToOrtho(false);
 		guiCamera.update();
 
-		background_image = Assets.instance.background.bg;
+		background_image = Assets.instance.background.grass.get(0);
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 	}
@@ -69,7 +77,6 @@ public class WorldRenderer {
 	}
 
 	public void writeToWorld(String string, float x, float y) {
-
 
 	}
 
@@ -98,20 +105,17 @@ public class WorldRenderer {
 
 	}
 
-	private void renderBackground() {
+	/*private void renderBackground() {
 		
 		batch.setProjectionMatrix(background_camera.combined);
 		batch.begin();
-
-	/*	batch.draw(background_image.getTexture(), 0, 0,
-				background_camera.viewportWidth,
-				background_camera.viewportHeight,
-				background_image.getRegionX(), background_image.getRegionY(),
-				background_image.getRegionWidth(),
-				background_image.getRegionHeight(), false, false);*/
+		
+		
+		
+		
 		batch.end();
 	}
-
+*/
 	private void renderGUI() {
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
@@ -181,7 +185,6 @@ public class WorldRenderer {
 
 	public void render() {
 
-		renderBackground();
 		renderWorld();
 		renderGUI();
 	}
