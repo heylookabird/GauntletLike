@@ -2,6 +2,7 @@ package game_objects;
 
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
+import ai_classes.AbstractAi;
 import backend.LevelStage;
 
 import com.badlogic.gdx.Gdx;
@@ -28,8 +29,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	private boolean isPlayerObject;
 	
 	//Internal reference to which side this MO is on
-	private Array<ManipulatableObject> teamObjects;
-	private Array<ManipulatableObject> enemyTeamObjects;
+
+	public Array<ManipulatableObject> teamObjects;
+	public Array<ManipulatableObject> enemyTeamObjects;
 	
 	//Animations and textures for movement
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
@@ -38,9 +40,14 @@ public class ManipulatableObject extends AbstractGameObject {
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
 	
+
+	private AbstractAi Ai;
+	
 	
 	//BASE STAT VARIABLES SPECIFIED IN SUBCLASS
-	protected int hp, damage, movementSpeed, attackSpeed, resistance;
+	public int hp, damage, movementSpeed, attackSpeed, resistance;
+	
+	public int currentHp;//need this for Ai and health bar
 
 	public enum STATE {
 		NOT_MOVING, MOVING
@@ -65,6 +72,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		hp = 10;
 		damage = 10;
 		movementSpeed = 10;
+
 	}
 
 	public ManipulatableObject(boolean controller, float x, float y,
@@ -79,6 +87,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		this.teamObjects = teamObjects;
 		this.enemyTeamObjects = enemyTeamObjects;
 	}
+	
 
 	public void setButtons(int up, int left, int down, int right, int fire) {
 		keyUp = up;
@@ -87,9 +96,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		keyDown = down;
 	}
 
+
 	protected void removeThyself() {
 		teamObjects.removeValue(this, true);
-		System.out.println("he's dead jim");
+		
 	}
 
 	//Moves the object to the right
@@ -141,7 +151,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	}
 
-	protected void moveUp() {
+	public void moveUp() {
 		if (acceleration.y > 0 && up)
 			return;
 
@@ -162,7 +172,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		velocity.y = terminalVelocity.y;
 	}
 
-	protected void moveDown() {
+
+	public void moveDown() {
 		//Gets called every frame if holding down because the xbox
 		//Controller needs that functionality since xbox input is
 		//polled every frame
@@ -177,7 +188,6 @@ public class ManipulatableObject extends AbstractGameObject {
 			this.setAnimation(walkingDown);
 			this.currentDirImg = downImg;
 			primaryWeapon.moveDown();
-
 		}
 		//if this down = true line isn't run,
 		down = true;
@@ -214,6 +224,9 @@ public class ManipulatableObject extends AbstractGameObject {
 				primaryWeapon.moveUp();
 			
 		//Continue downwards
+			//Adjust weapon correctlys
+			if(primaryWeapon != null)
+				primaryWeapon.moveUp();
 		} else if (down) {
 			setAnimation(walkingDown);
 			currentDirImg = downImg;
@@ -227,7 +240,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 	}
 
-	protected void stopMoveY() {
+
+	public void stopMoveY() {
 		up = false;
 		down = false;
 		velocity.y = 0;
@@ -239,6 +253,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			currentDirImg = rightImg;
 			
 			//Adjust weapon correctly
+			//Adjust weapon correctlys
 			if(primaryWeapon != null)
 				primaryWeapon.moveRight();
 			
@@ -246,7 +261,6 @@ public class ManipulatableObject extends AbstractGameObject {
 			setAnimation(walkingLeft);
 			currentDirImg = leftImg;
 			
-			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveLeft();
 		}else{
@@ -274,10 +288,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
+	
+
+	public void activateAI() {
+		this.Ai = new AbstractAi(this);
+	}
 
 	public void moveY(float deltaTime) {
 		// change in y this frame
 		deltay = velocity.y * deltaTime;
+
 
 		// If you didn't collide in y axis,
 		// add deltaY to the position.y
@@ -290,7 +310,13 @@ public class ManipulatableObject extends AbstractGameObject {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		handleAllPollingInput();
+		
+		if(Ai != null){
+			Ai.update(deltaTime);
+			
+		}
+		else
+			handleAllPollingInput();
 
 		moveX(deltaTime);
 		moveY(deltaTime);
@@ -334,8 +360,8 @@ public class ManipulatableObject extends AbstractGameObject {
 				return true;
 			}
 		}
-		// Iterate through platforms
-		for (AbstractGameObject obj : LevelStage.playerControlledObjects) {
+		// Iterate through platforms		
+		for (AbstractGameObject obj : teamObjects) {
 
 			// If collision
 			if (this != obj && bounds.overlaps(obj.bounds)) {
@@ -352,7 +378,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 		
 		// Iterate through platforms
-		for (AbstractGameObject enemyObjs : LevelStage.enemyControlledObjects) {
+		for (AbstractGameObject enemyObjs : enemyTeamObjects) {
 
 			// If collision
 			if (this != enemyObjs && bounds.overlaps(enemyObjs.bounds)) {
@@ -373,7 +399,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 			// If collision
 			if (bounds.overlaps(platform.bounds)) {
-
 				
 				if (deltaX != 0) {
 					deltax = 0;
@@ -597,6 +622,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		bounds.setPosition(position);
 
 	}
+	
 
 	public void takeHitFor(int damage) {
 		this.hp -= damage;

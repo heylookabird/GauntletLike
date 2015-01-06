@@ -1,6 +1,7 @@
 package game_objects;
 
 import game_objects.weapons.Sword;
+import ai_classes.AbstractAi;
 import backend.Assets;
 
 import com.badlogic.gdx.math.Vector2;
@@ -26,7 +27,8 @@ public class Mage extends ManipulatableObject {
 
 		primaryWeapon = new Sword(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.currentDirImg = upImg;
-		
+		this.setAnimation(walkingUp);
 	}
+
 
 }

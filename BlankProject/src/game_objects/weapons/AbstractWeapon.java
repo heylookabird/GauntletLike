@@ -6,6 +6,10 @@ import game_objects.abilities.AbstractAbility;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector2;
+
+import game_objects.AbstractGameObject;
+import game_objects.ManipulatableObject;
 
 public abstract class AbstractWeapon extends AbstractGameObject {
 
@@ -77,10 +81,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected void defaultAttackInit() {
 		
 	}
-	
-	
-	
 
-	
 
 }
