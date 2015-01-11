@@ -1,5 +1,11 @@
 package game_objects.weapons;
 
+import game_objects.AbstractGameObject;
+import game_objects.ManipulatableObject;
+import game_objects.abilities.AbstractAbility;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.Vector2;
 
 import game_objects.AbstractGameObject;
@@ -9,11 +15,21 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
+	
+	protected Array<AbstractAbility> abilities;
+	
+	
+	//ATTACKS
+	 protected float defaultAttackTimer, defaultAttackCooldown;
+	 protected AbstractAbility defaultAttack;
 
 	public AbstractWeapon(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
 		super(parent.position.x, parent.position.y, width, height);
 		this.parent = parent;
 		this.positionOffset = positionOffset;
+		defaultAttackCooldown = 5;
+		defaultAttackTimer = 1;
+		abilities = new Array<AbstractAbility>();
 	
 	}
 	public void moveRight(){
@@ -42,13 +58,29 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 	@Override
 	public void update(float deltaTime) {
+		
+		updateCooldowns(deltaTime);
+		defaultAttackCheck();
+		
 		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
 		super.update(deltaTime);
 	}
+	private void updateCooldowns(float deltaTime) {
+		defaultAttackTimer -= deltaTime;
+	}
 	
+	//CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
+	protected void defaultAttackCheck(){
+		if(defaultAttackTimer < 0){
+			defaultAttackInit();
+			defaultAttackTimer = defaultAttackCooldown;
+		}
+	}
 	
-	
+	//OVERRIDEN IN SUBCLASSES
+	protected void defaultAttackInit() {
+		
+	}
 
-	
 
 }

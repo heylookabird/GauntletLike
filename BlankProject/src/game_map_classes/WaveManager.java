@@ -52,7 +52,6 @@ public class WaveManager {
 			this.timing = timing;
 		}
 	}
-	
 	public WaveManager(String path){
 		stateTime = 0;
 		waitTime = 3;

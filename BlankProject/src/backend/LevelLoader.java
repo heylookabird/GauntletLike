@@ -57,6 +57,7 @@ public class LevelLoader {
 			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
 			player.setButtons(19, 21, 20, 22, 62);
 			Mage player2 = new Mage(false);
+			player2.position.set(10, 10);
 			player2.position.set(Constants.viewportWidth/2 + 10, Constants.viewportHeight/2 + 10);
 			
 			player2.setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
@@ -76,6 +77,7 @@ public class LevelLoader {
 	public void goToNextRoom(String file, boolean cleared) {
 		init(file, true, cleared);
 	}
+
 
 	// changed constructor for init so that if players already exist, it will
 	// know that.
