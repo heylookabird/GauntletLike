@@ -53,10 +53,26 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		//REMOVES ITSELF
 		if(suicidal){
 			lifeTimer -= deltaTime;
-			if(lifeTimer < 0)
+			if(lifeTimer < 0){
 				removeThyself();
-			
+				postDeathEffects();
+			}
 		}
+		
+		position.x += velocity.x;
+		position.y += velocity.y;
+	}
+
+	public void postDeathEffects() {
+		
+	}
+	
+	public boolean isSameTeam(ManipulatableObject obj){
+		if(parent.teamObjects.contains(obj, false)){
+			return true;
+		}
+		
+		return false;
 	}
 
 	protected void removeThyself() {

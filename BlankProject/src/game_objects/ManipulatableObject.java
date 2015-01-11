@@ -43,6 +43,8 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	private AbstractAi Ai;
 	
+	public DIRECTION facing;
+	
 	
 	//BASE STAT VARIABLES SPECIFIED IN SUBCLASS
 	public int hp, damage, movementSpeed, attackSpeed, resistance;
@@ -52,6 +54,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	public enum STATE {
 		NOT_MOVING, MOVING
 
+	}
+	
+	public enum DIRECTION{
+		RIGHT, LEFT, UP, DOWN;
 	}
 
 	public ManipulatableObject(boolean controller) {
@@ -72,6 +78,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		hp = 10;
 		damage = 10;
 		movementSpeed = 10;
+		
+		facing = DIRECTION.UP;
+		
 
 	}
 
@@ -119,6 +128,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			this.setAnimation(walkingRight);
 			this.currentDirImg = rightImg;
 			primaryWeapon.moveRight();
+			facing = DIRECTION.RIGHT;
 		}
 		right = true;
 		state = STATE.MOVING;
@@ -142,6 +152,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			this.setAnimation(walkingLeft);
 			this.currentDirImg = leftImg;
 			primaryWeapon.moveLeft();
+			facing = DIRECTION.LEFT;
 
 		}
 		left = true;
@@ -162,7 +173,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			this.setAnimation(walkingUp);
 			this.currentDirImg = upImg;
 			primaryWeapon.moveUp();
-
+			facing = DIRECTION.UP;
 
 		}
 		up = true;
@@ -188,6 +199,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			this.setAnimation(walkingDown);
 			this.currentDirImg = downImg;
 			primaryWeapon.moveDown();
+			facing = DIRECTION.DOWN;
+
 		}
 		//if this down = true line isn't run,
 		down = true;
