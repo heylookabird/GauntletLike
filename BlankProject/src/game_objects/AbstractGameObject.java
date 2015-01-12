@@ -24,7 +24,7 @@ public abstract class AbstractGameObject {
 	public Vector2 velocity;
 	public Vector2 terminalVelocity; // Objects max speed magnitude
 	public Rectangle bounds; // objects bounding box used for collision
-	protected float deltax, deltay, rotSpeed;
+	public float deltax, deltay, rotSpeed;
 
 	protected TextureRegion image;
 

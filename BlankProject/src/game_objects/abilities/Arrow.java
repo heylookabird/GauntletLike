@@ -14,6 +14,10 @@ public class Arrow extends AbstractAbility{
 		this.lifeTimer = 1f;
 		this.setImage(Assets.instance.weapons.sword);
 		this.velocity.set(xVelocity, yVelocity);
+		
+		double angle = Math.atan2(velocity.y, velocity.x);
+		rotation = (float) Math.toDegrees(angle);
+		System.out.println(rotation);
 	}
 	
 	@Override

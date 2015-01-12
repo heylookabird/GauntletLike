@@ -1,6 +1,7 @@
 package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.BasicMelee;
 import backend.Assets;
 import backend.LevelStage;
@@ -17,7 +18,12 @@ public class Sword extends AbstractWeapon {
 		image = Assets.instance.weapons.sword;
 		moveUp();
 	}
-	
+	@Override
+	protected void defaultAttackInit(DIRECTION direction) {
+		defaultAttack = new BasicMelee(parent, 1, direction);
+		LevelStage.interactables.add(defaultAttack);
+
+	}
 	@Override
 	protected void defaultAttackInit() {
 		defaultAttack = new BasicMelee(parent, 1);

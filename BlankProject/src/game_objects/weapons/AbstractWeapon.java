@@ -2,6 +2,7 @@ package game_objects.weapons;
 
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.AbstractAbility;
 
 import com.badlogic.gdx.math.Vector2;
@@ -27,7 +28,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		super(parent.position.x, parent.position.y, width, height);
 		this.parent = parent;
 		this.positionOffset = positionOffset;
-		defaultAttackCooldown = 5;
+		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
 		abilities = new Array<AbstractAbility>();
 	
@@ -60,7 +61,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	public void update(float deltaTime) {
 		
 		updateCooldowns(deltaTime);
-		defaultAttackCheck();
 		
 		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
 		super.update(deltaTime);
@@ -70,9 +70,16 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 	
 	//CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
-	protected void defaultAttackCheck(){
+	public void defaultAttackCheck(){
 		if(defaultAttackTimer < 0){
 			defaultAttackInit();
+			defaultAttackTimer = defaultAttackCooldown;
+		}
+	}
+	//OVERLOADING THE DEFAULT CHECK
+	public void defaultAttackCheck(DIRECTION direction) {
+		if(defaultAttackTimer < 0){
+			defaultAttackInit(direction);
 			defaultAttackTimer = defaultAttackCooldown;
 		}
 	}
@@ -81,6 +88,11 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected void defaultAttackInit() {
 		
 	}
+	//OVERRIDEN IN SUBCLASSES
+	protected void defaultAttackInit(DIRECTION direction) {
+		
+	}
+	
 
 
 }

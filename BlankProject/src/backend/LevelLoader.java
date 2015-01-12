@@ -55,7 +55,9 @@ public class LevelLoader {
 		if(!players){
 			Mage player = new Mage(false);
 			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
-			player.setButtons(19, 21, 20, 22, 62);
+			
+			
+			player.setButtons(51, 29, 47, 32, 62);
 			Mage player2 = new Mage(false);
 			player2.position.set(10, 10);
 			player2.position.set(Constants.viewportWidth/2 + 10, Constants.viewportHeight/2 + 10);

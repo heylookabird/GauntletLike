@@ -31,6 +31,8 @@ public class InputManager extends InputAdapter {
 	}
 	@Override
 	public boolean keyDown(int keycode) {
+		
+		//System.out.println(keycode);
 
 		if(keycode == Keys.ESCAPE){
 			Gdx.app.exit();

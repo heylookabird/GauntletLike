@@ -65,6 +65,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		super();
 		this.controller = controller;
 		leftJoyStick = new Vector2();
+		
 		rightJoyStick = new Vector2();
 		baseMovement = true;
 		isPlayerObject = true;
@@ -232,6 +233,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			setAnimation(this.walkingUp);
 			currentDirImg = upImg;
 			
+			facing = DIRECTION.UP;
 			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveUp();
@@ -243,6 +245,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		} else if (down) {
 			setAnimation(walkingDown);
 			currentDirImg = downImg;
+			facing = DIRECTION.DOWN;
+
 			
 			//Adjust weapon correctlys
 			if(primaryWeapon != null)
@@ -264,7 +268,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		if (right) {
 			setAnimation(this.walkingRight);
 			currentDirImg = rightImg;
-			
+			facing = DIRECTION.RIGHT;
 			//Adjust weapon correctly
 			//Adjust weapon correctlys
 			if(primaryWeapon != null)
@@ -273,6 +277,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		} else if (left) {
 			setAnimation(walkingLeft);
 			currentDirImg = leftImg;
+			facing = DIRECTION.LEFT;
+
 			
 			if(primaryWeapon != null)
 				primaryWeapon.moveLeft();
@@ -534,17 +540,18 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		// ABILITIES
 		// A BUTTON
-		case Keys.A:
+		case Keys.LEFT:
+			primaryWeapon.defaultAttackCheck(DIRECTION.LEFT);
+			break;
+		case Keys.RIGHT:
+			primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
 
 			break;
-		case Keys.S:
-
+		case Keys.UP:
+			primaryWeapon.defaultAttackCheck(DIRECTION.UP);
 			break;
-		case Keys.D:
-
-			break;
-		case Keys.F:
-
+		case Keys.DOWN:
+			primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
 			break;
 
 		case Keys.SPACE:
