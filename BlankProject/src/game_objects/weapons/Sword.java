@@ -1,9 +1,10 @@
 package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
-import game_objects.abilities.AOE;
+import game_objects.abilities.BasicMelee;
 import backend.Assets;
 import backend.LevelStage;
+import backend.Assets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -19,7 +20,7 @@ public class Sword extends AbstractWeapon {
 	
 	@Override
 	protected void defaultAttackInit() {
-		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 1, position.x + origin.x, origin.y + position.y, 1, 1);
+		defaultAttack = new BasicMelee(parent, 1);
 		LevelStage.interactables.add(defaultAttack);
 	}
 

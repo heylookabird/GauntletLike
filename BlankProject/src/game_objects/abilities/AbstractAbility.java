@@ -17,7 +17,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	boolean projectile, melee;
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean suicidal = true; //if suicidal it will delete itself
+	protected float lifeTimer; boolean suicidal; //if suicidal it will delete itself
 
 	public AbstractAbility() {
 		super();
@@ -30,7 +30,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		this.parent = parent;
 		objectsAlreadyHit = new Array<ManipulatableObject>();
 		
-		//initDebug();
+		initDebug();
 		lifeTimer = 1;
 		
 	}
