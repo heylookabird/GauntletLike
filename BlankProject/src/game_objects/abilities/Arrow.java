@@ -10,7 +10,7 @@ public class Arrow extends AbstractAbility{
 	public Arrow(ManipulatableObject parent, int damage, float xVelocity, float yVelocity) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
-		suicidal = true;
+		removesItself = true;
 		this.lifeTimer = 1f;
 		this.setImage(Assets.instance.weapons.sword);
 		this.velocity.set(xVelocity, yVelocity);
@@ -23,7 +23,7 @@ public class Arrow extends AbstractAbility{
 	@Override
 	public void postDeathEffects(){
 		attackFinished = true;
-		LevelStage.uncollidableObjects.add(this);
+		//LevelStage.uncollidableObjects.add(this);
 		velocity.set(0, 0);
 	}
 	

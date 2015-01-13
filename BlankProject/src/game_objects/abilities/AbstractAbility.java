@@ -5,6 +5,7 @@ import game_objects.ManipulatableObject;
 
 import backend.LevelStage;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class AbstractAbility extends AbstractGameObject {
@@ -17,7 +18,8 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	boolean projectile, melee;
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean suicidal; //if suicidal it will delete itself
+
+	protected float lifeTimer; boolean removesItself; 
 
 	public AbstractAbility() {
 		super();
@@ -30,7 +32,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		this.parent = parent;
 		objectsAlreadyHit = new Array<ManipulatableObject>();
 		
-		initDebug();
+		//initDebug();
 		lifeTimer = 1;
 		
 	}
@@ -51,7 +53,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		super.update(deltaTime);
 		
 		//REMOVES ITSELF
-		if(suicidal){
+		if(removesItself){
 			lifeTimer -= deltaTime;
 			if(lifeTimer < 0){
 				removeThyself();
@@ -68,7 +70,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	}
 	
 	public boolean isSameTeam(ManipulatableObject obj){
-		if(parent.teamObjects.contains(obj, false)){
+		if(parent.teamObjects == obj.teamObjects){
 			return true;
 		}
 		
@@ -78,6 +80,11 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected void removeThyself() {
 		LevelStage.interactables.removeValue(this, true);
 	}
+@Override
+public void render(SpriteBatch batch) {
+	System.out.println(LevelStage.interactables.size);
 
+	super.render(batch);
+}
 
 }

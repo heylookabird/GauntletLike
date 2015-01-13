@@ -3,9 +3,9 @@ package backend;
 import game_objects.GroundTile;
 import game_objects.Mage;
 import game_objects.Wall;
-import ai_classes.AbstractAi;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -47,24 +47,20 @@ public class LevelLoader {
 		init(fileName, false, false);
 	}
 
-	/*public void startLevel(String fileName) {
-		init(fileName, false, false);
-	}*/
-	
 	public void loadTestRoom(boolean players) {
 		if(!players){
-			Mage player = new Mage(false);
+			Mage player = new Mage(Controllers.getControllers().size > 0);
 			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
 			
 			
 			player.setButtons(51, 29, 47, 32, 62);
-			Mage player2 = new Mage(false);
+			/*Mage player2 = new Mage(false);
 			player2.position.set(10, 10);
-			player2.position.set(Constants.viewportWidth/2 + 10, Constants.viewportHeight/2 + 10);
+			player2.position.set(Constants.viewportWidth /2 + 10, Constants.viewportHeight /2 + 10);
 			
 			player2.setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 			player2.activateAI();
-			LevelStage.enemyControlledObjects.add(player2);
+			LevelStage.enemyControlledObjects.add(player2);*/
 
 			LevelStage.addPlayer(player);
 		}
