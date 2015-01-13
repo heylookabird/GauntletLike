@@ -94,7 +94,6 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void joyStick(int controllerNumber, Vector2 leftJoyStick,
 			Vector2 rightJoyStick) {
-		System.out.println("aoethuasnht");
 
 		World.world.joyStick(controllerNumber, leftJoyStick, rightJoyStick);
 	}

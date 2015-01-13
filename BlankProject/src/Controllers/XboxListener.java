@@ -42,7 +42,6 @@ public class XboxListener extends ControllerAdapter {
 	public boolean buttonDown(Controller controller, int buttonIndex) {
 		GameMain.currentScreen.controllerButtonDown(controllerNumber,
 				buttonIndex);
-		System.out.println("uathaseuht");
 		return true;
 	}
 	
