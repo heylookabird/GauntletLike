@@ -195,4 +195,8 @@ public abstract class AbstractGameObject {
 			}
 
 	}
+	
+	public void updateOrigin(){
+		origin.set(position.x + dimension.x/2, position.y + dimension.y/2);
+	}
 }

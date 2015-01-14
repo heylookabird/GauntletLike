@@ -79,11 +79,11 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected void removeThyself() {
 		LevelStage.interactables.removeValue(this, true);
 	}
-	@Override
-	public void render(SpriteBatch batch) {
-		System.out.println(LevelStage.interactables.size);
-	
-		super.render(batch);
-	}
+
+@Override
+public void render(SpriteBatch batch) {
+
+	super.render(batch);
+}
 
 }
