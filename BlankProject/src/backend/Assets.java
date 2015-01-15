@@ -116,6 +116,8 @@ public class Assets implements AssetErrorListener {
 		public final Animation west, east, north, south;
 		public final AtlasRegion facingWest, facingEast, facingNorth, facingSouth;
 		
+		public final AtlasRegion hp;
+		
 		private final float aniSpeed = .085f;
 		public Mage(TextureAtlas atlas){
 			walkingEastAni = atlas.findRegions("mage_walking_east");
@@ -127,6 +129,8 @@ public class Assets implements AssetErrorListener {
 			south = new Animation(aniSpeed, walkingSouthAni, Animation.LOOP);
 			north = new Animation(aniSpeed, walkingNorthAni, Animation.LOOP);
 			east = new Animation(aniSpeed, walkingEastAni, Animation.LOOP);
+			
+			hp = atlas.findRegion("health");
 			
 
 			facingWest = new AtlasRegion(atlas.findRegion("mage_standing_west"));

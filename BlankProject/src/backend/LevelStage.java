@@ -40,6 +40,7 @@ public class LevelStage {
 		
 		loader = new LevelLoader();
 		waveManager = new WaveManager("levels/level" + levelNum + "/" + "wave");
+		System.out.println("new wave");
 	}
 	
 	public static void setHeader(String head){

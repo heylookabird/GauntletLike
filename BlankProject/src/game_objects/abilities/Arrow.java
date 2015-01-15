@@ -17,7 +17,6 @@ public class Arrow extends AbstractAbility{
 		
 		double angle = Math.atan2(velocity.y, velocity.x);
 		rotation = (float) Math.toDegrees(angle);
-		System.out.println(rotation);
 	}
 	
 	@Override

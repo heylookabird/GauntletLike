@@ -1,12 +1,13 @@
 package ai_classes;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import game_objects.ManipulatableObject;
+
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class AbstractAi {
 	public ManipulatableObject parent;
-	private ManipulatableObject target;
+	protected ManipulatableObject target;
 	//public Attack attack1, attack2;
 	public HEALTH_STATE healthstate;
 	public float range = 10, thinkingTime = .3f, currTime = 0;
@@ -121,33 +122,13 @@ public class AbstractAi {
 	}
 
 	public void moveToTarget(ManipulatableObject target, float distance){
-		align(target, true, MathUtils.random(distance));
-		
-		align(target, false, MathUtils.random(distance));
 		
 
 	}
 	
 
 	public void align(ManipulatableObject target, boolean x, float distance){
-		if(x){
-			if(parent.position.x + parent.bounds.width < target.position.x - distance){
-				parent.moveRight();
-			}else if(parent.position.x > target.position.x + target.bounds.width + distance){
-				parent.moveLeft();
-			}else
-				parent.stopMoveX();
 		
-		}
-		else{
-			if(parent.position.y + parent.bounds.height < target.position.y - distance){
-				parent.moveUp();
-			}else if(parent.position.y > target.position.y + target.bounds.height + distance)
-				parent.moveDown();
-			else{
-				parent.stopMoveY();
-			}
-		}
 	}
 	public void update(float deltaTime){
 		currTime += deltaTime;
@@ -158,14 +139,16 @@ public class AbstractAi {
 		
 		if(currTime > thinkingTime){
 			makeNextDecision();
+			System.out.println(currTime);
+
 		}
 		//updateHealthState();
 	}
 	
 	
 
-	private void makeNextDecision() {
-		moveToTarget(target, 1);
+	protected void makeNextDecision() {
+		
 		currTime = 0;
 	}
 

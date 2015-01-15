@@ -3,6 +3,7 @@ package backend;
 import game_objects.GroundTile;
 import game_objects.Mage;
 import game_objects.Wall;
+import game_objects.enemies.MeleeEnemy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
@@ -54,13 +55,7 @@ public class LevelLoader {
 			
 			
 			player.setButtons(51, 29, 47, 32, 62);
-			/*Mage player2 = new Mage(false);
-			player2.position.set(10, 10);
-			player2.position.set(Constants.viewportWidth /2 + 10, Constants.viewportHeight /2 + 10);
 			
-			player2.setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
-			player2.activateAI();
-			LevelStage.enemyControlledObjects.add(player2);*/
 
 			LevelStage.addPlayer(player);
 		}

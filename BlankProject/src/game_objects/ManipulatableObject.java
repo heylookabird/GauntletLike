@@ -3,6 +3,8 @@ package game_objects;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
+import ai_classes.RusherAi;
+import backend.Assets;
 import backend.LevelStage;
 
 import com.badlogic.gdx.Gdx;
@@ -35,10 +37,11 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 	//Animations and textures for movement
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
-	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg;
+	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg, health;
 	
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
+	
 	
 
 	private AbstractAi Ai;
@@ -50,6 +53,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	public int hp, damage, movementSpeed, attackSpeed, resistance;
 	
 	public int currentHp;//need this for Ai and health bar
+
+	private int MAX_HEALTH;
 
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING
@@ -64,6 +69,18 @@ public class ManipulatableObject extends AbstractGameObject {
 		// Set the Default States
 		super();
 		this.controller = controller;
+		init();
+
+	}
+
+	public ManipulatableObject(boolean controller, float x, float y,
+			float width, float height) {
+
+		super(x, y, width, height);
+		this.controller = controller;
+		init();
+	}
+	private void init(){
 		leftJoyStick = new Vector2();
 		
 		rightJoyStick = new Vector2();
@@ -76,20 +93,12 @@ public class ManipulatableObject extends AbstractGameObject {
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
 		
-		hp = 10;
 		damage = 10;
 		movementSpeed = 10;
-		
+		MAX_HEALTH = 20;
+		hp = MAX_HEALTH;
 		facing = DIRECTION.UP;
-		
-
-	}
-
-	public ManipulatableObject(boolean controller, float x, float y,
-			float width, float height) {
-
-		super(x, y, width, height);
-		this.controller = controller;
+		health = Assets.instance.mage.hp;
 	}
 	
 	//This is the objects internal reference of who's team it's on. 
@@ -210,7 +219,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(state == STATE.ATTACKING){
 			return;
 		} else if (state == STATE.NOT_MOVING) {
-			System.out.println("toaetuaoeu");
 
 			this.setAnimation(walkingDown);
 			this.currentDirImg = downImg;
@@ -331,9 +339,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	}
 	
-
+ 
 	public void activateAI() {
-		this.Ai = new AbstractAi(this);
+		this.Ai = new RusherAi(this);
 	}
 
 	public void moveY(float deltaTime) {
@@ -352,7 +360,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		//System.out.println(state);
 		
 		if(Ai != null){
 			Ai.update(deltaTime);
@@ -497,10 +504,17 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 		if(secondaryWeapon != null)
 			secondaryWeapon.render(batch);
+		
+		renderHp(batch);
 
 		if (debug)
 			batch.draw(debugTex, bounds.x, bounds.y, bounds.width,
 					bounds.height);
+	}
+
+	private void renderHp(SpriteBatch batch) {
+		float hpPercent = (float)(hp) / (float)(MAX_HEALTH);
+		batch.draw(health, position.x - .2f, position.y - 1, 1.4f * hpPercent, .2f);
 	}
 
 	private void pollKeyInput() {
@@ -684,10 +698,20 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void takeHitFor(int damage) {
 		this.hp -= damage;
+		
 		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
 		
-		//if(hp < 0)
-			//removeThyself();
+		if(hp < 0)
+			removeThyself();
+	}
+
+	public Vector2 getCenter() {
+		
+		return new Vector2(position.x + dimension.x / 2, position.y + dimension.y / 2);
+	}
+
+	public void attack() {
+		primaryWeapon.defaultAttackCheck(facing);
 	}
 	
 

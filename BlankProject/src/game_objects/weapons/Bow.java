@@ -11,28 +11,30 @@ import com.badlogic.gdx.math.Vector2;
 public class Bow extends AbstractWeapon{
 	
 	private float arrowSpeed;
+	private int arrowDamage;
 	public Bow(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
+		defaultAttackCooldown = .3f;
 		image = Assets.instance.weapons.sword;
 		moveUp();
 		arrowSpeed = .5f;
-		
+		arrowDamage = 3;
 	}
 	
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
 		
 		if(direction == DIRECTION.LEFT)
-		defaultAttack = new Arrow(parent, 1, -arrowSpeed, 0);
+		defaultAttack = new Arrow(parent, arrowDamage, -arrowSpeed, 0);
 
 		else if(direction == DIRECTION.RIGHT)
-		defaultAttack = new Arrow(parent, 1, arrowSpeed, 0);
+		defaultAttack = new Arrow(parent, arrowDamage, arrowSpeed, 0);
 		
 		else if(direction == DIRECTION.DOWN)
-				defaultAttack = new Arrow(parent, 1, 0, -arrowSpeed);
+			defaultAttack = new Arrow(parent, arrowDamage, 0, -arrowSpeed);
 		else if(direction == DIRECTION.UP)
-			defaultAttack = new Arrow(parent, 1, 0, arrowSpeed);
+			defaultAttack = new Arrow(parent, arrowDamage, 0, arrowSpeed);
 		
 		
 		
@@ -78,7 +80,8 @@ public class Bow extends AbstractWeapon{
 		}
 		
 		//Initialize Attack
-		defaultAttack = new Arrow(parent, 1, temp.x, temp.y);
+		defaultAttack = new Arrow(parent, arrowDamage, temp.x, temp.y);
 		LevelStage.interactables.add(defaultAttack);
+		System.out.println("aoetuaoetu Bow ");
 	}
 }
