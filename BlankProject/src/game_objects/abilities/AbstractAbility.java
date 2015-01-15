@@ -14,11 +14,12 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected int damage;
 	protected ManipulatableObject parent;
 	
+	public float stunTime, knockBack = .3f;
 	//booleans for controlling
 	boolean projectile, melee;
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean removesItself; 
+	protected float lifeTimer; boolean removesItself = true; 
 
 	public AbstractAbility() {
 		super();
@@ -33,6 +34,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 		//initDebug();
 		lifeTimer = 1;
+		stunTime = .3f;
 		
 	}
 	protected boolean isFirstInteraction(ManipulatableObject obj){
@@ -43,6 +45,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		}
 		
 		objectsAlreadyHit.add(obj);
+		
 		
 		return true;
 	}
@@ -62,6 +65,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 		position.x += velocity.x;
 		position.y += velocity.y;
+		
 	}
 
 	public void postDeathEffects() {

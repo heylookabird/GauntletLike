@@ -1,5 +1,6 @@
 package game_objects;
 
+import game_objects.abilities.AbstractAbility;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
@@ -42,6 +43,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
 	
+	public float stunTimer;
+	
 	
 
 	private AbstractAi Ai;
@@ -57,7 +60,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	private int MAX_HEALTH;
 
 	public enum STATE {
-		NOT_MOVING, MOVING, ATTACKING
+		NOT_MOVING, MOVING, ATTACKING, STUNNED;
 
 	}
 	
@@ -99,6 +102,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		hp = MAX_HEALTH;
 		facing = DIRECTION.UP;
 		health = Assets.instance.mage.hp;
+		
+		stunTimer = 0;
 	}
 	
 	//This is the objects internal reference of who's team it's on. 
@@ -361,25 +366,42 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-		if(Ai != null){
-			Ai.update(deltaTime);
+		if(state != STATE.STUNNED){
+			if(Ai != null){
+				Ai.update(deltaTime);
+			}
+			else
+				handleAllPollingInput();
 			
-		}
-		else
-			handleAllPollingInput();
+
+			if(primaryWeapon != null){
+				primaryWeapon.update(deltaTime);
+			}
+			if(state != STATE.ATTACKING)
+				checkStopMove();
+		}else
+			handleStunUpdate(deltaTime);
 
 		moveX(deltaTime);
 		moveY(deltaTime);
+		
+		primaryWeapon.setPosition();
 
-		if(primaryWeapon != null){
-			primaryWeapon.update(deltaTime);
-		}
-		if(state != STATE.ATTACKING)
-			checkStopMove();
 		
 
 	}
+	
+	private void handleStunUpdate(float deltaTime){
+		stunTimer -= deltaTime;		
+		System.out.println(stunTimer);
 
+		if(stunTimer < 0){
+			state = STATE.NOT_MOVING;
+		}
+		
+	}
+
+	
 	// inefficient as fuck with so many conditions but it was buggy
 	// otherwise..someone help me
 	// tell it that it is standing when it isnt moving
@@ -696,19 +718,34 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 	
 
-	public void takeHitFor(int damage) {
+	public void takeHitFor(int damage, AbstractAbility attack) {
 		this.hp -= damage;
 		
 		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
+		
+		if(attack != null){
+			if(!attack.velocity.isZero())
+				velocity.set(attack.velocity.x * attack.knockBack, attack.velocity.y * attack.knockBack);
+			else{
+				Vector2 attCenter = attack.getCenter();
+				Vector2 thisCenter = getCenter();
+				double angle = MathUtils.atan2(attCenter.y - thisCenter.y, attCenter.x - thisCenter.x);
+				angle = Math.toDegrees(angle);
+				
+				velocity.set((float)Math.cos(angle) * 10, (float)Math.sin(angle) * 10);
+				
+				
+			}
+	
+			state = STATE.STUNNED;
+			stunTimer = attack.stunTime;
+			System.out.println("initial stun time: " + attack.stunTime);
+		}
 		
 		if(hp < 0)
 			removeThyself();
 	}
 
-	public Vector2 getCenter() {
-		
-		return new Vector2(position.x + dimension.x / 2, position.y + dimension.y / 2);
-	}
 
 	public void attack() {
 		primaryWeapon.defaultAttackCheck(facing);

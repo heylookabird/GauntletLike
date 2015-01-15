@@ -17,6 +17,7 @@ public class Arrow extends AbstractAbility{
 		
 		double angle = Math.atan2(velocity.y, velocity.x);
 		rotation = (float) Math.toDegrees(angle);
+		this.stunTime = .05f;
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class Arrow extends AbstractAbility{
 			boolean newObj = isFirstInteraction(obj);
 		
 			if(newObj)
-				obj.takeHitFor(damage);
+				obj.takeHitFor(damage, this);
 		}
 	}
 }

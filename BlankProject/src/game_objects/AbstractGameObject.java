@@ -112,6 +112,11 @@ public abstract class AbstractGameObject {
 	private void updateRotation(float deltaTime) {
 		rotation += rotationalVelocity * deltaTime;
 	}
+	
+	public Vector2 getCenter() {
+		
+		return new Vector2(position.x + dimension.x / 2, position.y + dimension.y / 2);
+	}
 
 	//TO BE OVERRIDEN IN SUBCLASSES
 	public void interact(AbstractGameObject couple) {}

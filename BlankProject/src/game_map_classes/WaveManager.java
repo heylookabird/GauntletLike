@@ -179,11 +179,9 @@ public class WaveManager {
 
 	private void checkClear() {
 		if(LevelStage.enemyControlledObjects.size > 0){
-			System.out.println("clear is" + clear + waveNum);
 			clear = false;
 		}else{
 			clear = true;
-			System.out.println("clear is " + clear);
 		}
 	}
 }

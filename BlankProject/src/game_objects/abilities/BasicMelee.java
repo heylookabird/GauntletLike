@@ -64,7 +64,7 @@ public class BasicMelee extends AbstractAbility {
 		boolean newObj = isFirstInteraction(obj);
 		
 		if(newObj)
-			obj.takeHitFor(damage);
+			obj.takeHitFor(damage, this);
 		
 	}
 	

@@ -62,11 +62,15 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		
 		updateCooldowns(deltaTime);
 		
-		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
 		super.update(deltaTime);
 	}
 	private void updateCooldowns(float deltaTime) {
 		defaultAttackTimer -= deltaTime;
+	}
+	
+	public void setPosition(){
+		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
+
 	}
 	
 	//CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
