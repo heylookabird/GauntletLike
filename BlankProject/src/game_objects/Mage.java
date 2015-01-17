@@ -1,7 +1,6 @@
 package game_objects;
 
-import game_objects.weapons.Bow;
-import game_objects.weapons.SwordAndShield;
+import game_objects.weapons.DualBlades;
 import backend.Assets;
 
 import com.badlogic.gdx.math.Vector2;
@@ -25,7 +24,7 @@ public class Mage extends ManipulatableObject {
 		accelerationPerSecond.set(20, 20);
 		
 
-		primaryWeapon = new Bow(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		primaryWeapon = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}

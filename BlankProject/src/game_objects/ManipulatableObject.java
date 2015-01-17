@@ -144,6 +144,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(state == STATE.ATTACKING){
 			return;
 		
+
 		}else if (state == STATE.NOT_MOVING || left) {
 			this.setAnimation(walkingRight);
 			this.currentDirImg = rightImg;
@@ -402,6 +403,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 		
 	}
+
 
 	
 	// inefficient as fuck with so many conditions but it was buggy
@@ -755,6 +757,7 @@ public class ManipulatableObject extends AbstractGameObject {
 				
 			}
 	
+			stun(attack.stunTime);
 			state = STATE.STUNNED;
 			stunTimer = attack.stunTime;
 		}
@@ -766,6 +769,11 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void attack() {
 		primaryWeapon.defaultAttackCheck(facing);
+	}
+
+	public void stun(float lifeTimer) {
+		state = STATE.STUNNED;
+		stunTimer = lifeTimer;
 	}
 	
 

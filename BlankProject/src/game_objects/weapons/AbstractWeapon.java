@@ -16,16 +16,16 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
-	
-	//protected Array<AbstractAbility> abilities;
-	protected int[] abilitycooldowns;
-	
-	
-	//ATTACKS
-	 protected float defaultAttackTimer, defaultAttackCooldown;
-	 protected AbstractAbility defaultAttack;
 
-	public AbstractWeapon(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
+	// protected Array<AbstractAbility> abilities;
+	protected int[] abilitycooldowns;
+
+	// ATTACKS
+	protected float defaultAttackTimer, defaultAttackCooldown;
+	protected AbstractAbility defaultAttack;
+
+	public AbstractWeapon(ManipulatableObject parent, float width,
+			float height, Vector2 positionOffset) {
 		super(parent.position.x, parent.position.y, width, height);
 		this.parent = parent;
 		this.positionOffset = positionOffset;
@@ -33,107 +33,132 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		defaultAttackTimer = 1;
 		abilitycooldowns = new int[4];
 	}
-	
-	private boolean checkAttack(int index){
-		if(abilitycooldowns[index] > 0)
+
+	private boolean checkAttack(int index) {
+		if (abilitycooldowns[index] < 0)
 			return false;
 		else
 			System.out.println("Cooldown");
 		return true;
 	}
-	
-	public void activateAbility1(DIRECTION direction){
-		if(checkAttack(1)){
-			
+
+	public void activateAbility1(DIRECTION direction) {
+		if (checkAttack(1)) {
+			ability1(direction);
 		}
 	}
-	
-	public void activateAbility2(DIRECTION direction){
-		if(checkAttack(2)){
-			
+
+	// override methods
+	public void ability1(DIRECTION direction) {
+
+	}
+
+	public void ability2(DIRECTION direction) {
+
+	}
+
+	public void ability3(DIRECTION direction) {
+
+	}
+
+	public void ability4(DIRECTION direction) {
+
+	}
+
+	public void activateAbility2(DIRECTION direction) {
+		if (checkAttack(2)) {
+			ability2(direction);
 		}
 	}
-	
-	public void activateAbility3(DIRECTION direction){
-		if(checkAttack(3)){
-			
+
+	public void activateAbility3(DIRECTION direction) {
+		if (checkAttack(3)) {
+			ability3(direction);
 		}
 	}
-	
-	public void activateAbility4(DIRECTION direction){
-		if(checkAttack(4)){
-			
+
+	public void activateAbility4(DIRECTION direction) {
+		if (checkAttack(4)) {
+			ability4(direction);
 		}
 	}
-	
-	public void moveRight(){
+
+	public void moveRight() {
 		rotation = 0;
-		positionOffset.set(parent.dimension.x /2 - .1f, parent.dimension.y / 3 - .2f);
+		positionOffset.set(parent.dimension.x / 2 - .1f,
+				parent.dimension.y / 3 - .2f);
 		parent.primaryBehind = false;
 	}
-	
-	public void moveLeft(){
+
+	public void moveLeft() {
 		rotation = 180;
 		positionOffset.set(parent.dimension.x / 2, parent.dimension.y / 2);
 		parent.primaryBehind = true;
 
-
-		
 	}
-	public void moveUp(){
+
+	public void moveUp() {
 		rotation = 90;
 		positionOffset.set(parent.dimension.x, parent.dimension.y / 2);
 
 	}
-	public void moveDown(){
+
+	public void moveDown() {
 		rotation = 270;
 		positionOffset.set(0, parent.dimension.y / 2);
 
-		
 	}
+
 	@Override
 	public void update(float deltaTime) {
-		
+
 		updateCooldowns(deltaTime);
-		
+
 		super.update(deltaTime);
 	}
+
 	private void updateCooldowns(float deltaTime) {
 		defaultAttackTimer -= deltaTime;
+		
+		for(int i = 0; i < this.abilitycooldowns.length; i++){
+			abilitycooldowns[i] -= deltaTime;
+		}
 	}
-	
-	public void setPosition(){
-		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
+
+	public void setPosition() {
+		position.set(parent.position.x + positionOffset.x, parent.position.y
+				+ positionOffset.y);
 
 	}
-	
-	//CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
-	public void defaultAttackCheck(){
-		if(defaultAttackTimer < 0){
+
+	// CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
+	public void defaultAttackCheck() {
+		if (defaultAttackTimer < 0) {
 			defaultAttackInit();
 			defaultAttackTimer = defaultAttackCooldown;
 		}
 	}
-	//OVERLOADING THE DEFAULT CHECK
+
+	// OVERLOADING THE DEFAULT CHECK
 	public void defaultAttackCheck(DIRECTION direction) {
-		if(defaultAttackTimer < 0){
+		if (defaultAttackTimer < 0) {
 			defaultAttackInit(direction);
 			defaultAttackTimer = defaultAttackCooldown;
 		}
 	}
-	
-	//OVERRIDEN IN SUBCLASSES
+
+	// OVERRIDEN IN SUBCLASSES
 	protected void defaultAttackInit() {
-		
+
 	}
-	//OVERRIDEN IN SUBCLASSES
+
+	// OVERRIDEN IN SUBCLASSES
 	protected void defaultAttackInit(DIRECTION direction) {
-		
+
 	}
+
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
 
 	}
-	
-
 
 }
