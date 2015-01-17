@@ -4,6 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.BasicMelee;
 import game_objects.abilities.AOE;
+import game_objects.abilities.Charge;
 import backend.Assets;
 import backend.LevelStage;
 
@@ -16,6 +17,7 @@ public class SwordAndShield extends AbstractWeapon {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
 		image = Assets.instance.weapons.sword;
+		ability1CoolDown = 3;
 		moveUp();
 	}
 	@Override
@@ -28,6 +30,14 @@ public class SwordAndShield extends AbstractWeapon {
 	protected void defaultAttackInit() {
 		defaultAttack = new BasicMelee(parent, 3, .5f, parent.facing);
 		LevelStage.interactables.add(defaultAttack);
+	}
+	
+	@Override
+	public void ability1(DIRECTION direction) {
+		System.out.println("sword and shield ability 1");
+		Charge charge = new Charge(parent, parent.position.x, parent.position.y, parent.dimension.x, parent.dimension.y);
+		LevelStage.interactables.add(charge);
+		
 	}
 
 	@Override

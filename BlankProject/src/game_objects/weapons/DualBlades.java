@@ -27,7 +27,7 @@ public class DualBlades extends AbstractWeapon {
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
 		
-		defaultAttack = new BasicMelee(parent, 1, direction);
+		defaultAttack = new BasicMelee(parent, 3, .5f, direction);
 		
 		
 		
@@ -36,7 +36,7 @@ public class DualBlades extends AbstractWeapon {
 	
 	@Override
 	public void ability1(DIRECTION direction) {
-		BasicMelee attack = new BasicMelee(parent, 4, direction);
+		BasicMelee attack = new BasicMelee(parent, 4, 1, direction);
 	}
 
 	@Override

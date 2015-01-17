@@ -18,11 +18,15 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	private Vector2 positionOffset;
 
 	// protected Array<AbstractAbility> abilities;
-	protected int[] abilitycooldowns;
+	protected float[] abilityCooldowns;
 
 	// ATTACKS
 	protected float defaultAttackTimer, defaultAttackCooldown;
 	protected AbstractAbility defaultAttack;
+	protected int ability1CoolDown;
+	protected int ability2CoolDown;
+	protected int ability3CoolDown;
+	protected int ability4CoolDown;
 
 	public AbstractWeapon(ManipulatableObject parent, float width,
 			float height, Vector2 positionOffset) {
@@ -31,20 +35,22 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		this.positionOffset = positionOffset;
 		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
-		abilitycooldowns = new int[4];
+		abilityCooldowns = new float[4];
 	}
 
 	private boolean checkAttack(int index) {
-		if (abilitycooldowns[index] < 0)
-			return false;
-		else
-			System.out.println("Cooldown");
-		return true;
+		if (abilityCooldowns[index] < 0)
+			return true;
+		return false;
 	}
 
 	public void activateAbility1(DIRECTION direction) {
-		if (checkAttack(1)) {
+		if (checkAttack(0)) {
 			ability1(direction);
+			abilityCooldowns[0] = ability1CoolDown;
+			
+		}else{
+			System.out.println(abilityCooldowns[0]);
 		}
 	}
 
@@ -66,20 +72,26 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void activateAbility2(DIRECTION direction) {
-		if (checkAttack(2)) {
+		if (checkAttack(1)) {
 			ability2(direction);
+			abilityCooldowns[1] = ability2CoolDown;
+
 		}
 	}
 
 	public void activateAbility3(DIRECTION direction) {
-		if (checkAttack(3)) {
+		if (checkAttack(2)) {
 			ability3(direction);
+			abilityCooldowns[2] = ability3CoolDown;
+
 		}
 	}
 
 	public void activateAbility4(DIRECTION direction) {
-		if (checkAttack(4)) {
+		if (checkAttack(3)) {
 			ability4(direction);
+			abilityCooldowns[3] = ability4CoolDown;
+
 		}
 	}
 
@@ -120,8 +132,8 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	private void updateCooldowns(float deltaTime) {
 		defaultAttackTimer -= deltaTime;
 		
-		for(int i = 0; i < this.abilitycooldowns.length; i++){
-			abilitycooldowns[i] -= deltaTime;
+		for(int i = 0; i < this.abilityCooldowns.length; i++){
+			abilityCooldowns[i] -= deltaTime;
 		}
 	}
 

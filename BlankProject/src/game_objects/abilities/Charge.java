@@ -7,22 +7,30 @@ import game_objects.ManipulatableObject.STATE;
 
 public class Charge extends AbstractAbility {
 
+	private int speed;
+	
+
 	public Charge(ManipulatableObject parent, float x, float y, float width,
 			float height) {
 		super(parent, x, y, width, height);
 		removesItself = true;
-		lifeTimer = 1.5f;
+		lifeTimer = .5f;
+		speed = 10;
+		
+		parent.stopMove();
+		terminalVelocity.set(parent.terminalVelocity);
+		parent.terminalVelocity.set(speed, speed);
+		if(parent.facing == DIRECTION.UP){
+			parent.velocity.y = speed;
+		}else if(parent.facing == DIRECTION.DOWN){
+			parent.velocity.y = -speed;
+		}else if(parent.facing == DIRECTION.LEFT){
+			parent.velocity.x = -speed;
+		}else if(parent.facing == DIRECTION.RIGHT){
+			parent.velocity.x = speed;
+		}
 		parent.stun(lifeTimer);
 
-		if(parent.facing == DIRECTION.UP){
-			parent.velocity.y = 3;
-		}else if(parent.facing == DIRECTION.DOWN){
-			parent.velocity.y = -3;
-		}else if(parent.facing == DIRECTION.LEFT){
-			parent.velocity.x = -3;
-		}else if(parent.facing == DIRECTION.RIGHT){
-			parent.velocity.y = 3;
-		}
 	}
 	@Override
 	public void update(float deltaTime) {
@@ -31,9 +39,8 @@ public class Charge extends AbstractAbility {
 	}
 	@Override
 	public void postDeathEffects() {
-		parent.state = STATE.NOT_MOVING;
-		parent.velocity.set(0, 0);
-		
+		parent.terminalVelocity.set(terminalVelocity);
+		parent.stopMove();
 		super.postDeathEffects();
 	}
 	

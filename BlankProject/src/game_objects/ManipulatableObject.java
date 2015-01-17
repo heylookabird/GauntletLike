@@ -373,7 +373,6 @@ public class ManipulatableObject extends AbstractGameObject {
 			}
 			else{
 				handleAllPollingInput();
-				System.out.println(this.hp + "");
 			}
 			
 
@@ -579,7 +578,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	private void handleAllPollingInput() {
-
+		
+		if(state == STATE.STUNNED)
+			return;
 		// Keyboard Input
 		if (!controller) {
 			pollKeyInput();
@@ -616,6 +617,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void actOnInputKeyDown(int keycode) {
+		if(state == STATE.STUNNED)
+			return;
 
 		// Movement, same among all characters
 		switch (keycode) {
