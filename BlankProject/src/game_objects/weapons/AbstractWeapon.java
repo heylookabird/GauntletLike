@@ -19,6 +19,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	// protected Array<AbstractAbility> abilities;
 	protected float[] abilityCooldowns;
+	protected int[] abilitycooldowns;
 
 	// ATTACKS
 	protected float defaultAttackTimer, defaultAttackCooldown;
@@ -41,6 +42,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	private boolean checkAttack(int index) {
 		if (abilityCooldowns[index] < 0)
 			return true;
+		
 		return false;
 	}
 
@@ -51,8 +53,10 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 			
 		}else{
 			System.out.println(abilityCooldowns[0]);
-		}
+		abilitycooldowns = new int[4];
 	}
+	}
+
 
 	// override methods
 	public void ability1(DIRECTION direction) {
@@ -75,24 +79,24 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		if (checkAttack(1)) {
 			ability2(direction);
 			abilityCooldowns[1] = ability2CoolDown;
-
 		}
+
+
 	}
 
 	public void activateAbility3(DIRECTION direction) {
 		if (checkAttack(2)) {
 			ability3(direction);
 			abilityCooldowns[2] = ability3CoolDown;
-
 		}
+
 	}
 
 	public void activateAbility4(DIRECTION direction) {
 		if (checkAttack(3)) {
 			ability4(direction);
 			abilityCooldowns[3] = ability4CoolDown;
-
-		}
+	}
 	}
 
 	public void moveRight() {

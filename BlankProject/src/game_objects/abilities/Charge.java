@@ -31,6 +31,7 @@ public class Charge extends AbstractAbility {
 		}
 		parent.stun(lifeTimer);
 
+
 	}
 	@Override
 	public void update(float deltaTime) {
@@ -41,6 +42,7 @@ public class Charge extends AbstractAbility {
 	public void postDeathEffects() {
 		parent.terminalVelocity.set(terminalVelocity);
 		parent.stopMove();
+		
 		super.postDeathEffects();
 	}
 	

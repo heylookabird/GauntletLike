@@ -1,14 +1,13 @@
 package game_objects;
 
-import game_objects.weapons.SwordAndShield;
+import game_objects.weapons.DualBlades;
 import backend.Assets;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class Mage extends ManipulatableObject {
-
+public class Rogue extends ManipulatableObject{
 	
-	public Mage(boolean controller) {
+	public Rogue(boolean controller){
 		super(controller);
 		upImg = Assets.instance.mage.facingNorth;
 		downImg = Assets.instance.mage.facingSouth;
@@ -24,10 +23,9 @@ public class Mage extends ManipulatableObject {
 		accelerationPerSecond.set(20, 20);
 		
 
-		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		primaryWeapon = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}
-
 
 }

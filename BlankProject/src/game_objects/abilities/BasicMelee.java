@@ -62,10 +62,13 @@ public class BasicMelee extends AbstractAbility {
 		
 		ManipulatableObject obj = (ManipulatableObject) couple;
 		
-		boolean newObj = isFirstInteraction(obj);
+		if(!isSameTeam(obj)){
+			boolean newObj = isFirstInteraction(obj);
 		
-		if(newObj && obj != parent)
+		if(newObj)
 			obj.takeHitFor(damage, this);
+		
+		}
 		
 	}
 	
