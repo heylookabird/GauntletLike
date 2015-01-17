@@ -24,7 +24,7 @@ public abstract class AbstractGameObject {
 	public Vector2 velocity;
 	public Vector2 terminalVelocity; // Objects max speed magnitude
 	public Rectangle bounds; // objects bounding box used for collision
-	protected float deltax, deltay, rotSpeed;
+	public float deltax, deltay, rotSpeed;
 
 	protected TextureRegion image;
 
@@ -112,6 +112,11 @@ public abstract class AbstractGameObject {
 	private void updateRotation(float deltaTime) {
 		rotation += rotationalVelocity * deltaTime;
 	}
+	
+	public Vector2 getCenter() {
+		
+		return new Vector2(position.x + dimension.x / 2, position.y + dimension.y / 2);
+	}
 
 	//TO BE OVERRIDEN IN SUBCLASSES
 	public void interact(AbstractGameObject couple) {}
@@ -194,5 +199,9 @@ public abstract class AbstractGameObject {
 				batch.draw(debugTex, bounds.x, bounds.y, bounds.width, bounds.height);
 			}
 
+	}
+	
+	public void updateOrigin(){
+		origin.set(position.x + dimension.x/2, position.y + dimension.y/2);
 	}
 }

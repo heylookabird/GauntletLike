@@ -17,6 +17,7 @@ public class World {
 	public static World world  = new World();
 	public CameraHelper cameraHelper;
 	private int numPlayers;
+	private LevelStage levelStage;
 	private World(){
 		
 	}
@@ -28,6 +29,7 @@ public class World {
 		
 		Assets.instance.characterInit(new AssetManager());
 		
+		levelStage = new LevelStage();
 		LevelStage.setHeader("images/blank");
 		LevelStage.activateWaveManager();
 		

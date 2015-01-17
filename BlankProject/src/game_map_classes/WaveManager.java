@@ -1,15 +1,13 @@
 package game_map_classes;
 
-import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
-import game_objects.Ranger;
+import game_objects.enemies.KiterEnemy;
+import game_objects.enemies.MeleeEnemy;
 import backend.LevelStage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 public class WaveManager {
 	private String difficulty;
@@ -56,9 +54,11 @@ public class WaveManager {
 		stateTime = 0;
 		waitTime = 3;
 		waveNum = 1;
-		clear = true;
+		clear = false;
 		this.path = path;
 		spawns = new Array<TimingNode>();
+		
+		newWave();
 	}
 	
 	public void setDifficulty(String diff){
@@ -68,11 +68,12 @@ public class WaveManager {
 	
 	public void newWave(){
 		String fileLoc = path + "" + waveNum + ".png";
-		
 		try {
 			pixmap = new Pixmap(Gdx.files.internal(fileLoc));
 		} catch (Exception e) {
-			e.printStackTrace();
+			waveNum = 1; 
+			newWave();
+			
 			//LEVEL COMPLETETETETE
 			return;
 		}
@@ -91,15 +92,24 @@ public class WaveManager {
 				if (ENEMY_TYPE.EMPTY.sameColor(currentPixel)) {
 					continue;
 					
+				}else if(ENEMY_TYPE.ENEMY1.sameColor(currentPixel)){
+					
+					if(Math.random() < .5f){
+						MeleeEnemy player2 = new MeleeEnemy(false, pixelX, baseHeight, 1, 1);
+						LevelStage.enemyControlledObjects.add(player2);
+					}else{
+						KiterEnemy player2 = new KiterEnemy(false, pixelX, baseHeight, 1, 1);
+						LevelStage.enemyControlledObjects.add(player2);
+					}
 				}
 				
-				
-				
-
 			}// inner for loop
 		}// outer for loop
 		
 		pixmap.dispose();
+		stateTime = 0;
+		waveNum++;
+		
 	}
 	
 	private void addEnemy(ManipulatableObject enemy){
@@ -131,12 +141,16 @@ public class WaveManager {
 	}
 	
 	public void update(float deltatime){
-		stateTime += deltatime;
+		checkClear();
+
 		if(clear){
+			stateTime += deltatime;
+
 			if(stateTime > waitTime)
 				newWave();
+
+			
 		}else{
-			checkClear();
 			spawnToTiming(deltatime);
 		}
 	}
@@ -165,11 +179,10 @@ public class WaveManager {
 	}
 
 	private void checkClear() {
-		if(LevelStage.enemyControlledObjects.size > 0 || spawns.size > 0){
+		if(LevelStage.enemyControlledObjects.size > 0){
 			clear = false;
 		}else{
 			clear = true;
-			stateTime = 0;
 		}
 	}
 }

@@ -1,15 +1,18 @@
 package ai_classes;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import game_objects.ManipulatableObject;
+import game_objects.abilities.AbstractAbility;
+
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class AbstractAi {
 	public ManipulatableObject parent;
-	private ManipulatableObject target;
+	protected ManipulatableObject target;
 	//public Attack attack1, attack2;
 	public HEALTH_STATE healthstate;
-	public float range = 10, thinkingTime = .3f, currTime = 0;
+	protected AbstractAbility nextAbility;
+	public float range = 10, thinkingTime = .5f, currTime = 0;
 	public enum HEALTH_STATE{
 		DANGER, LOW, MEDIUM, HIGH;
 	}
@@ -27,7 +30,10 @@ public class AbstractAi {
 		ManipulatableObject target = parent.enemyTeamObjects.first();
 		float closestDistance = range;
 		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
-			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = parent.enemyTeamObjects.get(i).position.x + parent.enemyTeamObjects.get(i).origin.x, enOriginY = parent.enemyTeamObjects.get(i).position.y + parent.enemyTeamObjects.get(i).origin.y;
+			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, 
+					enOriginX = parent.enemyTeamObjects.get(i).position.x + parent.enemyTeamObjects.get(i).origin.x,
+					enOriginY = parent.enemyTeamObjects.get(i).position.y + parent.enemyTeamObjects.get(i).origin.y;
+			
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < closestDistance){
 				target = parent.enemyTeamObjects.get(i);
@@ -121,9 +127,6 @@ public class AbstractAi {
 	}
 
 	public void moveToTarget(ManipulatableObject target, float distance){
-		align(target, true, MathUtils.random(distance));
-		
-		align(target, false, MathUtils.random(distance));
 		
 
 	}
@@ -131,18 +134,18 @@ public class AbstractAi {
 
 	public void align(ManipulatableObject target, boolean x, float distance){
 		if(x){
-			if(parent.position.x + parent.bounds.width < target.position.x - distance){
+			if(parent.position.x + parent.bounds.width / 2 < target.position.x + target.dimension.x / 2 - distance){
 				parent.moveRight();
-			}else if(parent.position.x > target.position.x + target.bounds.width + distance){
+			}else if(parent.position.x + parent.dimension.x / 2 > target.position.x + target.bounds.width / 2 + distance){
 				parent.moveLeft();
 			}else
 				parent.stopMoveX();
 		
 		}
 		else{
-			if(parent.position.y + parent.bounds.height < target.position.y - distance){
+			if(parent.position.y + parent.bounds.height / 2 < target.position.y + target.dimension.y / 2 - distance){
 				parent.moveUp();
-			}else if(parent.position.y > target.position.y + target.bounds.height + distance)
+			}else if(parent.position.y + parent.dimension.y / 2 > target.position.y + target.bounds.height / 2 + distance)
 				parent.moveDown();
 			else{
 				parent.stopMoveY();
@@ -153,20 +156,20 @@ public class AbstractAi {
 		currTime += deltaTime;
 		if(target == null){
 			target = findClosestEnemy();
-			System.out.println("called");
-
+			System.out.println("oabstract ai");
 		}
 		
 		if(currTime > thinkingTime){
 			makeNextDecision();
+
 		}
 		//updateHealthState();
 	}
 	
 	
 
-	private void makeNextDecision() {
-		moveToTarget(target, 1);
+	protected void makeNextDecision() {
+
 		currTime = 0;
 	}
 

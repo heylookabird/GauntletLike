@@ -2,6 +2,7 @@ package game_objects.weapons;
 
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.AbstractAbility;
 
 import com.badlogic.gdx.math.Vector2;
@@ -16,7 +17,8 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
 	
-	protected Array<AbstractAbility> abilities;
+	//protected Array<AbstractAbility> abilities;
+	protected int[] abilitycooldowns;
 	
 	
 	//ATTACKS
@@ -27,16 +29,49 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		super(parent.position.x, parent.position.y, width, height);
 		this.parent = parent;
 		this.positionOffset = positionOffset;
-		defaultAttackCooldown = 5;
+		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
-		abilities = new Array<AbstractAbility>();
-	
+		abilitycooldowns = new int[4];
 	}
+	
+	private boolean checkAttack(int index){
+		if(abilitycooldowns[index] > 0)
+			return false;
+		else
+			System.out.println("Cooldown");
+		return true;
+	}
+	
+	public void activateAbility1(DIRECTION direction){
+		if(checkAttack(1)){
+			
+		}
+	}
+	
+	public void activateAbility2(DIRECTION direction){
+		if(checkAttack(2)){
+			
+		}
+	}
+	
+	public void activateAbility3(DIRECTION direction){
+		if(checkAttack(3)){
+			
+		}
+	}
+	
+	public void activateAbility4(DIRECTION direction){
+		if(checkAttack(4)){
+			
+		}
+	}
+	
 	public void moveRight(){
 		rotation = 0;
 		positionOffset.set(parent.dimension.x /2 - .1f, parent.dimension.y / 3 - .2f);
 		parent.primaryBehind = false;
 	}
+	
 	public void moveLeft(){
 		rotation = 180;
 		positionOffset.set(parent.dimension.x / 2, parent.dimension.y / 2);
@@ -60,19 +95,29 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	public void update(float deltaTime) {
 		
 		updateCooldowns(deltaTime);
-		defaultAttackCheck();
 		
-		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
 		super.update(deltaTime);
 	}
 	private void updateCooldowns(float deltaTime) {
 		defaultAttackTimer -= deltaTime;
 	}
 	
+	public void setPosition(){
+		position.set(parent.position.x + positionOffset.x, parent.position.y + positionOffset.y);
+
+	}
+	
 	//CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
-	protected void defaultAttackCheck(){
+	public void defaultAttackCheck(){
 		if(defaultAttackTimer < 0){
 			defaultAttackInit();
+			defaultAttackTimer = defaultAttackCooldown;
+		}
+	}
+	//OVERLOADING THE DEFAULT CHECK
+	public void defaultAttackCheck(DIRECTION direction) {
+		if(defaultAttackTimer < 0){
+			defaultAttackInit(direction);
 			defaultAttackTimer = defaultAttackCooldown;
 		}
 	}
@@ -81,6 +126,14 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected void defaultAttackInit() {
 		
 	}
+	//OVERRIDEN IN SUBCLASSES
+	protected void defaultAttackInit(DIRECTION direction) {
+		
+	}
+	public void defaultAttackCheck(Vector2 rightJoyStick) {
+
+	}
+	
 
 
 }

@@ -5,6 +5,7 @@ import game_objects.ManipulatableObject;
 
 import backend.LevelStage;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class AbstractAbility extends AbstractGameObject {
@@ -12,12 +13,14 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected Array<ManipulatableObject> objectsAlreadyHit;
 	protected int damage;
 	protected ManipulatableObject parent;
+	public float range;
 	
+	public float stunTime, knockBack = .3f;
 	//booleans for controlling
 	boolean projectile, melee;
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean suicidal = true; //if suicidal it will delete itself
+	protected float lifeTimer; boolean removesItself = true; 
 
 	public AbstractAbility() {
 		super();
@@ -32,6 +35,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 		//initDebug();
 		lifeTimer = 1;
+		stunTime = .3f;
 		
 	}
 	protected boolean isFirstInteraction(ManipulatableObject obj){
@@ -43,6 +47,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 		objectsAlreadyHit.add(obj);
 		
+		
 		return true;
 	}
 	@Override
@@ -51,7 +56,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		super.update(deltaTime);
 		
 		//REMOVES ITSELF
-		if(suicidal){
+		if(removesItself){
 			lifeTimer -= deltaTime;
 			if(lifeTimer < 0){
 				removeThyself();
@@ -61,6 +66,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 		position.x += velocity.x;
 		position.y += velocity.y;
+		
 	}
 
 	public void postDeathEffects() {
@@ -68,7 +74,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	}
 	
 	public boolean isSameTeam(ManipulatableObject obj){
-		if(parent.teamObjects.contains(obj, false)){
+		if(parent.teamObjects == obj.teamObjects){
 			return true;
 		}
 		
@@ -79,5 +85,10 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		LevelStage.interactables.removeValue(this, true);
 	}
 
+@Override
+public void render(SpriteBatch batch) {
+
+	super.render(batch);
+}
 
 }

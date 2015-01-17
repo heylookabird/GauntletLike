@@ -1,8 +1,11 @@
 package game_objects;
 
+import game_objects.abilities.AbstractAbility;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
+import ai_classes.RusherAi;
+import backend.Assets;
 import backend.LevelStage;
 
 import com.badlogic.gdx.Gdx;
@@ -18,7 +21,7 @@ import com.badlogic.gdx.utils.Array;
 public class ManipulatableObject extends AbstractGameObject {
 
 	//MOVING, NOT-MOVING, ATTAKING, STUNNED?
-	protected STATE state;
+	public STATE state;
 
 	// This contains the current position of the joysticks,
 	//.x is x-coordinate, .y is y-coordinate
@@ -35,10 +38,13 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 	//Animations and textures for movement
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
-	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg;
+	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg, health;
 	
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
+	
+	public float stunTimer;
+	
 	
 
 	private AbstractAi Ai;
@@ -51,8 +57,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 	public int currentHp;//need this for Ai and health bar
 
+	private int MAX_HEALTH;
+
 	public enum STATE {
-		NOT_MOVING, MOVING
+		NOT_MOVING, MOVING, ATTACKING, STUNNED;
 
 	}
 	
@@ -64,7 +72,20 @@ public class ManipulatableObject extends AbstractGameObject {
 		// Set the Default States
 		super();
 		this.controller = controller;
+		init();
+
+	}
+
+	public ManipulatableObject(boolean controller, float x, float y,
+			float width, float height) {
+
+		super(x, y, width, height);
+		this.controller = controller;
+		init();
+	}
+	private void init(){
 		leftJoyStick = new Vector2();
+		
 		rightJoyStick = new Vector2();
 		baseMovement = true;
 		isPlayerObject = true;
@@ -75,20 +96,14 @@ public class ManipulatableObject extends AbstractGameObject {
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
 		
-		hp = 10;
 		damage = 10;
 		movementSpeed = 10;
-		
+		MAX_HEALTH = 20;
+		hp = MAX_HEALTH;
 		facing = DIRECTION.UP;
+		health = Assets.instance.mage.hp;
 		
-
-	}
-
-	public ManipulatableObject(boolean controller, float x, float y,
-			float width, float height) {
-
-		super(x, y, width, height);
-		this.controller = controller;
+		stunTimer = 0;
 	}
 	
 	//This is the objects internal reference of who's team it's on. 
@@ -123,16 +138,21 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(left){
 			stopMoveX();
 		}
+		right = true;
+		velocity.x = terminalVelocity.x;
 		
-		if (state == STATE.NOT_MOVING || left) {
+		if(state == STATE.ATTACKING){
+			return;
+		
+		}else if (state == STATE.NOT_MOVING || left) {
 			this.setAnimation(walkingRight);
 			this.currentDirImg = rightImg;
 			primaryWeapon.moveRight();
 			facing = DIRECTION.RIGHT;
+			state = STATE.MOVING;
+
 		}
-		right = true;
-		state = STATE.MOVING;
-		velocity.x = terminalVelocity.x;
+		
 
 	}
 
@@ -147,18 +167,20 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(right){
 			stopMoveX();
 		}
+		left = true;
+		velocity.x = -terminalVelocity.x;
 		
-		if (state == STATE.NOT_MOVING || right) {
+		if(state == STATE.ATTACKING){
+			return;
+		} else if (state == STATE.NOT_MOVING || right) {
 			this.setAnimation(walkingLeft);
 			this.currentDirImg = leftImg;
 			primaryWeapon.moveLeft();
 			facing = DIRECTION.LEFT;
+			state = STATE.MOVING;
 
 		}
-		left = true;
 		
-		state = STATE.MOVING;
-		velocity.x = -terminalVelocity.x;
 
 	}
 
@@ -168,19 +190,21 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		if(down)
 			stopMoveY();
+
+		up = true;
+		velocity.y = terminalVelocity.y;
 		
-		if (state == STATE.NOT_MOVING) {
+		if(state == STATE.ATTACKING){
+			return;
+		}else if (state == STATE.NOT_MOVING) {
 			this.setAnimation(walkingUp);
 			this.currentDirImg = upImg;
 			primaryWeapon.moveUp();
 			facing = DIRECTION.UP;
+			state = STATE.MOVING;
+
 
 		}
-		up = true;
-		
-
-		state = STATE.MOVING;
-		velocity.y = terminalVelocity.y;
 	}
 
 
@@ -194,18 +218,22 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(up)
 			stopMoveY();
 
-		//From walking to running.
-		if (state == STATE.NOT_MOVING) {
+		down = true;
+		velocity.y = -terminalVelocity.y;
+
+		if(state == STATE.ATTACKING){
+			return;
+		} else if (state == STATE.NOT_MOVING) {
+
 			this.setAnimation(walkingDown);
 			this.currentDirImg = downImg;
+			state = STATE.MOVING;
 			primaryWeapon.moveDown();
 			facing = DIRECTION.DOWN;
 
 		}
 		//if this down = true line isn't run,
-		down = true;
-		state = STATE.MOVING;
-		velocity.y = -terminalVelocity.y;
+		
 		
 	}
 
@@ -222,9 +250,13 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void stopMoveX() {
 		//Automatically Decelerates the character
 		//ToDO: Make a de-acceleration variable instead of accelerationPerSecond variable
-
-		left = false; right = false;
 		velocity.x = 0;
+		left = false; right = false;
+
+
+		if(state == STATE.ATTACKING)
+			return;
+		
 		
 		
 		//Continue upwards 
@@ -232,6 +264,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			setAnimation(this.walkingUp);
 			currentDirImg = upImg;
 			
+			facing = DIRECTION.UP;
 			//Adjust weapon correctly
 			if(primaryWeapon != null)
 				primaryWeapon.moveUp();
@@ -243,6 +276,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		} else if (down) {
 			setAnimation(walkingDown);
 			currentDirImg = downImg;
+			facing = DIRECTION.DOWN;
+
 			
 			//Adjust weapon correctlys
 			if(primaryWeapon != null)
@@ -257,14 +292,19 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void stopMoveY() {
 		up = false;
 		down = false;
-		velocity.y = 0;
+		velocity.y = 0; 
+		
+		if(state == STATE.ATTACKING)
+			return;
+		
+		
 		// These if-else if block is for when you stop moving
 		// up and down, if you were holding left or right,
 		// the animation will correct itself.
 		if (right) {
 			setAnimation(this.walkingRight);
 			currentDirImg = rightImg;
-			
+			facing = DIRECTION.RIGHT;
 			//Adjust weapon correctly
 			//Adjust weapon correctlys
 			if(primaryWeapon != null)
@@ -273,6 +313,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		} else if (left) {
 			setAnimation(walkingLeft);
 			currentDirImg = leftImg;
+			facing = DIRECTION.LEFT;
+
 			
 			if(primaryWeapon != null)
 				primaryWeapon.moveLeft();
@@ -302,9 +344,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	}
 	
-
-	public void activateAI() {
-		this.Ai = new AbstractAi(this);
+ 
+	public void activateAI(AbstractAi ai) {
+		this.Ai = ai;
 	}
 
 	public void moveY(float deltaTime) {
@@ -324,31 +366,59 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-		if(Ai != null){
-			Ai.update(deltaTime);
+		if(state != STATE.STUNNED){
+			if(Ai != null){
+				Ai.update(deltaTime);
+			}
+			else{
+				handleAllPollingInput();
+				System.out.println(this.hp + "");
+			}
 			
-		}
-		else
-			handleAllPollingInput();
+
+			if(primaryWeapon != null){
+				primaryWeapon.update(deltaTime);
+			}
+			if(state != STATE.ATTACKING)
+				checkStopMove();
+		}else
+			handleStunUpdate(deltaTime);
 
 		moveX(deltaTime);
 		moveY(deltaTime);
+		
+		primaryWeapon.setPosition();
 
-		if(primaryWeapon != null){
-			primaryWeapon.update(deltaTime);
-		}
-		checkStopMove();
+		
 
 	}
+	
+	private void handleStunUpdate(float deltaTime){
+		stunTimer -= deltaTime;		
 
+		if(stunTimer < 0){
+			state = STATE.NOT_MOVING;
+			velocity.set(0,0);
+		}
+		
+	}
+
+	
 	// inefficient as fuck with so many conditions but it was buggy
 	// otherwise..someone help me
 	// tell it that it is standing when it isnt moving
-	private void checkStopMove() {
+	public void checkStopMove() {
+		
 		if (!left && !right && !up && !down) {
 			state = STATE.NOT_MOVING;
+		}else{
+			state = STATE.MOVING;
 		}
+		
 	}
+	
+
+
 
 	protected boolean collision(float deltaX, float deltaY) {
 
@@ -458,10 +528,17 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 		if(secondaryWeapon != null)
 			secondaryWeapon.render(batch);
+		
+		renderHp(batch);
 
 		if (debug)
 			batch.draw(debugTex, bounds.x, bounds.y, bounds.width,
 					bounds.height);
+	}
+
+	private void renderHp(SpriteBatch batch) {
+		float hpPercent = (float)(hp) / (float)(MAX_HEALTH);
+		batch.draw(health, position.x - .2f, position.y - 1, 1.4f * hpPercent, .2f);
 	}
 
 	private void pollKeyInput() {
@@ -493,7 +570,7 @@ public class ManipulatableObject extends AbstractGameObject {
 			moveDown();
 
 		} else {
-			if (up || down)
+			if (up || down) 
 				stopMoveY();
 		}
 
@@ -507,7 +584,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			return;
 		}
 
-		// Controller
+
+		// Controller movement
 		if (leftJoyStick.y > .35f) {
 			moveDown();
 		} else if (leftJoyStick.y < -.35f) {
@@ -525,6 +603,14 @@ public class ManipulatableObject extends AbstractGameObject {
 		} else {
 			stopMoveX();
 		}
+		
+		
+		//SEND 
+		if(Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35){
+			primaryWeapon.defaultAttackCheck(rightJoyStick);
+		}
+		
+		
 	}
 
 	public void actOnInputKeyDown(int keycode) {
@@ -533,18 +619,35 @@ public class ManipulatableObject extends AbstractGameObject {
 		switch (keycode) {
 
 		// ABILITIES
-		// A BUTTON
-		case Keys.A:
+		// ARROW KEYS
+		case Keys.LEFT:
+			primaryWeapon.defaultAttackCheck(DIRECTION.LEFT);
+			break;
+		case Keys.RIGHT:
+			primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
 
 			break;
-		case Keys.S:
-
+		case Keys.UP:
+			primaryWeapon.defaultAttackCheck(DIRECTION.UP);
 			break;
-		case Keys.D:
-
+		case Keys.DOWN:
+			primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
 			break;
-		case Keys.F:
-
+			
+		case Keys.NUM_1:
+			primaryWeapon.activateAbility1(facing);
+			break;
+			
+		case Keys.NUM_2:
+			primaryWeapon.activateAbility2(facing);
+			break;
+			
+		case Keys.NUM_3:
+			primaryWeapon.activateAbility3(facing);
+			break;
+			
+		case Keys.NUM_4:
+			primaryWeapon.activateAbility4(facing);
 			break;
 
 		case Keys.SPACE:
@@ -616,11 +719,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void joyStick(Vector2 leftJoyStick, Vector2 rightJoyStick) {
-
-		if (Math.abs(leftJoyStick.x - this.leftJoyStick.x) < .15f
-				&& Math.abs(leftJoyStick.y - this.leftJoyStick.y) < .15f) {
-			return;
-		}
+		
 
 		this.leftJoyStick = leftJoyStick;
 		this.rightJoyStick = rightJoyStick;
@@ -637,12 +736,36 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 	
 
-	public void takeHitFor(int damage) {
+	public void takeHitFor(int damage, AbstractAbility attack) {
 		this.hp -= damage;
+		
 		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
 		
-		//if(hp < 0)
-			//removeThyself();
+		if(attack != null){
+			if(!attack.velocity.isZero())
+				velocity.set(attack.velocity.x * attack.knockBack, attack.velocity.y * attack.knockBack);
+			else{
+				Vector2 attCenter = attack.getCenter();
+				Vector2 thisCenter = getCenter();
+				double angle = MathUtils.atan2(attCenter.y - thisCenter.y, attCenter.x - thisCenter.x);
+				angle = Math.toDegrees(angle);
+				
+				velocity.set((float)Math.cos(angle) * 10, (float)Math.sin(angle) * 10);
+				
+				
+			}
+	
+			state = STATE.STUNNED;
+			stunTimer = attack.stunTime;
+		}
+		
+		if(hp <= 0)
+			removeThyself();
+	}
+
+
+	public void attack() {
+		primaryWeapon.defaultAttackCheck(facing);
 	}
 	
 

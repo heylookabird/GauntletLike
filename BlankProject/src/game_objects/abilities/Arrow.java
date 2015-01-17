@@ -10,16 +10,20 @@ public class Arrow extends AbstractAbility{
 	public Arrow(ManipulatableObject parent, int damage, float xVelocity, float yVelocity) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
-		suicidal = true;
+		removesItself = true;
 		this.lifeTimer = 1f;
 		this.setImage(Assets.instance.weapons.sword);
 		this.velocity.set(xVelocity, yVelocity);
+		
+		double angle = Math.atan2(velocity.y, velocity.x);
+		rotation = (float) Math.toDegrees(angle);
+		this.stunTime = .05f;
 	}
 	
 	@Override
 	public void postDeathEffects(){
 		attackFinished = true;
-		LevelStage.uncollidableObjects.add(this);
+		//LevelStage.uncollidableObjects.add(this);
 		velocity.set(0, 0);
 	}
 	
@@ -38,7 +42,7 @@ public class Arrow extends AbstractAbility{
 			boolean newObj = isFirstInteraction(obj);
 		
 			if(newObj)
-				obj.takeHitFor(damage);
+				obj.takeHitFor(damage, this);
 		}
 	}
 }
