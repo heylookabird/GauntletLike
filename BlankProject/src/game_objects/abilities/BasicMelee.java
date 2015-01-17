@@ -24,20 +24,28 @@ public class BasicMelee extends AbstractAbility {
 		parent.stopMove();
 		initDebug();
 		lifeTimer = hitBoxTimer;
+		
+		knockbackSpeed = 9;
+		knockbackTime = .3f;
+		
 		if(direction == DIRECTION.LEFT){
 			position.set(parent.position.x - dimension.x, position.y);
 			parent.moveLeft();
+			knockbackAngle = 180;
 		}else if(direction == DIRECTION.RIGHT){
 			position.set(parent.position.x + dimension.x, position.y);
 			parent.moveRight();
+			knockbackAngle = 0;
 
 		}else if(direction == DIRECTION.UP){
 			position.set(parent.position.x, position.y + dimension.y);
 			parent.moveUp();
+			knockbackAngle = 90;
 			
 		}else if(direction == DIRECTION.DOWN){
 			position.set(parent.position.x, position.y - dimension.y);
 			parent.moveDown();
+			knockbackAngle = 270;
 
 		}
 		parent.stopMove();

@@ -25,7 +25,7 @@ public class KiterEnemy extends ManipulatableObject{
 		walkingLeft = Assets.instance.mage.west;
 		
 		terminalVelocity.set(3f, 3f);
-		
+		walkingTerminalV.set(terminalVelocity);
 
 		primaryWeapon = new Bow(this, 1, .25f, new Vector2(dimension.x / 2, dimension.y / 2));
 		

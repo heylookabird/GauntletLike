@@ -52,7 +52,7 @@ public class Teleport extends AbstractAbility {
 		this.stunTime = .4f;
 		this.teleTime = lifeTimer;
 		this.position.set(position);
-		this.knockBack = 10;
+		this.knockbackSpeed = 10;
 		this.removesItself = false;
 	}
 

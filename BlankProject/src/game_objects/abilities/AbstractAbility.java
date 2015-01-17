@@ -15,12 +15,13 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected ManipulatableObject parent;
 	public float range;
 	
-	public float stunTime, knockBack = .3f;
+	public float stunTime, knockbackSpeed, knockbackTime, knockbackAngle;
 	//booleans for controlling
 	boolean projectile, melee;
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean removesItself = true; 
+	protected float lifeTimer; boolean removesItself = true;
+	 
 
 	public AbstractAbility() {
 		super();
@@ -36,6 +37,9 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		//initDebug();
 		lifeTimer = 1;
 		stunTime = .3f;
+		knockbackSpeed = 6;
+		knockbackTime = .3f;
+		knockbackAngle = 90;
 		
 	}
 	protected boolean isFirstInteraction(ManipulatableObject obj){

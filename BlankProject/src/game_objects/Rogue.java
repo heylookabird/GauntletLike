@@ -20,7 +20,7 @@ public class Rogue extends ManipulatableObject{
 		walkingLeft = Assets.instance.mage.west;
 		
 		terminalVelocity.set(4, 4);
-		accelerationPerSecond.set(20, 20);
+		walkingTerminalV.set(terminalVelocity);
 		
 
 		primaryWeapon = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));

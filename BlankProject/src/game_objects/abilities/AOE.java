@@ -25,7 +25,7 @@ public class AOE extends AbstractAbility{
 		stunTime = .3f;
 		timers = new Vector<Float>();
 		
-		this.knockBack = 10;
+		this.knockbackSpeed = 10;
 	}
 	
 
@@ -36,7 +36,7 @@ public class AOE extends AbstractAbility{
 		
 		timers = new Vector<Float>();
 		stunTime = .3f;
-		this.knockBack = 10;
+		this.knockbackSpeed = 10;
 	}
 	
 	

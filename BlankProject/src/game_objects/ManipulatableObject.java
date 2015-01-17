@@ -41,6 +41,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
 	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg,
 			health;
+	protected Vector2 walkingTerminalV;
 
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
@@ -57,9 +58,11 @@ public class ManipulatableObject extends AbstractGameObject {
 	public int currentHp;// need this for Ai and health bar
 
 	private int MAX_HEALTH;
+	
+	protected boolean stunned;
 
 	public enum STATE {
-		NOT_MOVING, MOVING, ATTACKING, STUNNED;
+		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
 
 	}
 
@@ -87,12 +90,13 @@ public class ManipulatableObject extends AbstractGameObject {
 		leftJoyStick = new Vector2();
 
 		rightJoyStick = new Vector2();
+		walkingTerminalV = new Vector2(terminalVelocity);
+		System.out.println(walkingTerminalV);
 		baseMovement = true;
 		isPlayerObject = true;
-		accelerationPerSecond = new Vector2(10, 10);
 		currentFrameDimension = new Vector2();
 
-		//
+		
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
 
@@ -350,8 +354,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		
+		System.out.println(terminalVelocity + " " + walkingTerminalV);
 
-		if (state != STATE.STUNNED) {
+		if (!stunned) {
 			if (Ai != null) {
 				Ai.update(deltaTime);
 			} else {
@@ -376,9 +382,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	private void handleStunUpdate(float deltaTime) {
 		stunTimer -= deltaTime;
 
-		if (stunTimer < 0) {
-			state = STATE.NOT_MOVING;
+		if (stunned && stunTimer < 0) {
+			stunned = false;
 			velocity.set(0, 0);
+			terminalVelocity.set(walkingTerminalV);
 		}
 
 	}
@@ -558,7 +565,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	private void handleAllPollingInput() {
 
-		if (state == STATE.STUNNED)
+		if (stunned)
 			return;
 		// Keyboard Input
 		if (!controller) {
@@ -593,7 +600,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void actOnInputKeyDown(int keycode) {
-		if (state == STATE.STUNNED)
+		if (stunned)
 			return;
 
 		// Movement, same among all characters
@@ -714,45 +721,48 @@ public class ManipulatableObject extends AbstractGameObject {
 		bounds.setPosition(position);
 
 	}
-
+	public void takeKnockback(float velocity, float knockbackAngle, float knockbackTime){
+		System.out.println("Knocked back  by " + velocity * knockbackAngle + " units");
+		state = STATE.KNOCKED;
+		stun(knockbackTime);
+		
+		this.velocity.set((float)(velocity * Math.cos(knockbackAngle * Math.PI / 180)), (float)(velocity * Math.sin(knockbackAngle * Math.PI  / 180)));
+		
+	}
 	public void takeHitFor(int damage, AbstractAbility attack) {
-		if(!isPlayerObject)
-			this.hp -= damage;
+		this.hp -= damage;
 
 		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
 
 		if (attack != null) {
-			if (!attack.velocity.isZero())
-				velocity.set(attack.velocity.x * attack.knockBack,
-						attack.velocity.y * attack.knockBack);
-			else {
-				Vector2 attCenter = attack.getCenter();
+			
+			takeKnockback(attack.knockbackSpeed, attack.knockbackAngle, attack.knockbackTime);
+			
+			/*	Vector2 attCenter = attack.getCenter();
 				Vector2 thisCenter = getCenter();
 				double angle = MathUtils.atan2(attCenter.y - thisCenter.y,
 						attCenter.x - thisCenter.x);
 				angle = Math.toDegrees(angle);
 
-				velocity.set((float) Math.cos(angle) * attack.knockBack,
-						(float) Math.sin(angle) * attack.knockBack);
-
-			}
-
-			stun(attack.stunTime);
-			state = STATE.STUNNED;
-			stunTimer = attack.stunTime;
+				velocity.set((float) Math.cos(angle) * attack.knockBackSpeed,
+						(float) Math.sin(angle) * attack.knockBackSpeed);
+			
+*/
 		}
 
 		if (hp <= 0)
 			removeThyself();
 	}
-
+	
 	public void attack() {
 		primaryWeapon.defaultAttackCheck(facing);
 	}
 
 	public void stun(float lifeTimer) {
-		state = STATE.STUNNED;
+		stunned = true;
 		stunTimer = lifeTimer;
+		
+		terminalVelocity.set(100, 100);
 	}
 
 }
