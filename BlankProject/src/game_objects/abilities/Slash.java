@@ -31,11 +31,11 @@ public class Slash extends AbstractAbility{
 			//parent.moveRight();
 
 		}else if(direction == DIRECTION.UP){
-			position.set(parent.position.x, position.y + dimension.y);
+			position.set(parent.position.x, position.y + parent.dimension.y);
 			//parent.moveUp();
 			
 		}else if(direction == DIRECTION.DOWN){
-			position.set(parent.position.x, position.y - dimension.y);
+			position.set(parent.position.x, position.y - parent.dimension.y);
 			//parent.moveDown();
 
 		}
@@ -128,7 +128,6 @@ public class Slash extends AbstractAbility{
 		
 		super.update(deltaTime);
 		
-		System.out.println(position);
 	}
 	
 	@Override

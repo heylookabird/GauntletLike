@@ -2,9 +2,9 @@ package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
-import game_objects.abilities.Arrow;
 import game_objects.abilities.BasicMelee;
 import game_objects.abilities.Slash;
+import game_objects.abilities.Teleport;
 import game_objects.abilities.ThrowSword;
 import backend.Assets;
 import backend.LevelStage;
@@ -43,6 +43,8 @@ public class DualBlades extends AbstractWeapon {
 	@Override
 	public void ability1(DIRECTION direction) {
 		BasicMelee attack = new BasicMelee(parent, 4, 1, direction);
+		attack.bounds.width = 2;
+		attack.bounds.height = 2;
 		
 		LevelStage.interactables.add(attack);
 	}
@@ -63,7 +65,6 @@ public class DualBlades extends AbstractWeapon {
 	public void ability3(DIRECTION direction) {
 		if(this.dualBlade){
 		
-		LevelStage.uncollidableObjects.removeValue(secondary, true);
 		
 		int arrowDamage = 2;
 		if(direction == DIRECTION.LEFT)
@@ -81,24 +82,39 @@ public class DualBlades extends AbstractWeapon {
 	
 		dualBlade = false;
 	}else{
-		parent.position.set(secondary.position);
+		Teleport attack = new Teleport(parent, secondary.position, 1){
+			@Override
+			public void postDeathEffects() {
+				super.postDeathEffects();
+				ability1(parent.facing);
+			}
+		};
+		LevelStage.uncollidableObjects.removeValue(secondary, true);
+		LevelStage.interactables.add(attack);
 		dualBlade = true;
-		ability1(direction);
 	}
 	}
 
 	@Override
 	public void ability4(DIRECTION direction) {
 		if(dualBlade){
-			LevelStage.uncollidableObjects.removeValue(secondary, true);
 
 			dualBlade = false;
 			secondary = new ThrowSword(parent, 4, 0, 0);
 			LevelStage.interactables.add(secondary);
 		}else{
+			
+			Teleport attack = new Teleport(parent, secondary.position, 1){
+				@Override
+				public void postDeathEffects() {
+					super.postDeathEffects();
+					ability2(parent.facing);
+				}
+			};
+			
+			LevelStage.uncollidableObjects.removeValue(secondary, true);
+			LevelStage.interactables.add(attack);
 			dualBlade = true;
-			parent.position.set(secondary.position);
-			ability2(direction);
 		}
 	}
 	

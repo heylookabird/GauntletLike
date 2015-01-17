@@ -755,7 +755,7 @@ public class ManipulatableObject extends AbstractGameObject {
 				double angle = MathUtils.atan2(attCenter.y - thisCenter.y, attCenter.x - thisCenter.x);
 				angle = Math.toDegrees(angle);
 				
-				velocity.set((float)Math.cos(angle) * 10, (float)Math.sin(angle) * 10);
+				velocity.set((float)Math.cos(angle) * attack.knockBack, (float)Math.sin(angle) * attack.knockBack);
 				
 				
 			}

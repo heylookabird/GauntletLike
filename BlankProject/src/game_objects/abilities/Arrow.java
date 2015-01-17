@@ -35,7 +35,7 @@ public class Arrow extends AbstractAbility{
 	
 	@Override
 	public void interact(AbstractGameObject couple) {
-		
+		super.interact(couple);
 		
 		ManipulatableObject obj = (ManipulatableObject) couple;
 		if(!this.isSameTeam(obj)){

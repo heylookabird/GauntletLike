@@ -73,6 +73,11 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		
 	}
 	
+	@Override
+	public void interact(AbstractGameObject couple){
+
+	}
+	
 	public boolean isSameTeam(ManipulatableObject obj){
 		if(parent.teamObjects == obj.teamObjects){
 			return true;
