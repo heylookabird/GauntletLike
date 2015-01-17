@@ -144,6 +144,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		if(state == STATE.ATTACKING){
 			return;
 		
+
 		}else if (state == STATE.NOT_MOVING || left) {
 			this.setAnimation(walkingRight);
 			this.currentDirImg = rightImg;
@@ -403,6 +404,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 	}
 
+
 	
 	// inefficient as fuck with so many conditions but it was buggy
 	// otherwise..someone help me
@@ -633,6 +635,22 @@ public class ManipulatableObject extends AbstractGameObject {
 		case Keys.DOWN:
 			primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
 			break;
+			
+		case Keys.NUM_1:
+			primaryWeapon.activateAbility1(facing);
+			break;
+			
+		case Keys.NUM_2:
+			primaryWeapon.activateAbility2(facing);
+			break;
+			
+		case Keys.NUM_3:
+			primaryWeapon.activateAbility3(facing);
+			break;
+			
+		case Keys.NUM_4:
+			primaryWeapon.activateAbility4(facing);
+			break;
 
 		case Keys.SPACE:
 
@@ -740,6 +758,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			}
 	
 			stun(attack.stunTime);
+			state = STATE.STUNNED;
+			stunTimer = attack.stunTime;
 		}
 		
 		if(hp <= 0)

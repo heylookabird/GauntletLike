@@ -17,7 +17,8 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
 	
-	protected Array<AbstractAbility> abilities;
+	//protected Array<AbstractAbility> abilities;
+	protected int[] abilitycooldowns;
 	
 	
 	//ATTACKS
@@ -30,14 +31,47 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		this.positionOffset = positionOffset;
 		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
-		abilities = new Array<AbstractAbility>();
-	
+		abilitycooldowns = new int[4];
 	}
+	
+	private boolean checkAttack(int index){
+		if(abilitycooldowns[index] > 0)
+			return false;
+		else
+			System.out.println("Cooldown");
+		return true;
+	}
+	
+	public void activateAbility1(DIRECTION direction){
+		if(checkAttack(1)){
+			
+		}
+	}
+	
+	public void activateAbility2(DIRECTION direction){
+		if(checkAttack(2)){
+			
+		}
+	}
+	
+	public void activateAbility3(DIRECTION direction){
+		if(checkAttack(3)){
+			
+		}
+	}
+	
+	public void activateAbility4(DIRECTION direction){
+		if(checkAttack(4)){
+			
+		}
+	}
+	
 	public void moveRight(){
 		rotation = 0;
 		positionOffset.set(parent.dimension.x /2 - .1f, parent.dimension.y / 3 - .2f);
 		parent.primaryBehind = false;
 	}
+	
 	public void moveLeft(){
 		rotation = 180;
 		positionOffset.set(parent.dimension.x / 2, parent.dimension.y / 2);
