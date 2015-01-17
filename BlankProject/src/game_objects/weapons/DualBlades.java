@@ -2,8 +2,10 @@ package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
+import game_objects.abilities.Arrow;
 import game_objects.abilities.BasicMelee;
 import game_objects.abilities.Slash;
+import game_objects.abilities.ThrowSword;
 import backend.Assets;
 import backend.LevelStage;
 
@@ -13,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 public class DualBlades extends AbstractWeapon {
 	private TextureRegion sword2;
 	private boolean dualBlade = true;
+	private float throwSpeed = .5f;
+	private ThrowSword secondary;
 	public DualBlades(ManipulatableObject parent, float width, float height,
 			Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
@@ -22,6 +26,7 @@ public class DualBlades extends AbstractWeapon {
 		sword2 = Assets.instance.weapons.sword;
 		moveUp();
 		dualBlade = true;
+		
 	}
 	
 	
@@ -52,16 +57,49 @@ public class DualBlades extends AbstractWeapon {
 			attack = new Slash(parent, direction, 3, false);
 		
 		LevelStage.interactables.add(attack);
-	}
+}
 
 	@Override
 	public void ability3(DIRECTION direction) {
+		if(this.dualBlade){
+		
+		LevelStage.uncollidableObjects.removeValue(secondary, true);
+		
+		int arrowDamage = 2;
+		if(direction == DIRECTION.LEFT)
+			secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0);
 
+		else if(direction == DIRECTION.RIGHT)
+			secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0);
+		
+		else if(direction == DIRECTION.DOWN)
+			secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed);
+		else if(direction == DIRECTION.UP)
+			secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed);
+		
+		LevelStage.interactables.add(secondary);
+	
+		dualBlade = false;
+	}else{
+		parent.position.set(secondary.position);
+		dualBlade = true;
+		ability1(direction);
+	}
 	}
 
 	@Override
 	public void ability4(DIRECTION direction) {
+		if(dualBlade){
+			LevelStage.uncollidableObjects.removeValue(secondary, true);
 
+			dualBlade = false;
+			secondary = new ThrowSword(parent, 4, 0, 0);
+			LevelStage.interactables.add(secondary);
+		}else{
+			dualBlade = true;
+			parent.position.set(secondary.position);
+			ability2(direction);
+		}
 	}
 	
 

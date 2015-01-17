@@ -19,7 +19,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	// protected Array<AbstractAbility> abilities;
 	protected float[] abilityCooldowns;
-	protected int[] abilitycooldowns;
 
 	// ATTACKS
 	protected float defaultAttackTimer, defaultAttackCooldown;
@@ -53,7 +52,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 			
 		}else{
 			System.out.println(abilityCooldowns[0]);
-		abilitycooldowns = new int[4];
 	}
 	}
 
