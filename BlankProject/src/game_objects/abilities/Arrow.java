@@ -37,12 +37,21 @@ public class Arrow extends AbstractAbility{
 	public void interact(AbstractGameObject couple) {
 		super.interact(couple);
 		
-		ManipulatableObject obj = (ManipulatableObject) couple;
-		if(!this.isSameTeam(obj)){
-			boolean newObj = isFirstInteraction(obj);
+		if(couple instanceof ManipulatableObject){
+			ManipulatableObject obj = (ManipulatableObject) couple;
+			if(!this.isSameTeam(obj)){
+				boolean newObj = isFirstInteraction(obj);
 		
-			if(newObj)
-				obj.takeHitFor(damage, this);
+				if(newObj)
+					obj.takeHitFor(damage, this);
+			}
+		}
+		
+		if(couple instanceof Arrow){
+			if(!((AbstractAbility) couple).isSameTeam(parent)){
+				lifeTimer = 0;
+				((Arrow) couple).lifeTimer = 0;
+			}
 		}
 	}
 }

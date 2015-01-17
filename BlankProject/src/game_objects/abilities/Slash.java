@@ -59,9 +59,8 @@ public class Slash extends AbstractAbility {
 
 		if (doublehit) {
 			positionHit1();
-		}else
+		} else
 			positionHit2();
-		
 
 	}
 
@@ -76,8 +75,7 @@ public class Slash extends AbstractAbility {
 
 		// reposition to bottom
 		case RIGHT:
-			position.set(parent.position.x, parent.position.y
-					- bounds.height);
+			position.set(parent.position.x, parent.position.y - bounds.height);
 			break;
 
 		case LEFT:
@@ -86,10 +84,9 @@ public class Slash extends AbstractAbility {
 			break;
 
 		case DOWN:
-			position.set(parent.position.x - bounds.width,
-					parent.position.y);
+			position.set(parent.position.x - bounds.width, parent.position.y);
 			break;
-		}		
+		}
 	}
 
 	private void positionHit1() {
@@ -103,21 +100,18 @@ public class Slash extends AbstractAbility {
 
 		// position below to bring to left
 		case LEFT:
-			position.set(parent.position.x, parent.position.y
-					- bounds.height);
+			position.set(parent.position.x, parent.position.y - bounds.height);
 			break;
 
 		// position above to bring to right
 		case RIGHT:
-			position.set(parent.position.x, parent.position.y
-					+ bounds.height);
+			position.set(parent.position.x, parent.position.y + bounds.height);
 			break;
 
 		case DOWN:
-			position.set(parent.position.x + bounds.width,
-					parent.position.y);
+			position.set(parent.position.x + bounds.width, parent.position.y);
 			break;
-		}		
+		}
 	}
 
 	@Override
@@ -172,14 +166,16 @@ public class Slash extends AbstractAbility {
 	@Override
 	public void interact(AbstractGameObject couple) {
 
-		ManipulatableObject obj = (ManipulatableObject) couple;
+		if (couple instanceof ManipulatableObject) {
+			ManipulatableObject obj = (ManipulatableObject) couple;
 
-		if (!isSameTeam(obj)) {
-			boolean newObj = isFirstInteraction(obj);
+			if (!isSameTeam(obj)) {
+				boolean newObj = isFirstInteraction(obj);
 
-			if (newObj)
-				obj.takeHitFor(damage, this);
+				if (newObj)
+					obj.takeHitFor(damage, this);
 
+			}
 		}
 
 	}

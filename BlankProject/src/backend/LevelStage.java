@@ -181,6 +181,7 @@ public class LevelStage {
 	}
 	
 	public static void addPlayer(ManipulatableObject obj){
+		obj.togglePlayerObject();
 		playerControlledObjects.add(obj);
 		InputManager.inputManager.addObject(obj);
 	}
@@ -259,8 +260,8 @@ public class LevelStage {
 			platform.update(deltaTime);
 		}
 		
-		for(AbstractGameObject interactableObject: interactables){
-			interactableObject.update(deltaTime);
+		for(int i = 0; i < interactables.size; i++){
+			interactables.get(i).update(deltaTime);
 		}
 		for(AbstractGameObject uncollidable: uncollidableObjects){
 			uncollidable.update(deltaTime);
