@@ -20,13 +20,13 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
-		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 1, direction);
+		defaultAttack = new BasicMelee(parent, 3, .5f, direction);
 		LevelStage.interactables.add(defaultAttack);
 
 	}
 	@Override
 	protected void defaultAttackInit() {
-		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 1, parent.facing);
+		defaultAttack = new BasicMelee(parent, 3, .5f, parent.facing);
 		LevelStage.interactables.add(defaultAttack);
 	}
 

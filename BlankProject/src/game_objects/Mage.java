@@ -25,7 +25,7 @@ public class Mage extends ManipulatableObject {
 		accelerationPerSecond.set(20, 20);
 		
 
-		primaryWeapon = new Bow(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}

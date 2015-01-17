@@ -13,16 +13,17 @@ public class BasicMelee extends AbstractAbility {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
 		removesItself = true;
-		System.out.println(bounds);
+		initDebug();
 	}
 	
-	public BasicMelee(ManipulatableObject parent, int damage, DIRECTION direction) {
+	public BasicMelee(ManipulatableObject parent, int damage, float hitBoxTimer, DIRECTION direction) {
 		
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
 		removesItself = true;
 		parent.stopMove();
-		
+		initDebug();
+		lifeTimer = hitBoxTimer;
 		if(direction == DIRECTION.LEFT){
 			position.set(parent.position.x - dimension.x, position.y);
 			parent.moveLeft();
@@ -63,7 +64,7 @@ public class BasicMelee extends AbstractAbility {
 		
 		boolean newObj = isFirstInteraction(obj);
 		
-		if(newObj)
+		if(newObj && obj != parent)
 			obj.takeHitFor(damage, this);
 		
 	}
