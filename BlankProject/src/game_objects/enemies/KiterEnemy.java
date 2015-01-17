@@ -1,17 +1,16 @@
 package game_objects.enemies;
 
 import game_objects.ManipulatableObject;
-import game_objects.weapons.SwordAndShield;
-import ai_classes.RusherAi;
+import game_objects.weapons.Bow;
+import ai_classes.KiterAi;
 import backend.Assets;
 import backend.LevelStage;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class MeleeEnemy extends ManipulatableObject {
-
-
-	public MeleeEnemy(boolean controller, float x, float y, float width,
+public class KiterEnemy extends ManipulatableObject{
+	
+	public KiterEnemy(boolean controller, float x, float y, float width,
 			float height) {
 		super(controller, x, y, width, height);
 		
@@ -28,14 +27,13 @@ public class MeleeEnemy extends ManipulatableObject {
 		terminalVelocity.set(3f, 3f);
 		
 
-		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x / 2, dimension.y / 2));
+		primaryWeapon = new Bow(this, 1, .25f, new Vector2(dimension.x / 2, dimension.y / 2));
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
-		activateAI(new RusherAi(this));
+		activateAI(new KiterAi(this));
 		hp = 5;
 		
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}
-
 }

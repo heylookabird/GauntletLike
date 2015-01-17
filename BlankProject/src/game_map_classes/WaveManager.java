@@ -1,17 +1,13 @@
 package game_map_classes;
 
-import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
-import game_objects.Ranger;
+import game_objects.enemies.KiterEnemy;
 import game_objects.enemies.MeleeEnemy;
-import backend.Constants;
 import backend.LevelStage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 public class WaveManager {
 	private String difficulty;
@@ -98,8 +94,13 @@ public class WaveManager {
 					
 				}else if(ENEMY_TYPE.ENEMY1.sameColor(currentPixel)){
 					
-					MeleeEnemy player2 = new MeleeEnemy(false, pixelX, baseHeight, 1, 1);
-					LevelStage.enemyControlledObjects.add(player2);
+					if(Math.random() < .5f){
+						MeleeEnemy player2 = new MeleeEnemy(false, pixelX, baseHeight, 1, 1);
+						LevelStage.enemyControlledObjects.add(player2);
+					}else{
+						KiterEnemy player2 = new KiterEnemy(false, pixelX, baseHeight, 1, 1);
+						LevelStage.enemyControlledObjects.add(player2);
+					}
 				}
 				
 			}// inner for loop

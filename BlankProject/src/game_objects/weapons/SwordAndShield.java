@@ -10,9 +10,9 @@ import backend.LevelStage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class Sword extends AbstractWeapon {
+public class SwordAndShield extends AbstractWeapon {
 
-	public Sword(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
+	public SwordAndShield(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
 		image = Assets.instance.weapons.sword;

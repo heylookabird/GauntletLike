@@ -345,8 +345,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 	
  
-	public void activateAI() {
-		this.Ai = new RusherAi(this);
+	public void activateAI(AbstractAi ai) {
+		this.Ai = ai;
 	}
 
 	public void moveY(float deltaTime) {
@@ -397,6 +397,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		if(stunTimer < 0){
 			state = STATE.NOT_MOVING;
+			velocity.set(0,0);
 		}
 		
 	}
@@ -739,10 +740,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 			state = STATE.STUNNED;
 			stunTimer = attack.stunTime;
-			System.out.println("initial stun time: " + attack.stunTime);
 		}
 		
-		if(hp < 0)
+		if(hp <= 0)
 			removeThyself();
 	}
 

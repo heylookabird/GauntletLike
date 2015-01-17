@@ -13,6 +13,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected Array<ManipulatableObject> objectsAlreadyHit;
 	protected int damage;
 	protected ManipulatableObject parent;
+	public float range;
 	
 	public float stunTime, knockBack = .3f;
 	//booleans for controlling
