@@ -60,7 +60,7 @@ public class Teleport extends AbstractAbility {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		if(stateTime > teleTime)
+		if (stateTime > teleTime)
 			teleport();
 	}
 
@@ -71,26 +71,28 @@ public class Teleport extends AbstractAbility {
 			teleported = true;
 			removeThyself();
 			postDeathEffects();
-		}else{
-			for(int i = 0; i < LevelStage.enemyControlledObjects.size; i++){
-				if(bounds.contains(LevelStage.enemyControlledObjects.get(i).bounds)){
-					LevelStage.enemyControlledObjects.get(i).takeHitFor(1, this);
+		} else {
+			for (int i = 0; i < LevelStage.enemyControlledObjects.size; i++) {
+				if (bounds.contains(LevelStage.enemyControlledObjects.get(i).bounds)) {
+					LevelStage.enemyControlledObjects.get(i)
+							.takeHitFor(1, this);
 				}
 			}
 		}
-		
-			
+
 	}
 
 	@Override
 	public void interact(AbstractGameObject couple) {
 		if (teleported) {
-			ManipulatableObject obj = (ManipulatableObject) couple;
-			if (!this.isSameTeam(obj)) {
-				boolean newObj = isFirstInteraction(obj);
+			if (couple instanceof ManipulatableObject) {
+				ManipulatableObject obj = (ManipulatableObject) couple;
+				if (!this.isSameTeam(obj)) {
+					boolean newObj = isFirstInteraction(obj);
 
-				if (newObj)
-					obj.takeHitFor(damage, this);
+					if (newObj)
+						obj.takeHitFor(damage, this);
+				}
 			}
 		}
 	}

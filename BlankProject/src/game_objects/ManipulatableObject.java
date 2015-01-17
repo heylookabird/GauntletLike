@@ -88,7 +88,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		rightJoyStick = new Vector2();
 		baseMovement = true;
-		isPlayerObject = true;
+		//isPlayerObject = true;
 		accelerationPerSecond = new Vector2(10, 10);
 		currentFrameDimension = new Vector2();
 
@@ -118,6 +118,13 @@ public class ManipulatableObject extends AbstractGameObject {
 		keyLeft = left;
 		keyRight = right;
 		keyDown = down;
+	}
+	
+	public void togglePlayerObject(){
+		if(!isPlayerObject)
+			isPlayerObject = true;
+		else
+			isPlayerObject = false;
 	}
 
 	protected void removeThyself() {
@@ -395,7 +402,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
-
+	
+	@Override
 	protected boolean collision(float deltaX, float deltaY) {
 
 		// Set bounds to where this object will be after adding
@@ -474,7 +482,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 		// Collide with objects that have an effect on collision
-		for (AbstractGameObject interactable : LevelStage.interactables) {
+		for (int i = 0; i < LevelStage.interactables.size; i++) {
+			AbstractGameObject interactable = LevelStage.interactables.get(i);
 			if (bounds.overlaps(interactable.bounds)) {
 				interactable.interact(this);
 			}

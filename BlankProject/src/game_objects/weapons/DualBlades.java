@@ -42,9 +42,7 @@ public class DualBlades extends AbstractWeapon {
 	
 	@Override
 	public void ability1(DIRECTION direction) {
-		BasicMelee attack = new BasicMelee(parent, 4, 1, direction);
-		attack.bounds.width = 2;
-		attack.bounds.height = 2;
+		BasicMelee attack = new BasicMelee(parent, 4, 1, direction, 2);
 		
 		LevelStage.interactables.add(attack);
 	}

@@ -1,5 +1,7 @@
 package game_objects;
 
+import backend.LevelStage;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -121,6 +123,59 @@ public abstract class AbstractGameObject {
 	//TO BE OVERRIDEN IN SUBCLASSES
 	public void interact(AbstractGameObject couple) {}
 
+	
+	protected boolean collision(float deltaX, float deltaY) {
+
+		// Set bounds to where this object will be after adding
+		// the velocity of this frame to check and see if we are
+		// going to collide with anything
+		bounds.setPosition(position.x + deltaX, position.y + deltaY);
+
+		// Iterate through platforms
+		for (AbstractGameObject platform : LevelStage.backObjects) {
+
+			// If collision
+			if (bounds.overlaps(platform.bounds)) {
+				if (deltaX != 0) {
+
+					deltax = 0;
+				}
+				if (deltaY != 0) {
+
+					deltay = 0;
+				}
+				return true;
+			}
+		}
+	
+
+		// Iterate through collidable Objects
+		for (AbstractGameObject platform : LevelStage.solidObjects) {
+
+			// If collision
+			if (bounds.overlaps(platform.bounds)) {
+
+				if (deltaX != 0) {
+					deltax = 0;
+				}
+				if (deltaY != 0) {
+					deltay = 0;
+				}
+
+				return true;
+			}
+		}
+
+		// Collide with objects that have an effect on collision
+		for (AbstractGameObject interactable : LevelStage.interactables) {
+			if (bounds.overlaps(interactable.bounds)) {
+				interactable.interact(this);
+			}
+		}
+		return false;
+
+	}
+	
 	public void setAnimation(Animation animation) {
 		if (animation.getPlayMode() == Animation.NORMAL) {
 			looping = false;

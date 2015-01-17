@@ -2,7 +2,7 @@ package game_objects.abilities;
 
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
-
+import game_objects.Wall;
 import backend.LevelStage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -64,8 +64,16 @@ public abstract class AbstractAbility extends AbstractGameObject {
 			}
 		}
 		
-		position.x += velocity.x;
-		position.y += velocity.y;
+		deltax = velocity.x;
+		
+		if(!collision(deltax, 0)){
+			position.x += deltax;
+		}
+		
+		deltay = velocity.y;
+		if(!collision(0, deltay)){
+			position.y += deltay;
+		}
 		
 	}
 
@@ -75,7 +83,9 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	
 	@Override
 	public void interact(AbstractGameObject couple){
-
+		if(couple instanceof Wall){
+			lifeTimer = 0;
+		}
 	}
 	
 	public boolean isSameTeam(ManipulatableObject obj){
