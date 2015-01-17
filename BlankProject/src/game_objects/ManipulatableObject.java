@@ -739,8 +739,7 @@ public class ManipulatableObject extends AbstractGameObject {
 				
 			}
 	
-			state = STATE.STUNNED;
-			stunTimer = attack.stunTime;
+			stun(attack.stunTime);
 		}
 		
 		if(hp <= 0)
@@ -750,6 +749,11 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void attack() {
 		primaryWeapon.defaultAttackCheck(facing);
+	}
+
+	public void stun(float lifeTimer) {
+		state = STATE.STUNNED;
+		stunTimer = lifeTimer;
 	}
 	
 

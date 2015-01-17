@@ -1,10 +1,11 @@
 package backend;
 
+import game_objects.ManipulatableObject.DIRECTION;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 
 public class Constants {
 
@@ -39,6 +40,22 @@ public class Constants {
 			return true;
 		
 		return false;
+	}
+	
+	public static DIRECTION directionBetween(Vector2 parentPos, Vector2 targetPos){
+		double angle = Math.toDegrees(Math.atan2(parentPos.y - targetPos.y, parentPos.x - targetPos.x));
+		
+		if(angle >= 315 && angle < 45){
+			return DIRECTION.RIGHT;
+		}else if(angle >= 45 && angle < 135){
+			return DIRECTION.UP;
+		}else if(angle >= 135 && angle < 225){
+			return DIRECTION.UP;
+		}
+		
+		return DIRECTION.DOWN;
+		
+		
 	}
 
 }
