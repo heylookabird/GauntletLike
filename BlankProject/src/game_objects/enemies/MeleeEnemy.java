@@ -37,5 +37,6 @@ public class MeleeEnemy extends ManipulatableObject {
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}
+	
 
 }

@@ -97,7 +97,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		
 	}
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
-		System.out.println(rightJoyStick);
+
 	}
 	
 

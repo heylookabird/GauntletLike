@@ -82,6 +82,5 @@ public class Bow extends AbstractWeapon{
 		//Initialize Attack
 		defaultAttack = new Arrow(parent, arrowDamage, temp.x, temp.y);
 		LevelStage.interactables.add(defaultAttack);
-		System.out.println("aoetuaoetu Bow ");
 	}
 }

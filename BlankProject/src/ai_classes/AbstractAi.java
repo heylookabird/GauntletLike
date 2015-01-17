@@ -30,7 +30,10 @@ public class AbstractAi {
 		ManipulatableObject target = parent.enemyTeamObjects.first();
 		float closestDistance = range;
 		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
-			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = parent.enemyTeamObjects.get(i).position.x + parent.enemyTeamObjects.get(i).origin.x, enOriginY = parent.enemyTeamObjects.get(i).position.y + parent.enemyTeamObjects.get(i).origin.y;
+			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, 
+					enOriginX = parent.enemyTeamObjects.get(i).position.x + parent.enemyTeamObjects.get(i).origin.x,
+					enOriginY = parent.enemyTeamObjects.get(i).position.y + parent.enemyTeamObjects.get(i).origin.y;
+			
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < closestDistance){
 				target = parent.enemyTeamObjects.get(i);
@@ -153,12 +156,11 @@ public class AbstractAi {
 		currTime += deltaTime;
 		if(target == null){
 			target = findClosestEnemy();
-
+			System.out.println("oabstract ai");
 		}
 		
 		if(currTime > thinkingTime){
 			makeNextDecision();
-			System.out.println(currTime);
 
 		}
 		//updateHealthState();

@@ -235,7 +235,8 @@ public class LevelStage {
 			object.update(deltaTime);
 		}
 		//Render all of the enemy controlled objects
-		for(AbstractGameObject object: enemyControlledObjects){
+		for(int i = 0; i < enemyControlledObjects.size; i++){
+			ManipulatableObject object = enemyControlledObjects.get(i);
 			object.update(deltaTime);
 		}
 		for(int i = backObjects.size - 1; i >= 0; i--){

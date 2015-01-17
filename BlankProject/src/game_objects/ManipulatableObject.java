@@ -370,8 +370,10 @@ public class ManipulatableObject extends AbstractGameObject {
 			if(Ai != null){
 				Ai.update(deltaTime);
 			}
-			else
+			else{
 				handleAllPollingInput();
+				System.out.println(this.hp + "");
+			}
 			
 
 			if(primaryWeapon != null){
@@ -393,7 +395,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 	private void handleStunUpdate(float deltaTime){
 		stunTimer -= deltaTime;		
-		System.out.println(stunTimer);
 
 		if(stunTimer < 0){
 			state = STATE.NOT_MOVING;
