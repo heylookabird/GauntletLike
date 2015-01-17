@@ -9,7 +9,7 @@ import backend.LevelStage;
 import com.badlogic.gdx.math.Vector2;
 
 public class Teleport extends AbstractAbility {
-	float teleTime = .25f;
+	float teleTime = .05f;
 	boolean teleported = false;
 
 	public Teleport(ManipulatableObject parent, int damage, DIRECTION facing,
@@ -53,13 +53,14 @@ public class Teleport extends AbstractAbility {
 		this.teleTime = lifeTimer;
 		this.position.set(position);
 		this.knockBack = 10;
+		this.removesItself = false;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		if (lifeTimer < teleTime)
+		if(stateTime > teleTime)
 			teleport();
 	}
 
@@ -67,11 +68,17 @@ public class Teleport extends AbstractAbility {
 
 		if (LevelStage.isAreaFree(bounds)) {
 			parent.position.set(this.position);
+			teleported = true;
+			removeThyself();
+			postDeathEffects();
 		}else{
-			AOE entrance = new AOE(Assets.instance.planes.bluePlaneImgs.first(), parent, 1, parent.facing);
-			entrance.position.set(bounds.x, bounds.y);
-			LevelStage.interactables.add(entrance);
+			for(int i = 0; i < LevelStage.enemyControlledObjects.size; i++){
+				if(bounds.contains(LevelStage.enemyControlledObjects.get(i).bounds)){
+					LevelStage.enemyControlledObjects.get(i).takeHitFor(1, this);
+				}
+			}
 		}
+		
 			
 	}
 
@@ -84,13 +91,7 @@ public class Teleport extends AbstractAbility {
 
 				if (newObj)
 					obj.takeHitFor(damage, this);
-			} else {
-				boolean newObj = isFirstInteraction(obj);
-
-				if (newObj)
-					obj.takeHitFor(0, this);
 			}
-
 		}
 	}
 }

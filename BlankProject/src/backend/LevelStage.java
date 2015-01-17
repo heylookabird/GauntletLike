@@ -62,6 +62,13 @@ public class LevelStage {
 		loader.loadTestRoom(players);
 	}
 	
+	public Array<ManipulatableObject> getObjectsInBounds(Rectangle bounds){
+		Array<ManipulatableObject> objects = new Array<ManipulatableObject>();
+		
+		
+		return objects;
+	}
+	
 	public static boolean isAreaFree(Rectangle bounds){
 		for(AbstractGameObject obj: enemyControlledObjects){
 			if(bounds.overlaps(obj.bounds))
@@ -69,6 +76,11 @@ public class LevelStage {
 		}
 		
 		for(AbstractGameObject obj: playerControlledObjects){
+			if(bounds.overlaps(obj.bounds))
+				return false;
+		}
+		
+		for(AbstractGameObject obj: solidObjects){
 			if(bounds.overlaps(obj.bounds))
 				return false;
 		}
