@@ -26,6 +26,7 @@ public class DualBlades extends AbstractWeapon {
 		sword2 = Assets.instance.weapons.sword;
 		moveUp();
 		dualBlade = true;
+		name = "Dual Blades";
 		
 	}
 	

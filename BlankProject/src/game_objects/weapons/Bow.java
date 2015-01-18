@@ -12,6 +12,7 @@ public class Bow extends AbstractWeapon{
 	
 	private float arrowSpeed;
 	private int arrowDamage;
+	
 	public Bow(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
@@ -20,6 +21,7 @@ public class Bow extends AbstractWeapon{
 		moveUp();
 		arrowSpeed = .5f;
 		arrowDamage = 3;
+		this.name = "Bow";
 	}
 	
 	@Override

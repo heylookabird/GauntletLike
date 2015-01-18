@@ -29,8 +29,7 @@ public class LevelStage {
 	public static String header;
 	private static LevelLoader loader = new LevelLoader();
 	public static GameMap map = new GameMap();
-	private int levelNum;
-	private int waveNum;
+	public static int levelNum;
 	
 	
 	public LevelStage(){
@@ -41,6 +40,21 @@ public class LevelStage {
 		loader = new LevelLoader();
 		waveManager = new WaveManager("levels/level" + levelNum + "/" + "wave");
 		System.out.println("new wave");
+	}
+	
+	public static void reset(){
+		currentX = 0;
+		currentY = 0;
+		levelNum = 1;
+		
+		LevelStage.destroy();
+		System.out.println("reset");
+		
+		loader = new LevelLoader();
+		loader.loadTestRoom(false);
+		waveManager = new WaveManager("levels/level" + levelNum + "/" + "wave");
+		
+		World.world.cameraHelper = new CameraHelper();
 	}
 	
 	public static void setHeader(String head){

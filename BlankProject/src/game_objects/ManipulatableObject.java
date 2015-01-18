@@ -1,5 +1,6 @@
 package game_objects;
 
+import game.GameMain;
 import game_objects.abilities.AbstractAbility;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
@@ -7,6 +8,7 @@ import ai_classes.AbstractAi;
 import ai_classes.RusherAi;
 import backend.Assets;
 import backend.LevelStage;
+import backend.World;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -533,6 +535,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		batch.draw(health, position.x - .2f, position.y - 1, 1.4f * hpPercent,
 				.2f);
 	}
+	
+	public void equipWeapon(AbstractWeapon weapon){
+		this.primaryWeapon = weapon;
+	}
 
 	private void pollKeyInput() {
 		if (!isPlayerObject)
@@ -646,6 +652,11 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		case Keys.SPACE:
 
+			break;
+			
+		case Keys.P:
+			World.world.togglePause();
+			World.world.menu.setPlayer(this);
 			break;
 		}
 
@@ -770,6 +781,11 @@ public class ManipulatableObject extends AbstractGameObject {
 		stunTimer = lifeTimer;
 		
 		terminalVelocity.set(100, 100);
+	}
+
+	public String getCurrentWeaponName() {
+
+		return primaryWeapon.name;
 	}
 
 }

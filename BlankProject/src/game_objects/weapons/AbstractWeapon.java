@@ -27,6 +27,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected int ability2CoolDown;
 	protected int ability3CoolDown;
 	protected int ability4CoolDown;
+	public String name;
 
 	public AbstractWeapon(ManipulatableObject parent, float width,
 			float height, Vector2 positionOffset) {

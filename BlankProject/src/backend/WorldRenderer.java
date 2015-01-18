@@ -116,9 +116,11 @@ public class WorldRenderer {
 		batch.end();
 	}
 */
-	private void renderGUI() {
+	private void renderGUI(boolean paused) {
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
+		if(paused)
+			World.world.menu.render(batch, fontManagers.first().getFont());
 
 		otherRenders();
 
@@ -183,10 +185,9 @@ public class WorldRenderer {
 
 	}
 
-	public void render() {
-
-		renderWorld();
-		renderGUI();
+	public void render(boolean paused) {
+			renderWorld();
+			renderGUI(paused);
 	}
 
 
