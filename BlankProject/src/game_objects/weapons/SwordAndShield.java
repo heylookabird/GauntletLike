@@ -22,20 +22,20 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
-		defaultAttack = new BasicMelee(parent, 3, .5f, direction);
+		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 3, direction);
 		LevelStage.interactables.add(defaultAttack);
 
 	}
 	@Override
 	protected void defaultAttackInit() {
-		defaultAttack = new BasicMelee(parent, 3, .5f, parent.facing);
+		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 3, parent.facing);
 		LevelStage.interactables.add(defaultAttack);
 	}
 	
 	@Override
 	public void ability1(DIRECTION direction) {
 		System.out.println("sword and shield ability 1");
-		Charge charge = new Charge(parent, parent.position.x, parent.position.y, parent.dimension.x, parent.dimension.y);
+		Charge charge = new Charge(parent, parent.position.x - .15f, parent.position.y - .15f, parent.dimension.x + .3f, parent.dimension.y + .3f);
 		LevelStage.interactables.add(charge);
 		
 	}

@@ -91,7 +91,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		rightJoyStick = new Vector2();
 		walkingTerminalV = new Vector2(terminalVelocity);
-		System.out.println(walkingTerminalV);
 		baseMovement = true;
 		currentFrameDimension = new Vector2();
 
@@ -361,7 +360,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-		System.out.println(terminalVelocity + " " + walkingTerminalV);
 
 		if (!stunned) {
 			if (Ai != null) {

@@ -24,7 +24,7 @@ public class BasicMelee extends AbstractAbility {
 		initDebug();
 		lifeTimer = hitBoxTimer;
 		
-		knockbackSpeed = 9;
+		knockbackSpeed = 0;
 		knockbackTime = .3f;
 		
 		if (direction == DIRECTION.LEFT) {

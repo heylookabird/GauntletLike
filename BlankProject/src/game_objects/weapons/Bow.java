@@ -15,7 +15,7 @@ public class Bow extends AbstractWeapon{
 	public Bow(ManipulatableObject parent, float width, float height, Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
-		defaultAttackCooldown = .3f;
+		defaultAttackCooldown = 5f;
 		image = Assets.instance.weapons.sword;
 		moveUp();
 		arrowSpeed = .5f;

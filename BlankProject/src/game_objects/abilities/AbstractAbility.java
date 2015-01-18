@@ -1,5 +1,7 @@
 package game_objects.abilities;
 
+import java.util.Vector;
+
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.Wall;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public abstract class AbstractAbility extends AbstractGameObject {
 	
 	protected Array<ManipulatableObject> objectsAlreadyHit;
+	protected Array<Float> timesToBeDeleted;
 	protected int damage;
 	protected ManipulatableObject parent;
 	public float range;
@@ -21,19 +24,24 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
 	protected float lifeTimer; boolean removesItself = true;
-	 
+	protected Vector<Float> timers;
+	private Float deletionTime;
+
 
 	public AbstractAbility() {
 		super();
 		objectsAlreadyHit = new Array<ManipulatableObject>();
-
+		timers = new Vector<Float>();
+		deletionTime = 2f;
 	}
 
 	public AbstractAbility(ManipulatableObject parent, float x, float y, float width, float height) {
 		super(x, y, width, height);
 		this.parent = parent;
 		objectsAlreadyHit = new Array<ManipulatableObject>();
-		
+		timers = new Vector<Float>();
+		deletionTime = .2f;
+
 		//initDebug();
 		lifeTimer = 1;
 		stunTime = .3f;
@@ -50,6 +58,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		}
 		
 		objectsAlreadyHit.add(obj);
+		timers.add(deletionTime);
 		
 		
 		return true;
@@ -58,6 +67,8 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	public void update(float deltaTime) {
 
 		super.update(deltaTime);
+		
+		manageObjectsHit(deltaTime);
 		
 		//REMOVES ITSELF
 		if(removesItself){
@@ -79,6 +90,22 @@ public abstract class AbstractAbility extends AbstractGameObject {
 			position.y += deltay;
 		}
 		
+	}
+
+	private void manageObjectsHit(float deltaTime) {
+		for(int i = 0; i < timers.size(); i++){
+			Float temp = timers.get(i);
+			if (temp > 0) {
+				temp -= deltaTime;
+				timers.set(i, temp);
+
+			}else{
+				this.objectsAlreadyHit.removeIndex(i);
+				timers.remove(i);
+				i--;
+				
+			}
+		}
 	}
 
 	public void postDeathEffects() {

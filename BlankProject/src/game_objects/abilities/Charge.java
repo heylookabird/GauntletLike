@@ -49,6 +49,18 @@ public class Charge extends AbstractAbility {
 	@Override
 	public void interact(AbstractGameObject couple) {
 
+		if(couple instanceof ManipulatableObject){
+			ManipulatableObject obj = (ManipulatableObject) couple;
+			
+			if (!isSameTeam(obj)) {
+				boolean newObj = isFirstInteraction(obj);
+
+				if (newObj)
+					obj.takeHitFor(damage, this);
+				
+
+			}
+		}
 		super.interact(couple);
 	}
 

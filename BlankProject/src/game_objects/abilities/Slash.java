@@ -174,7 +174,6 @@ public class Slash extends AbstractAbility {
 
 				if (newObj)
 					obj.takeHitFor(damage, this);
-
 			}
 		}
 

@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector2;
 public class AOE extends AbstractAbility{
 	
 	private float endTime;
-	private Vector<Float> timers;
 	
 	public AOE(Animation animation, ManipulatableObject parent, int damage, DIRECTION direction) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
@@ -43,24 +42,10 @@ public class AOE extends AbstractAbility{
 	@Override
 	public void update(float deltaTime){
 		super.update(deltaTime);
-		updateTimers(deltaTime);
 		spread();
 		checkCollisions();
-		
-		
-		
 	}
 
-	private void updateTimers(float deltaTime) {
-		for(int i = 0; i < timers.size(); i++){
-			Float temp = timers.get(i);
-			if (temp > 0) {
-				temp -= deltaTime;
-			}else{
-				this.objectsAlreadyHit.removeIndex(i);
-			}
-		}
-	}
 
 
 	private void checkCollisions() {
