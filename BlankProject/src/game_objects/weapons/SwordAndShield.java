@@ -3,8 +3,8 @@ package game_objects.weapons;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.BasicMelee;
-import game_objects.abilities.AOE;
 import game_objects.abilities.Charge;
+import game_objects.abilities.ShieldThrow;
 import backend.Assets;
 import backend.LevelStage;
 
@@ -22,20 +22,27 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
-		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 3, direction);
+		defaultAttack = new BasicMelee(parent, 3, .5f, direction);
 		LevelStage.interactables.add(defaultAttack);
 
 	}
 	@Override
 	protected void defaultAttackInit() {
-		defaultAttack = new AOE(Assets.instance.weapons.sword, parent, 3, parent.facing);
+		defaultAttack = new BasicMelee(parent, 3,  .5f, parent.facing);
 		LevelStage.interactables.add(defaultAttack);
 	}
 	
 	@Override
 	public void ability1(DIRECTION direction) {
-		System.out.println("sword and shield ability 1");
-		Charge charge = new Charge(parent, parent.position.x - .15f, parent.position.y - .15f, parent.dimension.x + .3f, parent.dimension.y + .3f);
+		Charge charge = new Charge(parent, parent.position.x , parent.position.y,
+				parent.dimension.x, parent.dimension.y, .25f, .25f);
+		LevelStage.interactables.add(charge);
+		
+	}
+	@Override
+	public void ability2(DIRECTION direction) {
+		ShieldThrow charge = new ShieldThrow(parent, parent.position.x , parent.position.y,
+				parent.dimension.x, parent.dimension.y, .3f);
 		LevelStage.interactables.add(charge);
 		
 	}

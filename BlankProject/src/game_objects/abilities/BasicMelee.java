@@ -1,5 +1,6 @@
 package game_objects.abilities;
 
+import backend.Calc;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
@@ -24,9 +25,9 @@ public class BasicMelee extends AbstractAbility {
 		initDebug();
 		lifeTimer = hitBoxTimer;
 		
-		knockbackSpeed = 0;
-		knockbackTime = .3f;
-		
+		knockbackSpeed = 4;
+		knockbackTime = .2f;
+		deletionTime = hitBoxTimer;
 		if (direction == DIRECTION.LEFT) {
 			// position.set(parent.position.x - dimension.x, position.y);
 			// parent.moveLeft();
@@ -99,6 +100,7 @@ public class BasicMelee extends AbstractAbility {
 	public void update(float deltaTime) {
 		position.x += parent.deltax;
 		position.y += parent.deltay;
+		Calc.sin(Calc.atan2(position, getCenter()));
 		super.update(deltaTime);
 	}
 

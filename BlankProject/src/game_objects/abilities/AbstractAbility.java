@@ -5,6 +5,7 @@ import java.util.Vector;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.Wall;
+import backend.Assets;
 import backend.LevelStage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,7 +26,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
 	protected float lifeTimer; boolean removesItself = true;
 	protected Vector<Float> timers;
-	private Float deletionTime;
+	protected Float deletionTime;
 
 
 	public AbstractAbility() {
@@ -42,12 +43,13 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		timers = new Vector<Float>();
 		deletionTime = .2f;
 
-		//initDebug();
+		initDebug();
 		lifeTimer = 1;
 		stunTime = .3f;
 		knockbackSpeed = 6;
 		knockbackTime = .3f;
 		knockbackAngle = 90;
+		image = Assets.instance.weapons.sword;
 		
 	}
 	protected boolean isFirstInteraction(ManipulatableObject obj){

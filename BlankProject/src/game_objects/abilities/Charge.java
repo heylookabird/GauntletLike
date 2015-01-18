@@ -9,13 +9,19 @@ public class Charge extends AbstractAbility {
 
 	private int speed;
 	
-
+	private float offsetX, offsetY;
 	public Charge(ManipulatableObject parent, float x, float y, float width,
-			float height) {
+			float height, float offsetX, float offsetY) {
 		super(parent, x, y, width, height);
 		removesItself = true;
 		lifeTimer = .5f;
 		speed = 10;
+		damage = 6;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+		dimension.x += offsetX * 2;
+		dimension.y += offsetY * 2;
+		bounds.setSize(dimension.x, dimension.y);
 		
 		parent.stopMove();
 		terminalVelocity.set(parent.terminalVelocity);
@@ -35,7 +41,9 @@ public class Charge extends AbstractAbility {
 	}
 	@Override
 	public void update(float deltaTime) {
-		bounds.setPosition(parent.position);
+		position.set(parent.position.x - offsetX, parent.position.y - offsetY);
+		bounds.x = parent.position.x;
+		bounds.y = parent.position.y;
 		super.update(deltaTime);
 	}
 	@Override

@@ -734,6 +734,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 		this.velocity.set((float)(velocity * Math.cos(knockbackAngle * Math.PI / 180)), (float)(velocity * Math.sin(knockbackAngle * Math.PI  / 180)));
 		
+		
 	}
 	public void takeHitFor(int damage, AbstractAbility attack) {
 		this.hp -= damage;
