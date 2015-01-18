@@ -17,6 +17,7 @@ public class Assets implements AssetErrorListener {
 	public Planes planes;
 	public Mage mage;
 	public Weapons weapons;
+	public Bat bat;
 	private Assets(){
 		
 	}
@@ -30,6 +31,7 @@ public class Assets implements AssetErrorListener {
 		assetManager.load("images/mage.pack", TextureAtlas.class);
 		assetManager.load("images/bg.pack", TextureAtlas.class);
 		assetManager.load("images/sword.pack", TextureAtlas.class);
+		assetManager.load("images/Bat.pack", TextureAtlas.class);
 
 		assetManager.finishLoading();
 		
@@ -37,10 +39,11 @@ public class Assets implements AssetErrorListener {
 		TextureAtlas atlas = assetManager.get("images/mage.pack");
 		TextureAtlas atlas2 = assetManager.get("images/bg.pack");
 		TextureAtlas sword = assetManager.get("images/sword.pack");
-		
+		TextureAtlas bat = assetManager.get("images/Bat.pack");
 		background = new Background(atlas2);
 		mage = new Mage(atlas);
 		weapons = new Weapons(sword);
+		this.bat = new Bat(bat);
 		
 
 	}
@@ -105,6 +108,28 @@ public class Assets implements AssetErrorListener {
 			yellowPlane = new Animation(.1f, yellowPlaneImgs);
 			greenPlane = new Animation(.1f, greenPlaneImgs);
 		}
+	}
+	
+	public class Bat{
+		public final Array<AtlasRegion> walkingEastAni;
+		public final Array<AtlasRegion> walkingWestAni;
+		public final Array<AtlasRegion> walkingNorthAni;
+		public final Array<AtlasRegion> walkingSouthAni;
+		
+		public final Animation west, east, north, south;
+		
+		public Bat(TextureAtlas atlas){
+			walkingEastAni = atlas.findRegions("Bat_walking_east");
+			walkingWestAni = atlas.findRegions("Bat_walking_west");
+			walkingNorthAni = atlas.findRegions("Bat_walking_north");
+			walkingSouthAni = atlas.findRegions("Bat_walking_south");
+			
+			west = new Animation(.1f, walkingWestAni);
+			east = new Animation(.1f, walkingEastAni);
+			north = new Animation(.1f, walkingNorthAni);
+			south = new Animation(.1f, walkingSouthAni);
+		}
+		
 	}
 	
 	public class Mage{

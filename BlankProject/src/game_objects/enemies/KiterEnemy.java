@@ -14,15 +14,15 @@ public class KiterEnemy extends ManipulatableObject{
 			float height) {
 		super(controller, x, y, width, height);
 		
-		upImg = Assets.instance.mage.facingNorth;
-		downImg = Assets.instance.mage.facingSouth;
-		leftImg = Assets.instance.mage.facingWest;
-		rightImg = Assets.instance.mage.facingEast;
+		upImg = Assets.instance.bat.walkingNorthAni.random();
+		downImg = Assets.instance.bat.walkingSouthAni.random();
+		leftImg = Assets.instance.bat.walkingWestAni.random();
+		rightImg = Assets.instance.bat.walkingEastAni.random();
 		
-		walkingDown = Assets.instance.mage.south;
-		walkingUp = Assets.instance.mage.north;
-		walkingRight = Assets.instance.mage.east;
-		walkingLeft = Assets.instance.mage.west;
+		walkingDown = Assets.instance.bat.south;
+		walkingUp = Assets.instance.bat.north;
+		walkingRight = Assets.instance.bat.east;
+		walkingLeft = Assets.instance.bat.west;
 		
 		terminalVelocity.set(3f, 3f);
 		walkingTerminalV.set(terminalVelocity);
