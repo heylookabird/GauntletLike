@@ -19,6 +19,7 @@ public class SwordAndShield extends AbstractWeapon {
 		image = Assets.instance.weapons.sword;
 		ability1CoolDown = 3;
 		moveUp();
+		name = "Sword and Shield";
 	}
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {

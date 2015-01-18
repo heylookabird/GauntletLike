@@ -59,10 +59,7 @@ public class LevelLoader {
 
 			LevelStage.addPlayer(player);
 		}
-		
-		
-		this.makeTestBoundaries();
-		
+				
 		init("levels/level1/stage.png", false, false);
 	}
 
