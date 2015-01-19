@@ -12,6 +12,7 @@ public class RusherAi extends AbstractAi {
 	}
 
 	
+	@Override
 	public void moveToTarget(ManipulatableObject target, float distance){
 		align(target, true, distance);
 		
@@ -20,6 +21,7 @@ public class RusherAi extends AbstractAi {
 
 	}
 	
+	@Override
 	protected void makeNextDecision() {
 		Vector2 temp = target.getCenter().sub(parent.getCenter());
 		if(Math.abs(temp.x) + Math.abs(temp.y) < 10)

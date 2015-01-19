@@ -801,4 +801,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		return primaryWeapon.name;
 	}
 
+	public void heal(int heal) {
+		hp += heal;
+		hp = MathUtils.clamp(hp, 0, MAX_HEALTH);
+	}
+
 }

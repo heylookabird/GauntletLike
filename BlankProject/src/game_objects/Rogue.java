@@ -2,6 +2,7 @@ package game_objects;
 
 import game_objects.weapons.Bow;
 import game_objects.weapons.DualBlades;
+import game_objects.weapons.HealingStaff;
 import game_objects.weapons.SwordAndShield;
 import backend.Assets;
 
@@ -32,6 +33,8 @@ public class Rogue extends ManipulatableObject{
 		SwordAndShield joes = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
 		this.equipableWeapons.add(joes);
 		this.equipableWeapons.add(bow);
+		HealingStaff staff = new HealingStaff(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
+		equipableWeapons.add(staff);
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}

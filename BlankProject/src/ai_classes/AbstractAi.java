@@ -48,7 +48,8 @@ public class AbstractAi {
 	public ManipulatableObject findStrongestEnemy(){
 		ManipulatableObject target = parent.enemyTeamObjects.first();
 		float strongestHealth = 0;
-		for(ManipulatableObject enemy: parent.enemyTeamObjects){
+		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
+			ManipulatableObject enemy = parent.enemyTeamObjects.get(i);
 			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < range){
@@ -64,7 +65,8 @@ public class AbstractAi {
 	public ManipulatableObject findStrongestAlly(){
 		ManipulatableObject target = null;
 		float strongestHealth = 0;
-		for(ManipulatableObject enemy: parent.teamObjects){
+		for(int i = 0; i < parent.teamObjects.size; i++){
+			ManipulatableObject enemy = parent.teamObjects.get(i);
 			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < range){
@@ -80,7 +82,8 @@ public class AbstractAi {
 	public ManipulatableObject findWeakestEnemy(){
 		ManipulatableObject target = parent.enemyTeamObjects.first();
 		float lowestHealth = 10000000f;
-		for(ManipulatableObject enemy: parent.enemyTeamObjects){
+		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
+			ManipulatableObject enemy = parent.enemyTeamObjects.get(i);
 			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < range){
@@ -96,12 +99,14 @@ public class AbstractAi {
 	public ManipulatableObject findWeakestAlly(){
 		ManipulatableObject target = null;
 		float lowestHealth = 10000000f;
-		for(ManipulatableObject enemy: parent.teamObjects){
+		for(int i = 0; i < parent.teamObjects.size; i++){
+			ManipulatableObject enemy = parent.teamObjects.get(i);
 			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < range){
 				if(enemy.hp < lowestHealth)
 					target = enemy;
+					lowestHealth = enemy.hp;
 			}
 			
 		}
@@ -113,7 +118,8 @@ public class AbstractAi {
 		ManipulatableObject target = null;
 		float closestDistance = range;
 		//same code as enemy
-		for(ManipulatableObject enemy: parent.teamObjects){
+		for(int i = 0; i < parent.teamObjects.size; i++){
+			ManipulatableObject enemy = parent.teamObjects.get(i);
 			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
 			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
 			if(distance < closestDistance){
@@ -152,6 +158,7 @@ public class AbstractAi {
 			}
 		}
 	}
+	
 	public void update(float deltaTime){
 		currTime += deltaTime;
 		if(target == null){
