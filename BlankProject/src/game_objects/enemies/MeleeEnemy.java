@@ -29,6 +29,8 @@ public class MeleeEnemy extends ManipulatableObject {
 		walkingTerminalV.set(terminalVelocity);
 
 		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x / 2, dimension.y / 2));
+		this.equipableWeapons.add(primaryWeapon);
+
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 		activateAI(new RusherAi(this));

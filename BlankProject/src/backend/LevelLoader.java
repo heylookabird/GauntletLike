@@ -1,7 +1,6 @@
 package backend;
 
 import game_objects.GroundTile;
-import game_objects.Mage;
 import game_objects.Rogue;
 import game_objects.Wall;
 
@@ -50,7 +49,7 @@ public class LevelLoader {
 
 	public void loadTestRoom(boolean players) {
 		if(!players){
-			Mage player = new Mage(Controllers.getControllers().size > 0);
+			Rogue player = new Rogue(Controllers.getControllers().size > 0);
 			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
 			
 			

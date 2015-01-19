@@ -1,6 +1,8 @@
 package game_objects;
 
+import game_objects.weapons.Bow;
 import game_objects.weapons.DualBlades;
+import game_objects.weapons.SwordAndShield;
 import backend.Assets;
 
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +26,12 @@ public class Rogue extends ManipulatableObject{
 		
 
 		primaryWeapon = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		this.equipableWeapons.add(primaryWeapon);
+		Bow bow = new Bow(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
+		bow.setPlayerBow();
+		SwordAndShield joes = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
+		this.equipableWeapons.add(joes);
+		this.equipableWeapons.add(bow);
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}

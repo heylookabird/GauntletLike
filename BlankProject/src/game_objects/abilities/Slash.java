@@ -185,6 +185,7 @@ public class Slash extends AbstractAbility {
 		// clears, repositions, and resets lifetimer
 		if (doublehit) {
 			this.objectsAlreadyHit.clear();
+			this.timers.clear();
 			lifeTimer = .2f;
 			doublehit = false;
 

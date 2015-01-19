@@ -1,11 +1,9 @@
 package game_objects;
 
-import game.GameMain;
 import game_objects.abilities.AbstractAbility;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
-import ai_classes.RusherAi;
 import backend.Assets;
 import backend.LevelStage;
 import backend.World;
@@ -38,6 +36,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public Array<ManipulatableObject> teamObjects;
 	public Array<ManipulatableObject> enemyTeamObjects;
+	
+	public Array<AbstractWeapon> equipableWeapons;
+	int weaponEquippedIndex = 0;
 
 	// Animations and textures for movement
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
@@ -100,6 +101,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
 
+		equipableWeapons = new Array<AbstractWeapon>();
 		damage = 10;
 		movementSpeed = 10;
 		MAX_HEALTH = 20;
@@ -130,9 +132,20 @@ public class ManipulatableObject extends AbstractGameObject {
 		else
 			isPlayerObject = false;
 	}
+	
+	public void toggleWeapon(){
+		this.weaponEquippedIndex++;
+		if(weaponEquippedIndex >= this.equipableWeapons.size)
+			weaponEquippedIndex = 0;
+		
+		this.equipWeapon(this.equipableWeapons.get(weaponEquippedIndex));
+	}
 
 	protected void removeThyself() {
 		teamObjects.removeValue(this, true);
+		
+		if(isPlayerObject)
+			World.world.togglePause();
 
 	}
 

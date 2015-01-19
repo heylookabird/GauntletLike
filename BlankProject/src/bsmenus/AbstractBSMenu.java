@@ -65,7 +65,7 @@ public class AbstractBSMenu {
 	
 	public void handleMenuInput(int keycode){
 		if(keycode == Keys.A){
-			player.togglePlayerObject();
+			player.toggleWeapon();
 		}else if(keycode == Keys.R){
 			LevelStage.reset();
 		}else if(keycode == Keys.P){

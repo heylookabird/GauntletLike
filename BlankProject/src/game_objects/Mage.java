@@ -25,6 +25,8 @@ public class Mage extends ManipulatableObject {
 		
 
 		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		this.equipableWeapons.add(primaryWeapon);
+
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
 	}

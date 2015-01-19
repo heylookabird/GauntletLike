@@ -28,6 +28,7 @@ public class KiterEnemy extends ManipulatableObject{
 		walkingTerminalV.set(terminalVelocity);
 
 		primaryWeapon = new Bow(this, 1, .25f, new Vector2(dimension.x / 2, dimension.y / 2));
+		this.equipableWeapons.add(primaryWeapon);
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 		activateAI(new KiterAi(this));

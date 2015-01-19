@@ -12,22 +12,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class AbstractAbility extends AbstractGameObject {
-	
+
 	protected Array<ManipulatableObject> objectsAlreadyHit;
 	protected Array<Float> timesToBeDeleted;
 	protected int damage;
 	protected ManipulatableObject parent;
 	public float range;
-	
+
 	public float stunTime, knockbackSpeed, knockbackTime, knockbackAngle;
-	//booleans for controlling
+	// booleans for controlling
 	boolean projectile, melee;
-	
-	//HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer; boolean removesItself = true;
+
+	// HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
+	protected float lifeTimer;
+	boolean removesItself = true;
 	protected Vector<Float> timers;
 	protected Float deletionTime;
-
 
 	public AbstractAbility() {
 		super();
@@ -36,7 +36,8 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		deletionTime = 2f;
 	}
 
-	public AbstractAbility(ManipulatableObject parent, float x, float y, float width, float height) {
+	public AbstractAbility(ManipulatableObject parent, float x, float y,
+			float width, float height) {
 		super(x, y, width, height);
 		this.parent = parent;
 		objectsAlreadyHit = new Array<ManipulatableObject>();
@@ -50,82 +51,82 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		knockbackTime = .3f;
 		knockbackAngle = 90;
 		image = Assets.instance.weapons.sword;
-		
+
 	}
-	protected boolean isFirstInteraction(ManipulatableObject obj){
-		
-		for(ManipulatableObject object : objectsAlreadyHit){
-			if(object == obj)
+
+	protected boolean isFirstInteraction(ManipulatableObject obj) {
+
+		for (ManipulatableObject object : objectsAlreadyHit) {
+			if (object == obj)
 				return false;
 		}
-		
+
 		objectsAlreadyHit.add(obj);
 		timers.add(deletionTime);
-		
-		
+
 		return true;
 	}
+
 	@Override
 	public void update(float deltaTime) {
 
 		super.update(deltaTime);
-		
+
 		manageObjectsHit(deltaTime);
-		
-		//REMOVES ITSELF
-		if(removesItself){
+
+		// REMOVES ITSELF
+		if (removesItself) {
 			lifeTimer -= deltaTime;
-			if(lifeTimer < 0){
+			if (lifeTimer < 0) {
 				removeThyself();
 				postDeathEffects();
 			}
 		}
-		
+
 		deltax = velocity.x;
-		
-		if(!collision(deltax, 0)){
+
+		if (!collision(deltax, 0)) {
 			position.x += deltax;
 		}
-		
+
 		deltay = velocity.y;
-		if(!collision(0, deltay)){
+		if (!collision(0, deltay)) {
 			position.y += deltay;
 		}
-		
+
 	}
 
 	private void manageObjectsHit(float deltaTime) {
-		for(int i = 0; i < timers.size(); i++){
+		for (int i = 0; i < timers.size(); i++) {
 			Float temp = timers.get(i);
 			if (temp > 0) {
 				temp -= deltaTime;
 				timers.set(i, temp);
 
-			}else{
+			} else {
 				this.objectsAlreadyHit.removeIndex(i);
 				timers.remove(i);
 				i--;
-				
 			}
 		}
 	}
 
 	public void postDeathEffects() {
-		
+
 	}
-	
+
 	@Override
-	public void interact(AbstractGameObject couple){
-		if(couple instanceof Wall){
+	public void interact(AbstractGameObject couple) {
+		if (couple instanceof Wall) {
 			lifeTimer = 0;
 		}
 	}
-	
-	public boolean isSameTeam(ManipulatableObject obj){
-		if(parent.teamObjects == obj.teamObjects){
+
+	public boolean isSameTeam(ManipulatableObject obj) {
+		if (parent.teamObjects == obj.teamObjects) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -133,10 +134,10 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		LevelStage.interactables.removeValue(this, true);
 	}
 
-@Override
-public void render(SpriteBatch batch) {
+	@Override
+	public void render(SpriteBatch batch) {
 
-	super.render(batch);
-}
+		super.render(batch);
+	}
 
 }

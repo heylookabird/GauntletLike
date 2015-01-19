@@ -24,6 +24,10 @@ public class Bow extends AbstractWeapon{
 		this.name = "Bow";
 	}
 	
+	public void setPlayerBow(){
+		this.defaultAttackCooldown = .4f;
+	}
+	
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
 		
