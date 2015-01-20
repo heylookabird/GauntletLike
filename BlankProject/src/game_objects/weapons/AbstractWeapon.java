@@ -173,7 +173,14 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
+		if(defaultAttackTimer < 0){
+			defaultAttackInit(rightJoyStick);
+			defaultAttackTimer = defaultAttackCooldown;
+		}
+	}
 
+	protected void defaultAttackInit(Vector2 rightJoyStick) {
+		
 	}
 
 }

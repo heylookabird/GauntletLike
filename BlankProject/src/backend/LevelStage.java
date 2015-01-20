@@ -48,6 +48,7 @@ public class LevelStage {
 		levelNum = 1;
 		
 		LevelStage.destroy();
+		InputManager.inputManager.controllableObjects.clear();
 		System.out.println("reset");
 		
 		loader = new LevelLoader();

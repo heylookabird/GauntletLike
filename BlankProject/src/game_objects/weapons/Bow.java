@@ -4,6 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Arrow;
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 
 import com.badlogic.gdx.math.Vector2;
@@ -88,5 +89,13 @@ public class Bow extends AbstractWeapon{
 		//Initialize Attack
 		defaultAttack = new Arrow(parent, arrowDamage, temp.x, temp.y);
 		LevelStage.interactables.add(defaultAttack);
+	}
+	
+	@Override
+	protected void defaultAttackInit(Vector2 rightJoyStick) {
+		float angle = Calc.atan2(rightJoyStick, new Vector2());
+		float speedX = Calc.cos(angle) * arrowSpeed;
+		float speedY = Calc.sin(angle) * arrowSpeed;
+		defaultAttack = new Arrow(parent, arrowDamage, speedX, speedY);
 	}
 }

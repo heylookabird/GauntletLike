@@ -1,6 +1,7 @@
 package bsmenus;
 
 import game_objects.ManipulatableObject;
+import Controllers.Xbox360;
 import backend.Constants;
 import backend.LevelStage;
 import backend.World;
@@ -31,7 +32,7 @@ public class AbstractBSMenu {
 		
 		currentWeapon = new StringInstructions("Current Weapon: ", Constants.bgViewportWidth/4, Constants.bgViewportHeight/4);
 		strings.add(new StringInstructions("Press A to toggle weapons", Constants.bgViewportWidth/4, Constants.bgViewportHeight * .75f));
-		strings.add(new StringInstructions("Press R to restart", Constants.bgViewportWidth/4, Constants.bgViewportHeight/2));
+		strings.add(new StringInstructions("Press R to restart, [back] on Xbox remote", Constants.bgViewportWidth/4, Constants.bgViewportHeight/2));
 		strings.add(currentWeapon);
 		
 	}
@@ -46,19 +47,7 @@ public class AbstractBSMenu {
 		this.player = player;
 	}
 	
-	public boolean handleKeyInput(int keycode){
-		switch(keycode){
-		case Keys.A:
-			player.togglePlayerObject();
-			break;
-			
-		case Keys.R:
-			LevelStage.reset();
-			break;
-		}
-		return false;
-	}
-	
+
 	public void updateString(){
 		currentWeapon.message = "Current Weapon: " + player.getCurrentWeaponName();
 	}
@@ -69,6 +58,16 @@ public class AbstractBSMenu {
 		}else if(keycode == Keys.R){
 			LevelStage.reset();
 		}else if(keycode == Keys.P){
+			World.world.togglePause();
+		}
+	}
+	
+	public void handleControllerMenuInput(int keycode){
+		if(keycode == Xbox360.BUTTON_A){
+			player.toggleWeapon();
+		}else if(keycode == Xbox360.BUTTON_BACK){
+			LevelStage.reset();
+		}else if(keycode == Xbox360.BUTTON_START){
 			World.world.togglePause();
 		}
 	}

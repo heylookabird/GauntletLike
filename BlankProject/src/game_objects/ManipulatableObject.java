@@ -590,8 +590,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	private void handleAllPollingInput() {
 
-		if (stunned)
-			return;
 		// Keyboard Input
 		if (!controller) {
 			pollKeyInput();
@@ -712,11 +710,24 @@ public class ManipulatableObject extends AbstractGameObject {
 		switch (buttonIndex) {
 
 		case Xbox360.BUTTON_A:
-
+			primaryWeapon.activateAbility1(facing);
 			break;
 
 		case Xbox360.BUTTON_B:
-
+			primaryWeapon.activateAbility2(facing);
+			break;
+			
+		case Xbox360.BUTTON_X:
+			primaryWeapon.activateAbility3(facing);
+			break;
+			
+		case Xbox360.BUTTON_Y:
+			primaryWeapon.activateAbility4(facing);
+			break;
+			
+		case Xbox360.BUTTON_START:
+			World.world.togglePause();
+			World.world.menu.setPlayer(this);
 			break;
 
 		}

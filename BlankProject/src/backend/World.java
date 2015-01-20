@@ -147,9 +147,11 @@ public class World {
 	}
 
 	public void controllerButtonDown(int controllerNumber, int buttonIndex) {
-
-		InputManager.inputManager.controllableObjects.get(controllerNumber)
-				.buttonDown(buttonIndex);
+		if(!paused){
+			InputManager.inputManager.controllableObjects.get(controllerNumber)
+					.buttonDown(buttonIndex);
+		}else
+			menu.handleControllerMenuInput(buttonIndex);
 
 	}
 

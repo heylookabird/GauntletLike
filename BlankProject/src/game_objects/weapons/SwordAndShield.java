@@ -48,6 +48,24 @@ public class SwordAndShield extends AbstractWeapon {
 		LevelStage.interactables.add(charge);
 		
 	}
+	
+
+	@Override
+	protected void defaultAttackInit(Vector2 rightJoyStick) {
+		boolean xAxis = Math.abs(rightJoyStick.x) > Math.abs(rightJoyStick.y);
+		
+		if(xAxis){
+			if(rightJoyStick.x < 0){
+				defaultAttackInit(DIRECTION.LEFT);
+			}else if(rightJoyStick.x > 0)
+				defaultAttackInit(DIRECTION.RIGHT);
+		}else{
+			if(rightJoyStick.y < 0)
+				defaultAttackInit(DIRECTION.UP);
+			else if(rightJoyStick.y > 0)
+				defaultAttackInit(DIRECTION.DOWN);
+		}
+	}
 
 	@Override
 	public void render(SpriteBatch batch) {
