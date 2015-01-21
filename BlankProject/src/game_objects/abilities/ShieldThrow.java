@@ -17,6 +17,7 @@ public class ShieldThrow extends AbstractAbility {
 		target = Calc.findClosestEnemy(this, parent.enemyTeamObjects);
 		damage = 1;
 		deletionTime = .03f;
+		priority = 2;
 	
 	}
 	@Override

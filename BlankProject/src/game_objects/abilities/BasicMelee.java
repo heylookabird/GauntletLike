@@ -60,6 +60,7 @@ public class BasicMelee extends AbstractAbility {
 		}
 		parent.stopMove();
 		parent.state = STATE.ATTACKING;
+		
 	}
 
 	public BasicMelee(ManipulatableObject parent, int damage,

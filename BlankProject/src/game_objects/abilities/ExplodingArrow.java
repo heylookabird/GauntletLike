@@ -10,6 +10,7 @@ public class ExplodingArrow extends Arrow {
 	public ExplodingArrow(ManipulatableObject parent, int damage,
 			float xVelocity, float yVelocity) {
 		super(parent, damage, xVelocity, yVelocity);
+		priority = 2;
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class ExplodingArrow extends Arrow {
 	@Override
 	public void removeThyself() {
 		super.removeThyself();
-		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 5,
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 1,
 				position.x, position.y);
 
 		LevelStage.interactables.add(deathAttack);

@@ -402,6 +402,10 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		moveX(deltaTime);
 		moveY(deltaTime);
+		
+		for(AbstractAbility passive: this.passiveAbilities){
+			passive.update(deltaTime);
+		}
 
 		primaryWeapon.setPosition();
 
@@ -834,6 +838,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
+		System.out.println("called");
 	}
 
 }

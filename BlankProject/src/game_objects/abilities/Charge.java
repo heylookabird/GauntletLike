@@ -3,7 +3,7 @@ package game_objects.abilities;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
-import game_objects.ManipulatableObject.STATE;
+import game_objects.abilities.effects.Apparition;
 
 public class Charge extends AbstractAbility {
 
@@ -37,6 +37,7 @@ public class Charge extends AbstractAbility {
 		}
 		parent.stun(lifeTimer);
 		parent.invulnerable = true;
+		priority = 3;
 
 	}
 	@Override
@@ -44,6 +45,10 @@ public class Charge extends AbstractAbility {
 		position.set(parent.position.x - offsetX, parent.position.y - offsetY);
 		bounds.x = parent.position.x;
 		bounds.y = parent.position.y;
+		
+		if(stateTime > .1f){
+			parent.addPassive(new Apparition(parent));
+		}
 		super.update(deltaTime);
 	}
 	@Override

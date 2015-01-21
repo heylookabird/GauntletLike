@@ -50,12 +50,5 @@ public class Arrow extends AbstractAbility {
 				lifeTimer = 0;
 			}
 		}
-
-		if (couple instanceof Arrow) {
-			if (!((AbstractAbility) couple).isSameTeam(parent)) {
-				lifeTimer = 0;
-				((Arrow) couple).lifeTimer = 0;
-			}
-		}
 	}
 }

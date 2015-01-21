@@ -108,7 +108,7 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability1(DIRECTION direction) {
-		Arrow attack = new ExplodingArrow(parent, 3, 0, 0);
+		Arrow attack = new ExplodingArrow(parent, 1, 0, 0);
 
 		// to shoot the arrow in correct spot
 		switch (direction) {

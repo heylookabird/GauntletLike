@@ -63,6 +63,8 @@ public class Slash extends AbstractAbility {
 			positionHit1();
 		} else
 			positionHit2();
+		
+		priority = 2;
 
 	}
 

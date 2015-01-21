@@ -48,8 +48,8 @@ public class Mine extends AbstractAbility {
 			if (stateTime > .10f) {
 				AOE deathAttack = new AOE(Assets.instance.effects.explosion,
 						parent, 5, position.x, position.y);
-			LevelStage.interactables.add(deathAttack);
-			removeThyself();
+				LevelStage.interactables.add(deathAttack);
+				removeThyself();
 			}
 		}
 

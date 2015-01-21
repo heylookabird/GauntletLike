@@ -90,7 +90,7 @@ protected boolean isFirstInteraction(ManipulatableObject obj){
 			
 				if(newObj){
 					temp.takeHitFor(damage, this);
-					
+					System.out.println("hit" + stateTime);
 				}
 			}
 		}

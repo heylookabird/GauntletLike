@@ -17,7 +17,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 
 	protected Array<ManipulatableObject> objectsAlreadyHit;
 	protected Array<Float> timesToBeDeleted;
-	protected int damage;
+	protected int damage, priority;
 	protected ManipulatableObject parent;
 	public float range;
 
@@ -53,6 +53,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		knockbackTime = .3f;
 		knockbackAngle = 90;
 		image = Assets.instance.weapons.sword;
+		priority = 1;
 
 	}
 	
@@ -143,6 +144,19 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	public void interact(AbstractGameObject couple) {
 		if (couple instanceof Wall) {
 			lifeTimer = 0;
+		}
+		
+		if (couple instanceof AbstractAbility) {
+			AbstractAbility ability = (AbstractAbility) couple;
+			if (!ability.isSameTeam(parent)) {
+				if(ability.priority > this.priority){
+					lifeTimer = 0;
+				}else if(ability.priority < priority){
+					ability.lifeTimer = 0;
+				}else{
+					lifeTimer = 0;
+				}
+			}
 		}
 	}
 
