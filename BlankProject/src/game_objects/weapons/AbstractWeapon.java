@@ -5,18 +5,15 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.AbstractAbility;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.math.Vector2;
-
-import game_objects.AbstractGameObject;
-import game_objects.ManipulatableObject;
 
 public abstract class AbstractWeapon extends AbstractGameObject {
 
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
-
+	
 	// protected Array<AbstractAbility> abilities;
 	protected float[] abilityCooldowns;
 
@@ -37,6 +34,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
 		abilityCooldowns = new float[4];
+		
 	}
 
 	private boolean checkAttack(int index) {

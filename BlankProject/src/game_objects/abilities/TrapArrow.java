@@ -1,15 +1,36 @@
 package game_objects.abilities;
 
-import backend.Assets;
-import backend.LevelStage;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import backend.Assets;
+import backend.LevelStage;
 
-public class ExplodingArrow extends Arrow {
-
-	public ExplodingArrow(ManipulatableObject parent, int damage,
-			float xVelocity, float yVelocity) {
+public class TrapArrow extends Arrow {
+	public TrapArrow(ManipulatableObject parent, int damage, float xVelocity,
+			float yVelocity) {
 		super(parent, damage, xVelocity, yVelocity);
+		System.out.println("Initialized");
+	}
+
+	@Override
+	public void postDeathEffects() {
+		super.postDeathEffects();
+		parent.addPassive(this);
+	}
+	
+	public void activate(){
+		
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 3,
+				position.x, position.y);
+
+		LevelStage.interactables.add(deathAttack);
+		
+		
+		if(!this.attackFinished){
+			removeThyself();
+		}else
+			parent.removePassive(this);
+
 	}
 
 	@Override
@@ -30,15 +51,6 @@ public class ExplodingArrow extends Arrow {
 				((Arrow) couple).lifeTimer = 0;
 			}
 		}
-	}
-
-	@Override
-	public void removeThyself() {
-		super.removeThyself();
-		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 5,
-				position.x, position.y);
-
-		LevelStage.interactables.add(deathAttack);
-	}
+		}
 
 }

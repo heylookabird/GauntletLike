@@ -31,6 +31,9 @@ public class ManipulatableObject extends AbstractGameObject {
 											// direction you're moving
 	int keyUp, keyLeft, keyRight, keyDown;
 	private boolean isPlayerObject;
+	
+	protected Array<AbstractAbility> passiveAbilities;
+
 
 	// Internal reference to which side this MO is on
 
@@ -108,6 +111,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		hp = MAX_HEALTH;
 		facing = DIRECTION.UP;
 		health = Assets.instance.mage.hp;
+		
+		passiveAbilities = new Array<AbstractAbility>();
+
 
 		stunTimer = 0;
 	}
@@ -378,9 +384,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-		if(isPlayerObject)
-			System.out.println(state + " " + stateTime);
-		
 		if (!stunned) {
 			if (Ai != null) {
 				Ai.update(deltaTime);
@@ -412,6 +415,10 @@ public class ManipulatableObject extends AbstractGameObject {
 			terminalVelocity.set(walkingTerminalV);
 		}
 
+	}
+	
+	public void addPassive(AbstractAbility ability){
+		passiveAbilities.add(ability);
 	}
 
 	// inefficient as fuck with so many conditions but it was buggy
@@ -542,6 +549,10 @@ public class ManipulatableObject extends AbstractGameObject {
 			secondaryWeapon.render(batch);
 
 		renderHp(batch);
+		
+		for(AbstractAbility ability: passiveAbilities){
+			ability.render(batch);
+		}
 
 		if (debug)
 			batch.draw(debugTex, bounds.x, bounds.y, bounds.width,
@@ -820,6 +831,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void heal(int heal) {
 		hp += heal;
 		hp = MathUtils.clamp(hp, 0, MAX_HEALTH);
+	}
+
+	public void removePassive(AbstractAbility ability) {
+		this.passiveAbilities.removeValue(ability, false);
 	}
 
 }

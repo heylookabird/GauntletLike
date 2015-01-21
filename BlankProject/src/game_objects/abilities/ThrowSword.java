@@ -25,9 +25,17 @@ public class ThrowSword extends AbstractAbility {
 	@Override
 	public void postDeathEffects() {
 		attackFinished = true;
-		LevelStage.uncollidableObjects.add(this);
+		parent.addPassive(this);
 		velocity.set(0, 0);
 		super.postDeathEffects();
+	}
+	
+	public boolean activate(){
+		if(attackFinished){
+			Teleport attack = new Teleport(parent, position, 1);
+			LevelStage.interactables.add(attack);
+			return true;
+		}else return false;
 	}
 
 	@Override

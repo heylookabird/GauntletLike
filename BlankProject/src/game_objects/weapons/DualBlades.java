@@ -63,21 +63,18 @@ public class DualBlades extends AbstractWeapon {
 		if (this.dualBlade) {
 
 			int arrowDamage = 2;
-			if (direction == DIRECTION.LEFT){
+			if (direction == DIRECTION.LEFT) {
 				secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0);
 				secondary.setKnockBackAngle(180);
-			}
-			else if (direction == DIRECTION.RIGHT){
+			} else if (direction == DIRECTION.RIGHT) {
 				secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0);
 				secondary.setKnockBackAngle(0);
 
-			}
-			else if (direction == DIRECTION.DOWN){
+			} else if (direction == DIRECTION.DOWN) {
 				secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed);
 				secondary.setKnockBackAngle(270);
 
-			}
-			else if (direction == DIRECTION.UP){
+			} else if (direction == DIRECTION.UP) {
 				secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed);
 				secondary.setKnockBackAngle(90);
 
@@ -87,16 +84,11 @@ public class DualBlades extends AbstractWeapon {
 
 			dualBlade = false;
 		} else {
-			Teleport attack = new Teleport(parent, secondary.position, 1) {
-				@Override
-				public void postDeathEffects() {
-					super.postDeathEffects();
-					ability1(parent.facing);
-				}
-			};
-			LevelStage.uncollidableObjects.removeValue(secondary, true);
-			LevelStage.interactables.add(attack);
-			dualBlade = true;
+			if (secondary.activate()) {
+				ability2(parent.facing);
+				parent.removePassive(secondary);
+				dualBlade = true;
+			}
 		}
 	}
 
@@ -108,34 +100,28 @@ public class DualBlades extends AbstractWeapon {
 			secondary = new ThrowSword(parent, 4, 0, 0);
 			LevelStage.interactables.add(secondary);
 		} else {
+			if (secondary.activate()) {
+				ability2(parent.facing);
+				parent.removePassive(secondary);
+				dualBlade = true;
+			}
 
-			Teleport attack = new Teleport(parent, secondary.position, 1) {
-				@Override
-				public void postDeathEffects() {
-					super.postDeathEffects();
-					ability2(parent.facing);
-				}
-			};
-
-			LevelStage.uncollidableObjects.removeValue(secondary, true);
-			LevelStage.interactables.add(attack);
-			dualBlade = true;
 		}
 	}
 
 	@Override
 	protected void defaultAttackInit(Vector2 rightJoyStick) {
 		boolean xAxis = Math.abs(rightJoyStick.x) > Math.abs(rightJoyStick.y);
-		
-		if(xAxis){
-			if(rightJoyStick.x < 0){
+
+		if (xAxis) {
+			if (rightJoyStick.x < 0) {
 				defaultAttackInit(DIRECTION.LEFT);
-			}else if(rightJoyStick.x > 0)
+			} else if (rightJoyStick.x > 0)
 				defaultAttackInit(DIRECTION.RIGHT);
-		}else{
-			if(rightJoyStick.y < 0)
+		} else {
+			if (rightJoyStick.y < 0)
 				defaultAttackInit(DIRECTION.UP);
-			else if(rightJoyStick.y > 0)
+			else if (rightJoyStick.y > 0)
 				defaultAttackInit(DIRECTION.DOWN);
 		}
 	}

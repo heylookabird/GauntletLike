@@ -6,7 +6,7 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 
 public class Arrow extends AbstractAbility{
-	private boolean attackFinished = false;
+	protected boolean attackFinished = false;
 	public Arrow(ManipulatableObject parent, int damage, float xVelocity, float yVelocity) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
@@ -31,6 +31,10 @@ public class Arrow extends AbstractAbility{
 	public void update(float deltaTime){
 		if(!attackFinished)
 			super.update(deltaTime);
+	}
+	
+	public boolean arrowStopped(){
+		return attackFinished;
 	}
 	
 	@Override
