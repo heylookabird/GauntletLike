@@ -4,13 +4,14 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Arrow;
 import game_objects.abilities.ExplodingArrow;
+import game_objects.abilities.MeatHook;
+import game_objects.abilities.ProxyArrow;
 import game_objects.abilities.TrapArrow;
 import backend.Assets;
 import backend.Calc;
 import backend.LevelStage;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 public class Bow extends AbstractWeapon {
 
@@ -169,11 +170,55 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability3(DIRECTION direction) {
+		Arrow attack = new ProxyArrow(parent, 3, 0, 0);
+		float speed = arrowSpeed/3f;
+		// to shoot the arrow in correct spot
+		switch (direction) {
 
+		case UP:
+			attack.velocity.set(0, speed);
+			break;
+
+		case DOWN:
+			attack.velocity.set(0, -speed);
+			break;
+
+		case RIGHT:
+			attack.velocity.set(speed, 0);
+			break;
+
+		case LEFT:
+			attack.velocity.set(-speed, 0);
+			break;
+		}
+
+		LevelStage.interactables.add(attack);
 	}
 
 	@Override
 	public void ability4(DIRECTION direction) {
+		Arrow attack = new MeatHook(parent, 3, 0, 0);
+		float speed = arrowSpeed/4f;
+		// to shoot the arrow in correct spot
+		switch (direction) {
 
+		case UP:
+			attack.velocity.set(0, speed);
+			break;
+
+		case DOWN:
+			attack.velocity.set(0, -speed);
+			break;
+
+		case RIGHT:
+			attack.velocity.set(speed, 0);
+			break;
+
+		case LEFT:
+			attack.velocity.set(-speed, 0);
+			break;
+		}
+
+		LevelStage.interactables.add(attack);
 	}
 }
