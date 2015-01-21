@@ -122,12 +122,16 @@ public class BasicMelee extends AbstractAbility {
 			if (!isSameTeam(obj)) {
 				boolean newObj = isFirstInteraction(obj);
 
-				if (newObj)
+				if (newObj){
 					obj.takeHitFor(damage, this);
+				} 
+					
+
+
 
 			}
-		}
 
+		}
 	}
 
 }

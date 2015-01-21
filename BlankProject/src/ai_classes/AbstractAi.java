@@ -163,7 +163,6 @@ public class AbstractAi {
 		currTime += deltaTime;
 		if(target == null){
 			target = findClosestEnemy();
-			System.out.println("oabstract ai");
 		}
 		
 		if(currTime > thinkingTime){

@@ -1,0 +1,75 @@
+
+Effects.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Explosion
+  rotate: false
+  xy: 1, 641
+  size: 370, 348
+  orig: 370, 348
+  offset: 0, 0
+  index: 10
+Explosion
+  rotate: false
+  xy: 1, 319
+  size: 326, 320
+  orig: 326, 320
+  offset: 0, 0
+  index: 9
+Explosion
+  rotate: false
+  xy: 373, 699
+  size: 306, 290
+  orig: 306, 290
+  offset: 0, 0
+  index: 8
+Explosion
+  rotate: false
+  xy: 1, 83
+  size: 256, 234
+  orig: 256, 234
+  offset: 0, 0
+  index: 6
+Explosion
+  rotate: false
+  xy: 1, 83
+  size: 256, 234
+  orig: 256, 234
+  offset: 0, 0
+  index: 7
+Explosion
+  rotate: false
+  xy: 681, 835
+  size: 160, 154
+  orig: 160, 154
+  offset: 0, 0
+  index: 5
+Explosion
+  rotate: false
+  xy: 681, 713
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: 1
+Explosion
+  rotate: false
+  xy: 843, 869
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: 4
+Explosion
+  rotate: false
+  xy: 1, 1
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: 2
+Explosion
+  rotate: false
+  xy: 373, 641
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: 3

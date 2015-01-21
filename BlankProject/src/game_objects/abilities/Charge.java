@@ -36,7 +36,7 @@ public class Charge extends AbstractAbility {
 			parent.velocity.x = speed;
 		}
 		parent.stun(lifeTimer);
-
+		parent.invulnerable = true;
 
 	}
 	@Override
@@ -50,6 +50,7 @@ public class Charge extends AbstractAbility {
 	public void postDeathEffects() {
 		parent.terminalVelocity.set(terminalVelocity);
 		parent.stopMove();
+		parent.invulnerable = false;
 		
 		super.postDeathEffects();
 	}
@@ -71,5 +72,6 @@ public class Charge extends AbstractAbility {
 		}
 		super.interact(couple);
 	}
+	
 
 }

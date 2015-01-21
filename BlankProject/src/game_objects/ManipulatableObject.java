@@ -66,6 +66,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	private int MAX_HEALTH;
 	
 	protected boolean stunned;
+	public boolean invulnerable;
 
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
@@ -455,7 +456,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 					deltay = 0;
 				}
-				return true;
 			}
 		}
 
@@ -473,7 +473,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 						deltay = 0;
 					}
-					return true;
 				}
 			}
 		}
@@ -491,7 +490,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 					deltay = 0;
 				}
-				return true;
 			}
 		}
 
@@ -508,7 +506,6 @@ public class ManipulatableObject extends AbstractGameObject {
 					deltay = 0;
 				}
 
-				return true;
 			}
 		}
 
@@ -788,8 +785,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 	}
 	public void takeHitFor(int damage, AbstractAbility attack) {
+		if(invulnerable)
+			return;
+		
 		this.hp -= damage;
-
 		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
 
 		if (attack != null) {
