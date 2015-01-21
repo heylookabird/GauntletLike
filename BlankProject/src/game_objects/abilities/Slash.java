@@ -56,6 +56,8 @@ public class Slash extends AbstractAbility {
 		this.doublehit = doublehit;
 
 		this.setImage(Assets.instance.weapons.sword);
+		
+		this.defaultKnockBackAngle(facing);
 
 		if (doublehit) {
 			positionHit1();

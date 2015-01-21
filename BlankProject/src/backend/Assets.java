@@ -17,6 +17,7 @@ public class Assets implements AssetErrorListener {
 	public Mage mage;
 	public Weapons weapons;
 	public Bat bat;
+	public Effects effects;
 	private Assets(){
 		
 	}
@@ -31,7 +32,7 @@ public class Assets implements AssetErrorListener {
 		assetManager.load("images/bg.pack", TextureAtlas.class);
 		assetManager.load("images/sword.pack", TextureAtlas.class);
 		assetManager.load("images/Bat.pack", TextureAtlas.class);
-
+		assetManager.load("images/Effects.pack", TextureAtlas.class);
 		assetManager.finishLoading();
 		
 		
@@ -39,10 +40,12 @@ public class Assets implements AssetErrorListener {
 		TextureAtlas atlas2 = assetManager.get("images/bg.pack");
 		TextureAtlas sword = assetManager.get("images/sword.pack");
 		TextureAtlas bat = assetManager.get("images/Bat.pack");
+		TextureAtlas effects = assetManager.get("images/Effects.pack");
 		background = new Background(atlas2);
 		mage = new Mage(atlas);
 		weapons = new Weapons(sword);
 		this.bat = new Bat(bat);
+		this.effects = new Effects(effects);
 		
 
 	}
@@ -69,6 +72,19 @@ public class Assets implements AssetErrorListener {
 	public void error(AssetDescriptor asset, Throwable throwable) {
 	//	throwable.getCause();
 		
+	}
+	
+	public class Effects{
+		public final Array<AtlasRegion> explosionImgs;
+		
+		public final Animation explosion;
+		
+		public Effects(TextureAtlas atlas){
+			explosionImgs = new Array<AtlasRegion> ();
+			explosionImgs.addAll(atlas.findRegions("Explosion"));
+			
+			explosion = new Animation(.1f, explosionImgs);
+		}
 	}
 	public class Background {
 		public final Array<AtlasRegion> walls;

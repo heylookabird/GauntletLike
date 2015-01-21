@@ -63,16 +63,25 @@ public class DualBlades extends AbstractWeapon {
 		if (this.dualBlade) {
 
 			int arrowDamage = 2;
-			if (direction == DIRECTION.LEFT)
+			if (direction == DIRECTION.LEFT){
 				secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0);
-
-			else if (direction == DIRECTION.RIGHT)
+				secondary.setKnockBackAngle(180);
+			}
+			else if (direction == DIRECTION.RIGHT){
 				secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0);
+				secondary.setKnockBackAngle(0);
 
-			else if (direction == DIRECTION.DOWN)
+			}
+			else if (direction == DIRECTION.DOWN){
 				secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed);
-			else if (direction == DIRECTION.UP)
+				secondary.setKnockBackAngle(270);
+
+			}
+			else if (direction == DIRECTION.UP){
 				secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed);
+				secondary.setKnockBackAngle(90);
+
+			}
 
 			LevelStage.interactables.add(secondary);
 

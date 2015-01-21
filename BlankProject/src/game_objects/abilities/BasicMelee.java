@@ -92,6 +92,8 @@ public class BasicMelee extends AbstractAbility {
 					position.y - dimension.y);
 
 		}
+		
+		this.defaultKnockBackAngle(direction);
 		parent.stopMove();
 		parent.state = STATE.ATTACKING;
 	}

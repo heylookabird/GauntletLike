@@ -182,11 +182,13 @@ public abstract class AbstractGameObject {
 		} else
 			looping = true;
 		this.animation = animation;
-		stateTime = 0;
+		//stateTime = 0;
 
 	}
 	//TO BE OVERRIDEN IN SUBCLASSES
-	public void animationComplete() {}
+	public void animationComplete() {
+	
+	}
 
 	public void setImage(TextureRegion image) {
 		this.image = image;

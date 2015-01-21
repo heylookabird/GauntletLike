@@ -1,10 +1,12 @@
 package game_objects.abilities;
 
-import java.util.Vector;
-
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.Wall;
+
+import java.util.Vector;
+
 import backend.Assets;
 import backend.LevelStage;
 
@@ -44,7 +46,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		timers = new Vector<Float>();
 		deletionTime = .2f;
 
-		initDebug();
+		//initDebug();
 		lifeTimer = 1;
 		stunTime = .3f;
 		knockbackSpeed = 6;
@@ -52,6 +54,28 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		knockbackAngle = 90;
 		image = Assets.instance.weapons.sword;
 
+	}
+	
+	public void setKnockBackAngle(float angle){
+		this.knockbackAngle = angle;
+	}
+	
+	public void defaultKnockBackAngle(DIRECTION direction){
+		if (direction == DIRECTION.LEFT){
+			setKnockBackAngle(180);
+		}
+		else if (direction == DIRECTION.RIGHT){
+			setKnockBackAngle(0);
+
+		}
+		else if (direction == DIRECTION.DOWN){
+			setKnockBackAngle(270);
+
+		}
+		else if (direction == DIRECTION.UP){
+			setKnockBackAngle(90);
+
+		}
 	}
 
 	protected boolean isFirstInteraction(ManipulatableObject obj) {

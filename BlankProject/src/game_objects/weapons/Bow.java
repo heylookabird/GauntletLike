@@ -3,6 +3,7 @@ package game_objects.weapons;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Arrow;
+import game_objects.abilities.ExplodingArrow;
 import backend.Assets;
 import backend.Calc;
 import backend.LevelStage;
@@ -97,5 +98,48 @@ public class Bow extends AbstractWeapon{
 		float speedX = Calc.cos(angle) * arrowSpeed;
 		float speedY = Calc.sin(angle) * arrowSpeed;
 		defaultAttack = new Arrow(parent, arrowDamage, speedX, speedY);
+	}
+	
+
+	@Override
+	public void ability1(DIRECTION direction) {
+		Arrow attack = new ExplodingArrow(parent, arrowDamage, 0, 0);
+		
+		//to shoot the arrow in correct spot
+		switch(direction){
+		
+		case UP:
+			attack.velocity.set(0, arrowSpeed);
+			break;
+			
+		case DOWN:
+			attack.velocity.set(0, -arrowSpeed);
+			break;
+		
+		case RIGHT:
+			attack.velocity.set(arrowSpeed, 0);
+			break;
+			
+		case LEFT:
+			attack.velocity.set(-arrowSpeed, 0);
+		}
+		
+		
+		LevelStage.interactables.add(attack);
+	}
+
+	@Override
+	public void ability2(DIRECTION direction) {
+		
+	}
+
+	@Override
+	public void ability3(DIRECTION direction) {
+
+	}
+
+	@Override
+	public void ability4(DIRECTION direction) {
+
 	}
 }

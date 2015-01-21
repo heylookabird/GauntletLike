@@ -1,6 +1,7 @@
 package game_objects.enemies;
 
 import game_objects.ManipulatableObject;
+import game_objects.abilities.AOE;
 import game_objects.weapons.Bow;
 import ai_classes.KiterAi;
 import backend.Assets;
@@ -36,5 +37,14 @@ public class KiterEnemy extends ManipulatableObject{
 		
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
+	}
+	
+	@Override
+	public void removeThyself(){
+		super.removeThyself();
+
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, this, 1);
+		
+		LevelStage.interactables.add(deathAttack);
 	}
 }

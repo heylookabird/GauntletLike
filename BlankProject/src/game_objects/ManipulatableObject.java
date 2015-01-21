@@ -142,10 +142,13 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	protected void removeThyself() {
-		teamObjects.removeValue(this, true);
+
 		
-		if(isPlayerObject)
+		if(isPlayerObject){
 			World.world.togglePause();
+			World.world.menu.setPlayer(this);
+		}else
+			teamObjects.removeValue(this, true);
 
 	}
 
@@ -375,7 +378,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-
+		if(isPlayerObject)
+			System.out.println(state + " " + stateTime);
+		
 		if (!stunned) {
 			if (Ai != null) {
 				Ai.update(deltaTime);
@@ -516,7 +521,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		// get correct image and draw the current proportions
 		if (state == STATE.MOVING) {
-			image = animation.getKeyFrame(stateTime, looping);
+			image = animation.getKeyFrame(stateTime, true);
 		} else {
 			image = currentDirImg;
 		}
