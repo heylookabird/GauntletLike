@@ -93,6 +93,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		if (checkAttack(3)) {
 			ability4(direction);
 			abilityCooldowns[3] = ability4CoolDown;
+
 	}
 	}
 

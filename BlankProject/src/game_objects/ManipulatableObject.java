@@ -638,6 +638,27 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
+	
+	public void activatePlayerAbility(int ability){
+		switch(ability){
+		case 1:
+			this.primaryWeapon.activateAbility1(facing);
+			break;
+			
+		case 2:
+			this.primaryWeapon.activateAbility2(facing);
+			break;
+			
+		case 3:
+			this.primaryWeapon.activateAbility3(facing);
+			break;
+			
+		case 4:
+			this.primaryWeapon.activateAbility4(facing);
+			break;
+		}
+		
+	}
 
 	public void actOnInputKeyDown(int keycode) {
 		if (stunned)

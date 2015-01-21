@@ -1,5 +1,6 @@
 package game_objects.abilities;
 
+import backend.Assets;
 import backend.Calc;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
@@ -18,6 +19,7 @@ public class ShieldThrow extends AbstractAbility {
 		damage = 1;
 		deletionTime = .03f;
 		priority = 2;
+		this.setImage(Assets.instance.effects.iceExplosionImgs.get(2));;
 	
 	}
 	@Override

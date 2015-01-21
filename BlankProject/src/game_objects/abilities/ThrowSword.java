@@ -7,9 +7,10 @@ import backend.LevelStage;
 
 public class ThrowSword extends AbstractAbility {
 	private boolean attackFinished = false;
+	private int entrance;
 
 	public ThrowSword(ManipulatableObject parent, int damage, float xVelocity,
-			float yVelocity) {
+			float yVelocity, int entranceAbility) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
 		removesItself = true;
@@ -20,6 +21,7 @@ public class ThrowSword extends AbstractAbility {
 		double angle = Math.atan2(velocity.y, velocity.x);
 		rotation = (float) Math.toDegrees(angle);
 		this.stunTime = .05f;
+		this.entrance = entranceAbility;
 	}
 
 	@Override
@@ -32,11 +34,12 @@ public class ThrowSword extends AbstractAbility {
 	
 	public boolean activate(){
 		if(attackFinished){
-			Teleport attack = new Teleport(parent, position, 1);
+			Teleport attack = new Teleport(parent, position, 1, entrance);
 			LevelStage.interactables.add(attack);
 			return true;
 		}else return false;
 	}
+	
 
 	@Override
 	public void update(float deltaTime) {

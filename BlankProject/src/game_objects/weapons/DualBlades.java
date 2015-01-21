@@ -56,6 +56,7 @@ public class DualBlades extends AbstractWeapon {
 			attack = new Slash(parent, direction, 3, false);
 
 		LevelStage.interactables.add(attack);
+
 	}
 
 	@Override
@@ -64,18 +65,18 @@ public class DualBlades extends AbstractWeapon {
 
 			int arrowDamage = 2;
 			if (direction == DIRECTION.LEFT) {
-				secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0);
+				secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0, 1);
 				secondary.setKnockBackAngle(180);
 			} else if (direction == DIRECTION.RIGHT) {
-				secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0);
+				secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0, 1);
 				secondary.setKnockBackAngle(0);
 
 			} else if (direction == DIRECTION.DOWN) {
-				secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed);
+				secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed, 1);
 				secondary.setKnockBackAngle(270);
 
 			} else if (direction == DIRECTION.UP) {
-				secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed);
+				secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed, 1);
 				secondary.setKnockBackAngle(90);
 
 			}
@@ -85,7 +86,6 @@ public class DualBlades extends AbstractWeapon {
 			dualBlade = false;
 		} else {
 			if (secondary.activate()) {
-				ability2(parent.facing);
 				parent.removePassive(secondary);
 				dualBlade = true;
 			}
@@ -97,16 +97,18 @@ public class DualBlades extends AbstractWeapon {
 		if (dualBlade) {
 
 			dualBlade = false;
-			secondary = new ThrowSword(parent, 4, 0, 0);
+			secondary = new ThrowSword(parent, 4, 0, 0, 2);
 			LevelStage.interactables.add(secondary);
 		} else {
 			if (secondary.activate()) {
-				ability2(parent.facing);
 				parent.removePassive(secondary);
 				dualBlade = true;
+
 			}
 
 		}
+		
+
 	}
 
 	@Override

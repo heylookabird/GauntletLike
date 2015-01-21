@@ -33,6 +33,7 @@ public class Assets implements AssetErrorListener {
 		assetManager.load("images/sword.pack", TextureAtlas.class);
 		assetManager.load("images/Bat.pack", TextureAtlas.class);
 		assetManager.load("images/Effects.pack", TextureAtlas.class);
+		assetManager.load("images/ice.pack", TextureAtlas.class);
 		assetManager.finishLoading();
 		
 		
@@ -76,13 +77,25 @@ public class Assets implements AssetErrorListener {
 	
 	public class Effects{
 		public final Array<AtlasRegion> explosionImgs;
+		public final Array<AtlasRegion> iceShardImgs;
+		public final Array<AtlasRegion> iceExplosionImgs;
 		
 		public final Animation explosion;
+		public final Animation iceShard;
+		public final Animation iceExplosion;
 		
 		public Effects(TextureAtlas atlas){
 			explosionImgs = new Array<AtlasRegion> ();
 			explosionImgs.addAll(atlas.findRegions("Explosion"));
 			
+			iceShardImgs = new Array<AtlasRegion>();
+			iceShardImgs.addAll(atlas.findRegions("iceberg"));
+			
+			iceExplosionImgs = new Array<AtlasRegion>();
+			iceExplosionImgs.addAll(atlas.findRegions("icespear"));
+			
+			iceShard = new Animation(.05f, iceShardImgs);
+			iceExplosion = new Animation(.2f, iceExplosionImgs);
 			explosion = new Animation(.1f, explosionImgs);
 		}
 	}

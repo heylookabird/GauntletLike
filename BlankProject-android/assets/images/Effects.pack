@@ -59,6 +59,13 @@ Explosion
   orig: 120, 120
   offset: 0, 0
   index: 4
+icespear
+  rotate: false
+  xy: 329, 499
+  size: 41, 140
+  orig: 41, 140
+  offset: 0, 0
+  index: 2
 Explosion
   rotate: false
   xy: 1, 1
@@ -66,6 +73,13 @@ Explosion
   orig: 80, 80
   offset: 0, 0
   index: 2
+icespear
+  rotate: false
+  xy: 259, 216
+  size: 54, 101
+  orig: 54, 101
+  offset: 0, 0
+  index: 3
 Explosion
   rotate: false
   xy: 373, 641
@@ -73,3 +87,38 @@ Explosion
   orig: 56, 56
   offset: 0, 0
   index: 3
+icespear
+  rotate: false
+  xy: 803, 744
+  size: 22, 89
+  orig: 22, 89
+  offset: 0, 0
+  index: 1
+iceberg
+  rotate: false
+  xy: 965, 933
+  size: 31, 56
+  orig: 31, 56
+  offset: 0, 0
+  index: 3
+iceberg
+  rotate: false
+  xy: 329, 460
+  size: 23, 37
+  orig: 23, 37
+  offset: 0, 0
+  index: 2
+iceberg
+  rotate: false
+  xy: 372, 602
+  size: 20, 37
+  orig: 20, 37
+  offset: 0, 0
+  index: 4
+iceberg
+  rotate: false
+  xy: 843, 849
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: 1

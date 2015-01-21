@@ -3,7 +3,6 @@ package game_objects.abilities;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
-import backend.Assets;
 import backend.LevelStage;
 
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Teleport extends AbstractAbility {
 	float teleTime = .05f;
 	boolean teleported = false;
+	int entranceAbility;
 
 	public Teleport(ManipulatableObject parent, int damage, DIRECTION facing,
 			float distance) {
@@ -55,13 +55,31 @@ public class Teleport extends AbstractAbility {
 		this.knockbackSpeed = 10;
 		this.removesItself = false;
 	}
+	
+	public Teleport(ManipulatableObject parent, Vector2 position, int damage, int abilityIndex) {
+		super(parent, 10, 10, 2, 2);
+		this.damage = damage;
+		lifeTimer = .4f;
+		this.damage = damage;
+		this.stunTime = .4f;
+		this.teleTime = lifeTimer;
+		this.position.set(position);
+		this.knockbackSpeed = 10;
+		this.removesItself = false;
+		this.entranceAbility = abilityIndex;
+	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
-		if (stateTime > teleTime)
+		if (stateTime > teleTime){
 			teleport();
+		}
+	}
+
+	private void doEntranceAbility(int index) {
+		parent.activatePlayerAbility(index);
 	}
 
 	private void teleport() {
@@ -71,6 +89,7 @@ public class Teleport extends AbstractAbility {
 			teleported = true;
 			removeThyself();
 			postDeathEffects();
+			doEntranceAbility(entranceAbility);
 		} else {
 			for (int i = 0; i < LevelStage.enemyControlledObjects.size; i++) {
 				if (bounds.contains(LevelStage.enemyControlledObjects.get(i).bounds)) {

@@ -1,5 +1,6 @@
 package game_objects.abilities;
 
+import backend.Assets;
 import backend.Calc;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
@@ -22,7 +23,9 @@ public class BasicMelee extends AbstractAbility {
 		this.damage = damage;
 		removesItself = true;
 		parent.stopMove();
-		initDebug();
+		//initDebug();
+		
+		this.setAnimation(Assets.instance.effects.iceExplosion);
 		lifeTimer = hitBoxTimer;
 		
 		knockbackSpeed = 4;
@@ -69,7 +72,9 @@ public class BasicMelee extends AbstractAbility {
 		this.damage = damage;
 		removesItself = true;
 		parent.stopMove();
-		initDebug();
+		//initDebug();
+		this.setAnimation(Assets.instance.effects.iceExplosion);
+
 		lifeTimer = hitBoxTimer;
 		if (direction == DIRECTION.LEFT) {
 			// position.set(parent.position.x - dimension.x, position.y);
