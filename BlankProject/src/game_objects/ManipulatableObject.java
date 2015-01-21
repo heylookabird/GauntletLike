@@ -67,7 +67,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	
 	protected boolean stunned;
 	public boolean invulnerable;
-
+	
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
 

@@ -4,6 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.BasicMelee;
 import game_objects.abilities.Charge;
+import game_objects.abilities.Counter;
 import game_objects.abilities.ShieldThrow;
 import backend.Assets;
 import backend.LevelStage;
@@ -33,23 +34,6 @@ public class SwordAndShield extends AbstractWeapon {
 		defaultAttack = new BasicMelee(parent, 3,  .5f, parent.facing);
 		LevelStage.interactables.add(defaultAttack);
 	}
-	
-	@Override
-	public void ability1(DIRECTION direction) {
-		Charge charge = new Charge(parent, parent.position.x , parent.position.y,
-				parent.dimension.x, parent.dimension.y, .25f, .25f);
-		LevelStage.interactables.add(charge);
-		
-	}
-	@Override
-	public void ability2(DIRECTION direction) {
-		ShieldThrow charge = new ShieldThrow(parent, parent.position.x , parent.position.y,
-				parent.dimension.x, parent.dimension.y, .3f);
-		LevelStage.interactables.add(charge);
-		
-	}
-	
-
 	@Override
 	protected void defaultAttackInit(Vector2 rightJoyStick) {
 		boolean xAxis = Math.abs(rightJoyStick.x) > Math.abs(rightJoyStick.y);
@@ -66,6 +50,34 @@ public class SwordAndShield extends AbstractWeapon {
 				defaultAttackInit(DIRECTION.DOWN);
 		}
 	}
+	
+	@Override
+	public void ability1(DIRECTION direction) {
+		Charge charge = new Charge(parent, parent.position.x , parent.position.y,
+				parent.dimension.x, parent.dimension.y, .25f, .25f);
+		LevelStage.interactables.add(charge);
+		
+	}
+	@Override
+	public void ability2(DIRECTION direction) {
+		ShieldThrow charge = new ShieldThrow(parent, parent.position.x , parent.position.y,
+				parent.dimension.x, parent.dimension.y, .3f);
+		LevelStage.interactables.add(charge);
+		
+	}
+	
+	@Override
+	public void ability3(DIRECTION direction) {
+		Counter counter = new Counter(parent, parent.position.x , parent.position.y,
+				parent.dimension.x, parent.dimension.y);
+		
+		LevelStage.interactables.add(counter);
+		
+	}
+	
+	
+
+	
 
 	@Override
 	public void render(SpriteBatch batch) {
