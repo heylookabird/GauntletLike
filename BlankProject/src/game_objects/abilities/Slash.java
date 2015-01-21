@@ -26,17 +26,23 @@ public class Slash extends AbstractAbility {
 
 		if (direction == DIRECTION.LEFT) {
 			position.set(parent.position.x, position.y);
+			this.rotation = 180;
 			// parent.moveLeft();
 		} else if (direction == DIRECTION.RIGHT) {
 			position.set(parent.position.x + dimension.x, position.y);
+
 			// parent.moveRight();
 
 		} else if (direction == DIRECTION.UP) {
 			position.set(parent.position.x, position.y + parent.dimension.y);
+			this.rotation = 90;
+
 			// parent.moveUp();
 
 		} else if (direction == DIRECTION.DOWN) {
 			position.set(parent.position.x, position.y - parent.dimension.y);
+			this.rotation = 270;
+
 			// parent.moveDown();
 
 		}
@@ -64,7 +70,27 @@ public class Slash extends AbstractAbility {
 		} else
 			positionHit2();
 		
+		fixRotation(facing);
 		priority = 2;
+
+	}
+	
+	private void fixRotation(DIRECTION facing){
+		if (facing == DIRECTION.LEFT) {
+			this.rotation = 180;
+			// parent.moveLeft();
+		} else if (facing == DIRECTION.RIGHT) {
+
+			// parent.moveRight();
+
+		} else if (facing == DIRECTION.UP) {
+			this.rotation = 90;
+
+			// parent.moveUp();
+
+		} else if (facing == DIRECTION.DOWN) {
+			this.rotation = 270;
+		}
 
 	}
 
@@ -83,12 +109,12 @@ public class Slash extends AbstractAbility {
 			break;
 
 		case LEFT:
-			position.set(parent.position.x, parent.position.y
+			position.set(parent.position.x - bounds.width, parent.position.y
 					+ parent.bounds.height);
 			break;
 
 		case DOWN:
-			position.set(parent.position.x - bounds.width, parent.position.y);
+			position.set(parent.position.x - bounds.width, parent.position.y - bounds.height);
 			break;
 		}
 	}
@@ -104,7 +130,7 @@ public class Slash extends AbstractAbility {
 
 		// position below to bring to left
 		case LEFT:
-			position.set(parent.position.x, parent.position.y - bounds.height);
+			position.set(parent.position.x - bounds.width, parent.position.y - bounds.height);
 			break;
 
 		// position above to bring to right
@@ -113,7 +139,7 @@ public class Slash extends AbstractAbility {
 			break;
 
 		case DOWN:
-			position.set(parent.position.x + bounds.width, parent.position.y);
+			position.set(parent.position.x + bounds.width, parent.position.y - bounds.height);
 			break;
 		}
 	}
