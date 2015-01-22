@@ -130,7 +130,7 @@ public abstract class AbstractGameObject {
 		// the velocity of this frame to check and see if we are
 		// going to collide with anything
 		bounds.setPosition(position.x + deltaX, position.y + deltaY);
-
+		boolean temp = false;
 		// Iterate through platforms
 		for (AbstractGameObject platform : LevelStage.backObjects) {
 
@@ -141,10 +141,10 @@ public abstract class AbstractGameObject {
 					deltax = 0;
 				}
 				if (deltaY != 0) {
-
+					
 					deltay = 0;
 				}
-				return true;
+				temp = true;
 			}
 		}
 	
@@ -161,8 +161,7 @@ public abstract class AbstractGameObject {
 				if (deltaY != 0) {
 					deltay = 0;
 				}
-
-				return true;
+				temp = true;
 			}
 		}
 
@@ -172,7 +171,7 @@ public abstract class AbstractGameObject {
 				interactable.interact(this);
 			}
 		}
-		return false;
+		return temp;
 
 	}
 	

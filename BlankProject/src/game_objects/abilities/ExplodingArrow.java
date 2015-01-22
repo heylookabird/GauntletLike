@@ -36,8 +36,8 @@ public class ExplodingArrow extends Arrow {
 	@Override
 	public void removeThyself() {
 		super.removeThyself();
-		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 1,
-				position.x, position.y);
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 1, .3f, .5f,
+				position.x, position.y, 1, 1, false);
 
 		LevelStage.interactables.add(deathAttack);
 	}

@@ -10,6 +10,7 @@ public class TrapArrow extends Arrow {
 			float yVelocity) {
 		super(parent, damage, xVelocity, yVelocity);
 		System.out.println("Initialized");
+		
 	}
 
 	@Override
@@ -20,8 +21,8 @@ public class TrapArrow extends Arrow {
 	
 	public void activate(){
 		
-		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 3,
-				position.x, position.y);
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 3, .2f, .4f,
+				position.x, position.y, 1, 1, false);
 
 		LevelStage.interactables.add(deathAttack);
 		

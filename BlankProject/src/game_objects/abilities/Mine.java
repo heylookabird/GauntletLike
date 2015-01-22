@@ -12,7 +12,7 @@ public class Mine extends AbstractAbility {
 		this.damage = damage;
 		this.setImage(Assets.instance.weapons.sword);
 
-		stunTime = .3f;
+		knockbackTime = .3f;
 
 		this.knockbackSpeed = 10;
 		this.removesItself = false;
@@ -21,7 +21,7 @@ public class Mine extends AbstractAbility {
 
 	public Mine(ManipulatableObject parent, int damage) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
-		stunTime = .3f;
+		knockbackTime = .3f;
 		this.removesItself = false;
 
 		knockbackSpeed = 10;
@@ -37,8 +37,8 @@ public class Mine extends AbstractAbility {
 			ManipulatableObject temp = (ManipulatableObject) couple;
 
 			if (!this.isSameTeam(temp)) {
-				AOE deathAttack = new AOE(Assets.instance.effects.explosion,
-						parent, 5, position.x, position.y);
+				AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 5, .2f, .4f,
+						position.x, position.y, 1, 1, false);
 
 				LevelStage.interactables.add(deathAttack);
 				removeThyself();
@@ -46,8 +46,9 @@ public class Mine extends AbstractAbility {
 		}
 		if (couple instanceof Arrow) {
 			if (stateTime > .10f) {
-				AOE deathAttack = new AOE(Assets.instance.effects.explosion,
-						parent, 5, position.x, position.y);
+				AOE deathAttack = new AOE(Assets.instance.effects.explosion, parent, 5, .2f, .4f,
+						position.x, position.y, 1, 1, false);
+				
 				LevelStage.interactables.add(deathAttack);
 				removeThyself();
 			}

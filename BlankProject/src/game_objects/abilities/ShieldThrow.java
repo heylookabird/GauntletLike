@@ -16,7 +16,7 @@ public class ShieldThrow extends AbstractAbility {
 		lifeTimer = time;
 		terminalVelocity.set(speed, speed);
 		target = Calc.findClosestEnemy(this, parent.enemyTeamObjects);
-		damage = 1;
+		damage = 3;
 		deletionTime = .03f;
 		priority = 2;
 		this.setImage(Assets.instance.effects.iceExplosionImgs.get(2));;

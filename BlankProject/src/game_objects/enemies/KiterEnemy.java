@@ -43,8 +43,9 @@ public class KiterEnemy extends ManipulatableObject{
 	public void removeThyself(){
 		super.removeThyself();
 
-		AOE deathAttack = new AOE(Assets.instance.effects.explosion, this, 1);
-		
-		LevelStage.interactables.add(deathAttack);
+		AOE deathAttack = new AOE(Assets.instance.effects.explosion, this, 0, 0, 0,
+				position.x, position.y, 1, 1, false);
+		System.out.println("ya");
+		LevelStage.uncollidableObjects.add(deathAttack);
 	}
 }

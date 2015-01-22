@@ -21,7 +21,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected ManipulatableObject parent;
 	public float range;
 
-	public float stunTime, knockbackSpeed, knockbackTime, knockbackAngle;
+	public float knockbackSpeed, knockbackTime, knockbackAngle;
 	// booleans for controlling
 	boolean projectile, melee;
 
@@ -48,7 +48,6 @@ public abstract class AbstractAbility extends AbstractGameObject {
 
 		//initDebug();
 		lifeTimer = 1;
-		stunTime = .3f;
 		knockbackSpeed = 6;
 		knockbackTime = .3f;
 		knockbackAngle = 90;
@@ -169,7 +168,10 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	}
 
 	protected void removeThyself() {
-		LevelStage.interactables.removeValue(this, true);
+		if(!LevelStage.interactables.removeValue(this, true)){
+			LevelStage.uncollidableObjects.removeValue(this, true);
+		}
+
 	}
 
 	@Override

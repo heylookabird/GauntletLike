@@ -13,27 +13,30 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AOE extends AbstractAbility{
 	
-	
+	private boolean hitAll;
 	public AOE(Animation animation, ManipulatableObject parent, int damage) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.animation = animation;
 		this.damage = damage;
 		this.lifeTimer = animation.animationDuration;
 		
-		stunTime = .3f;
+		knockbackTime = .3f;
 		timers = new Vector<Float>();
 		
 		this.knockbackSpeed = 10;
 	}
 	
-	public AOE(Animation animation, ManipulatableObject parent, int damage, float x, float y){
+	public AOE(Animation animation, ManipulatableObject parent, int damage, float knockbackTime, float deletionTime,
+			float x, float y, float width, float height, boolean hitAll){
 		super(parent, x, y, 1, 1);
+		this.hitAll = hitAll;
 		this.setAnimation(animation);
 		this.damage = damage;
 		this.lifeTimer = animation.animationDuration;
+		this.deletionTime = deletionTime;
 		
 		timers = new Vector<Float>();
-		stunTime = .3f;
+		this.knockbackTime = knockbackTime;
 		this.knockbackSpeed = 10;
 	}
 	
@@ -44,7 +47,7 @@ public class AOE extends AbstractAbility{
 		this.damage = damage;
 		
 		timers = new Vector<Float>();
-		stunTime = .3f;
+		knockbackTime = .3f;
 		this.knockbackSpeed = 10;
 	}
 	
@@ -62,35 +65,26 @@ public class AOE extends AbstractAbility{
 		
 	}
 
-@Override
-protected boolean isFirstInteraction(ManipulatableObject obj){
-		
-		for(ManipulatableObject object : objectsAlreadyHit){
-			if(object == obj)
-				return false;
-		}
-		
-		objectsAlreadyHit.add(obj);
-		timers.add(.3f);
-		
-		
-		return true;
-	}
 
 	
 	@Override
 	public void interact(AbstractGameObject couple) {
 		
-		
 		if(couple instanceof ManipulatableObject){
 			ManipulatableObject temp = (ManipulatableObject) couple;
-			
+			if(hitAll){
+				boolean newObj = isFirstInteraction(temp);
+				if(newObj){
+					temp.takeHitFor(damage, this);
+				}
+				return;
+			}
+
 			if(!this.isSameTeam(temp)){
 				boolean newObj = isFirstInteraction(temp);
 			
 				if(newObj){
 					temp.takeHitFor(damage, this);
-					System.out.println("hit" + stateTime);
 				}
 			}
 		}

@@ -19,7 +19,7 @@ public class SwordAndShield extends AbstractWeapon {
 		origin.set(0, dimension.y / 2);
 		image = Assets.instance.weapons.sword;
 		ability1CoolDown = 3;
-		ability2CoolDown = 4;
+		ability2CoolDown = 2;
 		moveUp();
 		name = "Sword and Shield";
 	}

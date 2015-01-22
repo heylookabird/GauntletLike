@@ -20,7 +20,7 @@ public class Teleport extends AbstractAbility {
 
 		lifeTimer = .3f;
 		this.damage = damage;
-		this.stunTime = .4f;
+		this.knockbackTime = .4f;
 
 		switch (facing) {
 
@@ -49,7 +49,7 @@ public class Teleport extends AbstractAbility {
 		this.damage = damage;
 		lifeTimer = .4f;
 		this.damage = damage;
-		this.stunTime = .4f;
+		this.knockbackTime = .4f;
 		this.teleTime = lifeTimer;
 		this.position.set(position);
 		this.knockbackSpeed = 10;
@@ -61,7 +61,7 @@ public class Teleport extends AbstractAbility {
 		this.damage = damage;
 		lifeTimer = .4f;
 		this.damage = damage;
-		this.stunTime = .4f;
+		this.knockbackTime = .4f;
 		this.teleTime = lifeTimer;
 		this.position.set(position);
 		this.knockbackSpeed = 10;

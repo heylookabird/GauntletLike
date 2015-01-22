@@ -802,6 +802,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 	public void takeKnockback(float velocity, float knockbackAngle, float knockbackTime){
 		System.out.println("Knocked back  by " + velocity * knockbackAngle + " units");
+		
+		if(knockbackTime <= 0)
+			return;
+		
 		state = STATE.KNOCKED;
 		stun(knockbackTime);
 		
@@ -844,7 +848,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		stunned = true;
 		stunTimer = lifeTimer;
 		
-		terminalVelocity.set(100, 100);
 	}
 
 	public String getCurrentWeaponName() {
@@ -859,7 +862,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
-		System.out.println("called");
 	}
 
 }
