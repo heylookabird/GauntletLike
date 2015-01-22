@@ -1,6 +1,7 @@
 package game_objects;
 
 import game_objects.abilities.AbstractAbility;
+import game_objects.abilities.effects.Effect;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
@@ -47,7 +48,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
 	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg,
 			health;
-	protected Vector2 walkingTerminalV;
+	public Vector2 walkingTerminalV;
 
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
@@ -844,7 +845,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		stunned = true;
 		stunTimer = lifeTimer;
 		
-		terminalVelocity.set(100, 100);
 	}
 
 	public String getCurrentWeaponName() {
@@ -859,7 +859,20 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
-		System.out.println("called");
+	}
+	
+	public boolean checkPassive(Effect effect){
+		boolean exists = false;
+		
+		for(int i = 0; i < passiveAbilities.size; i++){
+			if(passiveAbilities.get(i).getClass() == effect.getClass()){
+				exists = true;
+				
+				System.out.println("NOPE EFFECT EXISTS");
+			}
+		}
+		
+		return exists;
 	}
 
 }

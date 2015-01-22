@@ -35,7 +35,7 @@ public class MeleeEnemy extends ManipulatableObject {
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 		activateAI(new RusherAi(this));
-		hp = 5;
+		hp = 100;
 		
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);
@@ -48,6 +48,13 @@ public class MeleeEnemy extends ManipulatableObject {
 		AOE deathAttack = new AOE(Assets.instance.effects.explosion, this, 1);
 		
 		LevelStage.interactables.add(deathAttack);
+	}
+	
+	@Override
+	public void update(float deltaTime){
+		super.update(deltaTime);
+		
+		
 	}
 	
 

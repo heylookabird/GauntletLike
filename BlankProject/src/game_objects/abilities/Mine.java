@@ -12,7 +12,6 @@ public class Mine extends AbstractAbility {
 		this.damage = damage;
 		this.setImage(Assets.instance.weapons.sword);
 
-		stunTime = .3f;
 
 		this.knockbackSpeed = 10;
 		this.removesItself = false;
@@ -21,7 +20,6 @@ public class Mine extends AbstractAbility {
 
 	public Mine(ManipulatableObject parent, int damage) {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
-		stunTime = .3f;
 		this.removesItself = false;
 
 		knockbackSpeed = 10;

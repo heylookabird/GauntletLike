@@ -1,2 +1,8 @@
-/game_objects
-/backend
+/com/
+/game/
+/game_map_classes/
+/game_objects/
+/Controllers/
+/ai_classes/
+/backend/
+/bsmenus/

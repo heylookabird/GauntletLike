@@ -197,27 +197,11 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability4(DIRECTION direction) {
-		Arrow attack = new MeatHook(parent, 3, 0, 0);
 		float speed = arrowSpeed/4f;
+		Arrow attack = new MeatHook(parent, 3, direction, speed);
+
 		// to shoot the arrow in correct spot
-		switch (direction) {
-
-		case UP:
-			attack.velocity.set(0, speed);
-			break;
-
-		case DOWN:
-			attack.velocity.set(0, -speed);
-			break;
-
-		case RIGHT:
-			attack.velocity.set(speed, 0);
-			break;
-
-		case LEFT:
-			attack.velocity.set(-speed, 0);
-			break;
-		}
+		
 
 		LevelStage.interactables.add(attack);
 	}

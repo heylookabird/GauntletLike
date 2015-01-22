@@ -4,6 +4,8 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.Wall;
+import game_objects.abilities.effects.Cold;
+import game_objects.abilities.effects.Poison;
 
 import java.util.Vector;
 
@@ -21,7 +23,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected ManipulatableObject parent;
 	public float range;
 
-	public float stunTime, knockbackSpeed, knockbackTime, knockbackAngle;
+	public float knockbackSpeed, knockbackTime, knockbackAngle;
 	// booleans for controlling
 	boolean projectile, melee;
 
@@ -46,9 +48,8 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		timers = new Vector<Float>();
 		deletionTime = .2f;
 
-		//initDebug();
+		// initDebug();
 		lifeTimer = 1;
-		stunTime = .3f;
 		knockbackSpeed = 6;
 		knockbackTime = .3f;
 		knockbackAngle = 90;
@@ -56,24 +57,21 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		priority = 1;
 
 	}
-	
-	public void setKnockBackAngle(float angle){
+
+	public void setKnockBackAngle(float angle) {
 		this.knockbackAngle = angle;
 	}
-	
-	public void defaultKnockBackAngle(DIRECTION direction){
-		if (direction == DIRECTION.LEFT){
+
+	public void defaultKnockBackAngle(DIRECTION direction) {
+		if (direction == DIRECTION.LEFT) {
 			setKnockBackAngle(180);
-		}
-		else if (direction == DIRECTION.RIGHT){
+		} else if (direction == DIRECTION.RIGHT) {
 			setKnockBackAngle(0);
 
-		}
-		else if (direction == DIRECTION.DOWN){
+		} else if (direction == DIRECTION.DOWN) {
 			setKnockBackAngle(270);
 
-		}
-		else if (direction == DIRECTION.UP){
+		} else if (direction == DIRECTION.UP) {
 			setKnockBackAngle(90);
 
 		}
@@ -145,18 +143,34 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		if (couple instanceof Wall) {
 			lifeTimer = 0;
 		}
-		
+
 		if (couple instanceof AbstractAbility) {
 			AbstractAbility ability = (AbstractAbility) couple;
 			if (!ability.isSameTeam(parent)) {
-				if(ability.priority > this.priority){
+				if (ability.priority > this.priority) {
 					lifeTimer = 0;
-				}else if(ability.priority < priority){
+				} else if (ability.priority < priority) {
 					ability.lifeTimer = 0;
-				}else{
+				} else {
 					lifeTimer = 0;
 				}
 			}
+		}
+	}
+
+	public void cold(ManipulatableObject target, float rate, float time) {
+		Cold cold = new Cold(target, rate, time);
+
+		if (target.checkPassive(cold)) {
+			target.addPassive(cold);
+		}
+	}
+
+	public void poison(ManipulatableObject target, float rate, float time) {
+		Poison poison = new Poison(target, rate, time);
+
+		if (target.checkPassive(poison)) {
+			target.addPassive(poison);
 		}
 	}
 

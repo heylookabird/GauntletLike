@@ -20,9 +20,7 @@ public class AOE extends AbstractAbility{
 		this.damage = damage;
 		this.lifeTimer = animation.animationDuration;
 		
-		stunTime = .3f;
 		timers = new Vector<Float>();
-		
 		this.knockbackSpeed = 10;
 	}
 	
@@ -33,7 +31,6 @@ public class AOE extends AbstractAbility{
 		this.lifeTimer = animation.animationDuration;
 		
 		timers = new Vector<Float>();
-		stunTime = .3f;
 		this.knockbackSpeed = 10;
 	}
 	
@@ -44,7 +41,6 @@ public class AOE extends AbstractAbility{
 		this.damage = damage;
 		
 		timers = new Vector<Float>();
-		stunTime = .3f;
 		this.knockbackSpeed = 10;
 	}
 	

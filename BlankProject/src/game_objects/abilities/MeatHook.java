@@ -2,6 +2,7 @@ package game_objects.abilities;
 
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 import backend.Assets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -44,6 +45,37 @@ public class MeatHook extends Arrow {
 		this.knockbackSpeed = 0;
 		removesItself = false;
 
+	}
+
+	public MeatHook(ManipulatableObject parent, int damage,
+			DIRECTION direction, float speed) {
+		super(parent, damage, 0, 0);
+		
+		chains = new Array<ChainNode>();
+		chains.add(new ChainNode(position.x, position.y, 1, 1));
+		this.damage = 0;
+		this.lifeTimer = .9f;
+		this.knockbackSpeed = 0;
+		removesItself = false;
+		
+		switch (direction) {
+
+		case UP:
+			velocity.set(0, speed);
+			break;
+
+		case DOWN:
+			velocity.set(0, -speed);
+			break;
+
+		case RIGHT:
+			velocity.set(speed, 0);
+			break;
+
+		case LEFT:
+			velocity.set(-speed, 0);
+			break;
+		}
 	}
 
 	@Override
@@ -109,6 +141,7 @@ public class MeatHook extends Arrow {
 					hit = true;
 					grabbed = obj;
 					stateTime = 0;
+					poison(grabbed, 1f, 10);
 					// grabbed.stun(1f);
 				}
 			}

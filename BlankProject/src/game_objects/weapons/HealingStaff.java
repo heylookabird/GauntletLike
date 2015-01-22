@@ -4,6 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Heal;
 import game_objects.abilities.IceShard;
+import game_objects.abilities.MeatHook;
 import backend.Assets;
 import backend.LevelStage;
 
@@ -51,15 +52,15 @@ public class HealingStaff extends AbstractWeapon {
 
 	@Override
 	public void ability2(DIRECTION direction) {
-		System.out.println("Got here");
 
-		IceShard attack = new IceShard(parent, 2, parent.position.x, parent.position.y, 1, 0, parent.facing);
+		IceShard attack = new IceShard(parent, 0, parent.position.x, parent.position.y, 1, 0, parent.facing);
 		LevelStage.interactables.add(attack);
 	}
 
 	@Override
 	public void ability3(DIRECTION direction) {
-		//LevelStage.interactables.add(attack);
+		MeatHook attack = new MeatHook(parent, 0, direction, .125f);
+		LevelStage.interactables.add(attack);
 
 	}
 
