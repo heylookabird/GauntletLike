@@ -49,14 +49,18 @@ public class LevelLoader {
 
 	public void loadTestRoom(boolean players) {
 		if(!players){
-			Rogue player = new Rogue(Controllers.getControllers().size > 0);
-			player.position.set(Constants.viewportWidth / 2, Constants.viewportHeight /2);
-			
-			
-			player.setButtons(51, 29, 47, 32, 62);
-			
-
-			LevelStage.addPlayer(player);
+			int x = 0;
+			do{
+				Rogue player = new Rogue(Controllers.getControllers().size > 0);
+				player.position.set(Constants.viewportWidth / 2 + x * 2, Constants.viewportHeight /2);
+				
+				
+				player.setButtons(51, 29, 47, 32, 62);
+				
+	
+				LevelStage.addPlayer(player);
+				x++;
+			}while(x < Controllers.getControllers().size);
 		}
 				
 		init("levels/level1/stage.png", false, false);
