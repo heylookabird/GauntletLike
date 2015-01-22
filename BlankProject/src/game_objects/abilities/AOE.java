@@ -21,8 +21,8 @@ public class AOE extends AbstractAbility{
 		this.lifeTimer = animation.animationDuration;
 		
 		knockbackTime = .3f;
+
 		timers = new Vector<Float>();
-		
 		this.knockbackSpeed = 10;
 	}
 	

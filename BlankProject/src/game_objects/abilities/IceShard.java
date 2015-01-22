@@ -1,11 +1,13 @@
 package game_objects.abilities;
 
-import backend.Assets;
-import backend.LevelStage;
+import com.badlogic.gdx.math.Vector2;
+
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
-import game_objects.Wall;
 import game_objects.ManipulatableObject.DIRECTION;
+import game_objects.abilities.effects.Cold;
+import backend.Assets;
+import backend.LevelStage;
 
 public class IceShard extends AbstractAbility {
 	DIRECTION direction;
@@ -18,8 +20,10 @@ public class IceShard extends AbstractAbility {
 		this.setAnimation(Assets.instance.effects.iceShard);
 		this.direction = direction;
 		this.startingSize = startingSize;
-		this.lifeTimer = .1f;
+		this.lifeTimer = .2f;
 		currentSpike = spikeNum;
+		this.damage = damage;
+		this.priority = 2;
 	}
 	
 	//constructor with this initially and things will multiply from there
@@ -29,8 +33,10 @@ public class IceShard extends AbstractAbility {
 		this.setAnimation(Assets.instance.effects.explosion);
 		direction = parent.facing;
 		this.startingSize = startingSize;
-		this.lifeTimer = .1f;
+		this.lifeTimer = .2f;
 		currentSpike = 0;
+		this.damage = damage;
+		this.priority = 2;
 	}
 	
 	
@@ -66,6 +72,20 @@ public class IceShard extends AbstractAbility {
 	}
 	
 	@Override
+	public void update(float deltaTime){
+		super.update(deltaTime);
+		spread();
+		
+	}
+	
+	private void spread() {
+		dimension.x += .05f;
+		dimension.y += .05f;
+		bounds.width = dimension.x;
+		bounds.height = dimension.y;
+	}
+
+	@Override
 	public void interact(AbstractGameObject couple) {
 		super.interact(couple);
 		
@@ -73,6 +93,7 @@ public class IceShard extends AbstractAbility {
 			ManipulatableObject obj = (ManipulatableObject) couple;
 			if (!this.isSameTeam(obj)) {
 				obj.takeHitFor(damage, this);
+				cold(obj, .25f, .5f);
 			}
 		}
 	}

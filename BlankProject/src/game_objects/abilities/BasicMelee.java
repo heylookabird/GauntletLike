@@ -6,6 +6,7 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.ManipulatableObject.STATE;
+import game_objects.abilities.effects.Cold;
 
 public class BasicMelee extends AbstractAbility {
 

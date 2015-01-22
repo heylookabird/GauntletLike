@@ -1,6 +1,7 @@
 package game_objects;
 
 import game_objects.abilities.AbstractAbility;
+import game_objects.abilities.effects.Effect;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
@@ -47,7 +48,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	public Animation walkingLeft, walkingRight, walkingUp, walkingDown;
 	public TextureRegion leftImg, rightImg, upImg, downImg, currentDirImg,
 			health;
-	protected Vector2 walkingTerminalV;
+	public Vector2 walkingTerminalV;
 
 	protected AbstractWeapon primaryWeapon, secondaryWeapon;
 	public boolean twoHanded, primaryBehind;
@@ -59,8 +60,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	public DIRECTION facing;
 
 	// BASE STAT VARIABLES SPECIFIED IN SUBCLASS
-	public int hp, damage, movementSpeed, attackSpeed, resistance;
+	public int damage, movementSpeed, attackSpeed, resistance;
 
+	public float hp;
 	public int currentHp;// need this for Ai and health bar
 
 	private int MAX_HEALTH;
@@ -813,12 +815,11 @@ public class ManipulatableObject extends AbstractGameObject {
 		
 		
 	}
-	public void takeHitFor(int damage, AbstractAbility attack) {
+	public void takeHitFor(float damage, AbstractAbility attack) {
 		if(invulnerable)
 			return;
 		
 		this.hp -= damage;
-		System.out.println("DIS NIGGA JUST GOT HIT FOR " + damage + " DAMAGE ");
 
 		if (attack != null) {
 			
@@ -862,6 +863,21 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
+
+	}
+	
+	public boolean checkPassive(Effect effect){
+		boolean exists = false;
+		
+		for(int i = 0; i < passiveAbilities.size; i++){
+			if(passiveAbilities.get(i).getClass() == effect.getClass()){
+				exists = true;
+				
+				System.out.println("NOPE EFFECT EXISTS");
+			}
+		}
+		
+		return exists;
 	}
 
 }

@@ -51,5 +51,12 @@ public class MeleeEnemy extends ManipulatableObject {
 		LevelStage.interactables.add(deathAttack);
 	}
 	
+	@Override
+	public void update(float deltaTime){
+		super.update(deltaTime);
+		
+		
+	}
+	
 
 }
