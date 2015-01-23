@@ -1,6 +1,7 @@
 package game_objects;
 
 import game_objects.abilities.AbstractAbility;
+import game_objects.abilities.Taunt;
 import game_objects.abilities.effects.Effect;
 import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
@@ -878,6 +879,24 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 		
 		return exists;
+	}
+
+	public void setTarget(ManipulatableObject target) {
+		if(Ai != null){
+			Ai.taunt(target);
+			
+		}
+	}
+
+	public void setTarget(AbstractAbility taunt) {
+		if(Ai != null){
+			Ai.targetPosition(taunt.getCenter());
+		}
+	}
+
+	public void resetTarget() {
+		if(Ai != null)
+			Ai.target = null;
 	}
 
 }

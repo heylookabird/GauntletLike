@@ -47,7 +47,6 @@ public class MeleeEnemy extends ManipulatableObject {
 
 		AOE deathAttack = new AOE(Assets.instance.effects.explosion, this, 0, 0, 0,
 				position.x, position.y, 1, 1, false);
-		System.out.println("ya");
 		LevelStage.interactables.add(deathAttack);
 	}
 	

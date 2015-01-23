@@ -28,7 +28,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	boolean projectile, melee;
 
 	// HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	protected float lifeTimer;
+	public float lifeTimer;
 	boolean removesItself = true;
 	protected Vector<Float> timers;
 	protected Float deletionTime;
@@ -48,7 +48,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		timers = new Vector<Float>();
 		deletionTime = .2f;
 
-		// initDebug();
+		//initDebug();
 		lifeTimer = 1;
 		knockbackSpeed = 6;
 		knockbackTime = .3f;

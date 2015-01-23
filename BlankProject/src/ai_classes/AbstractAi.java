@@ -8,11 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AbstractAi {
 	public ManipulatableObject parent;
-	protected ManipulatableObject target;
+	public ManipulatableObject target;
 	//public Attack attack1, attack2;
 	public HEALTH_STATE healthstate;
 	protected AbstractAbility nextAbility;
 	public float range = 10, thinkingTime = .5f, currTime = 0;
+	private Vector2 targetSpot;
 	public enum HEALTH_STATE{
 		DANGER, LOW, MEDIUM, HIGH;
 	}
@@ -161,7 +162,10 @@ public class AbstractAi {
 	
 	public void update(float deltaTime){
 		currTime += deltaTime;
-		if(target == null){
+		if(targetSpot != null){
+			moveTowardsPosition();
+			return;
+		}else if(target == null){
 			target = findClosestEnemy();
 		}
 		
@@ -173,6 +177,26 @@ public class AbstractAi {
 	}
 	
 	
+
+	private void moveTowardsPosition() {
+		if(parent.position.x < targetSpot.x - 1){
+			parent.moveRight();
+		}else if(parent.position.x + parent.dimension.x > targetSpot.x + 1){
+			parent.moveLeft();
+		}else{
+			parent.stopMoveX();
+		}
+		
+		if(parent.position.y < targetSpot.y - 1){
+			parent.moveUp();
+		}else if(parent.position.y + parent.dimension.y > targetSpot.y + 1){
+			parent.moveDown();
+		}else{
+			parent.stopMoveY();
+		}
+		
+		
+	}
 
 	protected void makeNextDecision() {
 
@@ -194,6 +218,15 @@ public class AbstractAi {
 
 
 
+	}
+
+	public void taunt(ManipulatableObject target) {
+		this.target = target;
+		
+	}
+
+	public void targetPosition(Vector2 targetSpot) {
+		this.targetSpot = targetSpot;
 	}
 	
 }
