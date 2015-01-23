@@ -20,6 +20,7 @@ public class KiterAi extends AbstractAi {
 			align(target, true, distance);
 		}else if(!alignedY)
 			align(target, false, distance);
+		
 	}
 	
 	private void checkAlignment(ManipulatableObject target) {

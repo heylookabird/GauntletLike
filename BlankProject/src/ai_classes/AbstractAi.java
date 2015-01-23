@@ -3,7 +3,6 @@ package ai_classes;
 import game_objects.ManipulatableObject;
 import game_objects.abilities.AbstractAbility;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class AbstractAi {
@@ -29,15 +28,15 @@ public class AbstractAi {
 	
 	public ManipulatableObject findClosestEnemy(){
 		ManipulatableObject target = parent.enemyTeamObjects.first();
-		float closestDistance = range;
+		float closestDistance = 100;
 		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
-			float originX = parent.position.x + parent.origin.x, originY = parent.position.y + parent.origin.y, 
-					enOriginX = parent.enemyTeamObjects.get(i).position.x + parent.enemyTeamObjects.get(i).origin.x,
-					enOriginY = parent.enemyTeamObjects.get(i).position.y + parent.enemyTeamObjects.get(i).origin.y;
+			ManipulatableObject obj = parent.enemyTeamObjects.get(i);
 			
-			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
+			float distance = parent.getCenter().dst2(obj.getCenter());
+			
+			
 			if(distance < closestDistance){
-				target = parent.enemyTeamObjects.get(i);
+				target = obj;
 				closestDistance = distance;
 			}
 			
@@ -134,7 +133,6 @@ public class AbstractAi {
 	}
 
 	public void moveToTarget(ManipulatableObject target, float distance){
-		
 
 	}
 	
@@ -171,6 +169,8 @@ public class AbstractAi {
 		
 		if(currTime > thinkingTime){
 			makeNextDecision();
+			currTime = 0;
+			
 
 		}
 		//updateHealthState();
@@ -199,7 +199,7 @@ public class AbstractAi {
 	}
 
 	protected void makeNextDecision() {
-
+		target = findClosestEnemy();
 		currTime = 0;
 	}
 

@@ -33,7 +33,7 @@ public class KiterEnemy extends ManipulatableObject{
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 		activateAI(new KiterAi(this));
-		hp = 5;
+		hp = 7;
 		
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);

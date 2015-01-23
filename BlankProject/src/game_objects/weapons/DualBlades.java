@@ -26,6 +26,10 @@ public class DualBlades extends AbstractWeapon {
 		image = Assets.instance.weapons.sword;
 		sword2 = Assets.instance.weapons.sword;
 		moveUp();
+		ability1CoolDown = 3;
+		ability2CoolDown = 2;
+		ability3CoolDown = 5;
+		ability4CoolDown = 3;
 		dualBlade = true;
 		name = "Dual Blades";
 		this.shieldMax = 8 + parent.MAX_SHIELD_RATING;

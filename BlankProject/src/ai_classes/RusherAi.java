@@ -14,6 +14,7 @@ public class RusherAi extends AbstractAi {
 	
 	@Override
 	public void moveToTarget(ManipulatableObject target, float distance){
+		super.moveToTarget(target, distance);
 		align(target, true, distance);
 		
 		align(target, false, distance);

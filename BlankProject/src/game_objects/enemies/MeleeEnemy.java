@@ -35,7 +35,7 @@ public class MeleeEnemy extends ManipulatableObject {
 		
 		setTeam(LevelStage.enemyControlledObjects, LevelStage.playerControlledObjects);
 		activateAI(new RusherAi(this));
-		hp = 5;
+		hp = 10;
 		
 		this.currentDirImg = upImg;
 		this.setAnimation(walkingUp);

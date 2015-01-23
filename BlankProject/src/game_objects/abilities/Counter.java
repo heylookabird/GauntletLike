@@ -12,6 +12,8 @@ public class Counter extends AbstractAbility {
 		super(parent, x, y, width, height);
 		lifeTimer = 4;
 		parent.invulnerable = true;
+		parent.stopMove();
+
 		parent.stun(lifeTimer);
 
 	}

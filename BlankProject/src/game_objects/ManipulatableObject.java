@@ -157,8 +157,9 @@ public class ManipulatableObject extends AbstractGameObject {
 	protected void removeThyself() {
 
 		if (isPlayerObject) {
-			World.world.togglePause();
-			World.world.menu.setPlayer(this);
+			//World.world.togglePause();
+			//World.world.menu.setPlayer(this);
+			hp = this.MAX_HEALTH;
 		} else
 			teamObjects.removeValue(this, true);
 
