@@ -23,7 +23,7 @@ public class IceShard extends AbstractAbility {
 		this.lifeTimer = .2f;
 		currentSpike = spikeNum;
 		this.damage = damage;
-		this.priority = 2;
+		this.priority = 1;
 	}
 	
 	//constructor with this initially and things will multiply from there
@@ -36,7 +36,6 @@ public class IceShard extends AbstractAbility {
 		this.lifeTimer = .2f;
 		currentSpike = 0;
 		this.damage = damage;
-		this.priority = 2;
 	}
 	
 	
@@ -45,7 +44,7 @@ public class IceShard extends AbstractAbility {
 	public void postDeathEffects() {
 		currentSpike++;
 
-		if (currentSpike < maxSpikes) {
+		if (currentSpike < maxSpikes && !this.cancelled) {
 			IceShard attack = new IceShard(parent, damage, position.x,
 					position.y, startingSize, currentSpike, direction);
 
@@ -75,6 +74,7 @@ public class IceShard extends AbstractAbility {
 	public void update(float deltaTime){
 		super.update(deltaTime);
 		spread();
+		
 		
 	}
 	

@@ -10,6 +10,10 @@ public class Effect extends AbstractAbility{
 		parent.addPassive(this);
 	}
 	
+	public void update(float deltatime){
+		this.position.set(parent.position);
+	}
+	
 	@Override
 	public void removeThyself(){
 		parent.removePassive(this);

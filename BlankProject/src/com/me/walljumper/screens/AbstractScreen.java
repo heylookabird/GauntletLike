@@ -57,6 +57,10 @@ public abstract class AbstractScreen implements Screen{
 	public boolean handleKeyInput(int keycode) {
 		return false;
 	}
+	
+	public boolean handleKeyInputUp(int keycode){
+		return false;
+	}
 	public void changeScreen(AbstractScreen screen) {
 		((DirectedGame) Gdx.app.getApplicationListener()).setScreen(screen);
 

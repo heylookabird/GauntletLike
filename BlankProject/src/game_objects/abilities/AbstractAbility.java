@@ -22,6 +22,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	protected int damage, priority;
 	protected ManipulatableObject parent;
 	public float range;
+	protected boolean cancelled = false;
 
 	public float knockbackSpeed, knockbackTime, knockbackAngle;
 	// booleans for controlling
@@ -142,6 +143,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	public void interact(AbstractGameObject couple) {
 		if (couple instanceof Wall) {
 			lifeTimer = 0;
+			cancelled = true;
 		}
 
 		if (couple instanceof AbstractAbility) {
@@ -149,10 +151,13 @@ public abstract class AbstractAbility extends AbstractGameObject {
 			if (!ability.isSameTeam(parent)) {
 				if (ability.priority > this.priority) {
 					lifeTimer = 0;
+					cancelled = true;
 				} else if (ability.priority < priority) {
 					ability.lifeTimer = 0;
+					ability.cancelled = true;
 				} else {
 					lifeTimer = 0;
+					cancelled = true;
 				}
 			}
 		}

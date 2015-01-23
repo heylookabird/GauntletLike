@@ -28,6 +28,13 @@ public class DualBlades extends AbstractWeapon {
 		moveUp();
 		dualBlade = true;
 		name = "Dual Blades";
+		this.shieldMax = 8 + parent.MAX_SHIELD_RATING;
+		shield = shieldMax;
+		this.dodgeCooldown = .2f;
+		this.dodgeSpeed = 6;
+				
+		this.terminalVelocity.set(dodgeSpeed, dodgeSpeed);
+
 
 	}
 

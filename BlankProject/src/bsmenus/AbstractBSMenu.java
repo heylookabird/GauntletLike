@@ -71,4 +71,9 @@ public class AbstractBSMenu {
 			World.world.togglePause();
 		}
 	}
+
+	public void handleMenuInputUp(int keycode) {
+		// TODO Auto-generated method stub
+		
+	}
 }

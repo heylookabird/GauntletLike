@@ -1,5 +1,6 @@
 package game_objects.abilities.effects;
 
+import backend.Assets;
 import game_objects.ManipulatableObject;
 
 public class Poison extends Effect {
@@ -15,6 +16,7 @@ public class Poison extends Effect {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		parent.takeHitFor(rate, null);
+		
 		
 	}
 

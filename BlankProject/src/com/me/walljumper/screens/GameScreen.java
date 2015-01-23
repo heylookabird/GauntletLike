@@ -36,6 +36,12 @@ public class GameScreen extends AbstractScreen {
 		
 
 	}
+	
+	@Override
+	public boolean handleKeyInputUp(int keycode){
+		World.world.handleKeyInputUp(keycode);
+		return false;
+	}
 
 	@Override
 	public void handleDrag(int screenX, int screenY, int pointer) {
