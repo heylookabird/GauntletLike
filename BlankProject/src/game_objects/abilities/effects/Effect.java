@@ -7,11 +7,6 @@ public class Effect extends AbstractAbility{
 	
 	public Effect(ManipulatableObject parent){
 		super(parent, parent.position.x, parent.position.y, parent.bounds.width, parent.bounds.height);
-		parent.addPassive(this);
-	}
-	
-	public void update(float deltatime){
-		this.position.set(parent.position);
 	}
 	
 	@Override

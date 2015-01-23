@@ -408,12 +408,13 @@ public class ManipulatableObject extends AbstractGameObject {
 		moveX(deltaTime);
 		moveY(deltaTime);
 
-		for (AbstractAbility passive : this.passiveAbilities) {
+		for (int i = 0; i < passiveAbilities.size; i++) {
+			AbstractAbility passive = passiveAbilities.get(i);
 			passive.update(deltaTime);
+			
 		}
 
 		primaryWeapon.setPosition();
-		System.out.println("ManObj " + shielding);
 
 	}
 
@@ -430,6 +431,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void addPassive(AbstractAbility ability) {
 		passiveAbilities.add(ability);
+		System.out.println("ManObj added");
 	}
 
 	// inefficient as fuck with so many conditions but it was buggy
@@ -557,8 +559,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		renderHp(batch);
 
-		for (AbstractAbility ability : passiveAbilities) {
-			ability.render(batch);
+		for (int i = 0; i < passiveAbilities.size; i++) {
+			AbstractAbility passive = passiveAbilities.get(i);
+			passive.render(batch);
 		}
 
 		if (debug)
@@ -913,7 +916,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
-
+		System.out.println("ManObj remove");
 	}
 
 	public boolean checkPassive(Effect effect) {

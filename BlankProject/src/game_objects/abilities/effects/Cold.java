@@ -19,6 +19,7 @@ public class Cold extends Effect{
 	public void update(float deltaTime){
 		super.update(deltaTime);
 		
+		this.position.set(parent.position);
 		parent.terminalVelocity.set(speed, speed);
 
 

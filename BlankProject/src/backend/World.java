@@ -134,7 +134,6 @@ public class World {
 	}
 	
 	public boolean handleKeyInputUp(int keycode){
-		System.out.println("got here");
 		if (!paused) {
 			for (ManipulatableObject obj : LevelStage.playerControlledObjects) {
 				obj.actOnInputKeyUp(keycode);

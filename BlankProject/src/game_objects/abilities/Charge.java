@@ -48,6 +48,7 @@ public class Charge extends AbstractAbility {
 		
 		if(stateTime > .1f){
 			parent.addPassive(new Apparition(parent));
+			stateTime = 0;
 		}
 		super.update(deltaTime);
 	}

@@ -16,6 +16,8 @@ public class Poison extends Effect {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		parent.takeHitFor(rate, null);
+		position.set(parent.position);
+
 		
 		
 	}
