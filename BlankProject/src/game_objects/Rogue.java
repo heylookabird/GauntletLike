@@ -25,9 +25,11 @@ public class Rogue extends ManipulatableObject{
 		terminalVelocity.set(4, 4);
 		walkingTerminalV.set(terminalVelocity);
 		
+		
 
-		primaryWeapon = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
-		this.equipableWeapons.add(primaryWeapon);
+		DualBlades blades = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		this.equipableWeapons.add(blades);
+		this.equipWeapon(blades);
 		Bow bow = new Bow(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
 		bow.setPlayerBow();
 		SwordAndShield joes = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));

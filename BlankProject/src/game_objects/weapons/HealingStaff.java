@@ -53,7 +53,7 @@ public class HealingStaff extends AbstractWeapon {
 	@Override
 	public void ability2(DIRECTION direction) {
 
-		IceShard attack = new IceShard(parent, 0, parent.position.x, parent.position.y, 1, 0, parent.facing);
+		IceShard attack = new IceShard(parent, 1, parent.position.x, parent.position.y, 1, 0, parent.facing);
 		LevelStage.interactables.add(attack);
 	}
 

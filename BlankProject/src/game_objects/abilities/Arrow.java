@@ -33,6 +33,8 @@ public class Arrow extends AbstractAbility {
 	public void update(float deltaTime) {
 		if (!attackFinished)
 			super.update(deltaTime);
+		
+
 	}
 
 	public boolean arrowStopped() {

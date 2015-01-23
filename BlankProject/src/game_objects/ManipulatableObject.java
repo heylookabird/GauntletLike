@@ -6,6 +6,7 @@ import game_objects.weapons.AbstractWeapon;
 import Controllers.Xbox360;
 import ai_classes.AbstractAi;
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 import backend.World;
 
@@ -32,15 +33,14 @@ public class ManipulatableObject extends AbstractGameObject {
 											// direction you're moving
 	int keyUp, keyLeft, keyRight, keyDown;
 	private boolean isPlayerObject;
-	
-	protected Array<AbstractAbility> passiveAbilities;
 
+	protected Array<AbstractAbility> passiveAbilities;
 
 	// Internal reference to which side this MO is on
 
 	public Array<ManipulatableObject> teamObjects;
 	public Array<ManipulatableObject> enemyTeamObjects;
-	
+
 	public Array<AbstractWeapon> equipableWeapons;
 	int weaponEquippedIndex = 0;
 
@@ -66,10 +66,15 @@ public class ManipulatableObject extends AbstractGameObject {
 	public int currentHp;// need this for Ai and health bar
 
 	private int MAX_HEALTH;
-	
+
 	protected boolean stunned;
 	public boolean invulnerable;
-	
+	public boolean shielding = false;
+
+	public int MAX_SHIELD_RATING;
+
+	public float DODGE_RATING;
+
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
 
@@ -103,7 +108,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		baseMovement = true;
 		currentFrameDimension = new Vector2();
 
-		
 		teamObjects = LevelStage.playerControlledObjects;
 		enemyTeamObjects = LevelStage.enemyControlledObjects;
 
@@ -114,9 +118,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		hp = MAX_HEALTH;
 		facing = DIRECTION.UP;
 		health = Assets.instance.mage.hp;
-		
-		passiveAbilities = new Array<AbstractAbility>();
 
+		passiveAbilities = new Array<AbstractAbility>();
 
 		stunTimer = 0;
 	}
@@ -134,29 +137,28 @@ public class ManipulatableObject extends AbstractGameObject {
 		keyRight = right;
 		keyDown = down;
 	}
-	
-	public void togglePlayerObject(){
-		if(!isPlayerObject)
+
+	public void togglePlayerObject() {
+		if (!isPlayerObject)
 			isPlayerObject = true;
 		else
 			isPlayerObject = false;
 	}
-	
-	public void toggleWeapon(){
+
+	public void toggleWeapon() {
 		this.weaponEquippedIndex++;
-		if(weaponEquippedIndex >= this.equipableWeapons.size)
+		if (weaponEquippedIndex >= this.equipableWeapons.size)
 			weaponEquippedIndex = 0;
-		
+
 		this.equipWeapon(this.equipableWeapons.get(weaponEquippedIndex));
 	}
 
 	protected void removeThyself() {
 
-		
-		if(isPlayerObject){
+		if (isPlayerObject) {
 			World.world.togglePause();
 			World.world.menu.setPlayer(this);
-		}else
+		} else
 			teamObjects.removeValue(this, true);
 
 	}
@@ -386,7 +388,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		
+
 		if (!stunned) {
 			if (Ai != null) {
 				Ai.update(deltaTime);
@@ -404,12 +406,13 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		moveX(deltaTime);
 		moveY(deltaTime);
-		
-		for(AbstractAbility passive: this.passiveAbilities){
+
+		for (AbstractAbility passive : this.passiveAbilities) {
 			passive.update(deltaTime);
 		}
 
 		primaryWeapon.setPosition();
+		System.out.println("ManObj " + shielding);
 
 	}
 
@@ -423,8 +426,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
-	
-	public void addPassive(AbstractAbility ability){
+
+	public void addPassive(AbstractAbility ability) {
 		passiveAbilities.add(ability);
 	}
 
@@ -440,7 +443,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
-	
+
 	@Override
 	protected boolean collision(float deltaX, float deltaY) {
 
@@ -552,8 +555,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			secondaryWeapon.render(batch);
 
 		renderHp(batch);
-		
-		for(AbstractAbility ability: passiveAbilities){
+
+		for (AbstractAbility ability : passiveAbilities) {
 			ability.render(batch);
 		}
 
@@ -567,8 +570,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		batch.draw(health, position.x - .2f, position.y - 1, 1.4f * hpPercent,
 				.2f);
 	}
-	
-	public void equipWeapon(AbstractWeapon weapon){
+
+	public void equipWeapon(AbstractWeapon weapon) {
 		this.primaryWeapon = weapon;
 	}
 
@@ -605,6 +608,8 @@ public class ManipulatableObject extends AbstractGameObject {
 				stopMoveY();
 		}
 
+		// dodging = Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
+
 	}
 
 	private void handleAllPollingInput() {
@@ -640,26 +645,26 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
-	
-	public void activatePlayerAbility(int ability){
-		switch(ability){
+
+	public void activatePlayerAbility(int ability) {
+		switch (ability) {
 		case 1:
 			this.primaryWeapon.activateAbility1(facing);
 			break;
-			
+
 		case 2:
 			this.primaryWeapon.activateAbility2(facing);
 			break;
-			
+
 		case 3:
 			this.primaryWeapon.activateAbility3(facing);
 			break;
-			
+
 		case 4:
 			this.primaryWeapon.activateAbility4(facing);
 			break;
 		}
-		
+
 	}
 
 	public void actOnInputKeyDown(int keycode) {
@@ -701,10 +706,16 @@ public class ManipulatableObject extends AbstractGameObject {
 			primaryWeapon.activateAbility4(facing);
 			break;
 
-		case Keys.SPACE:
+		
+		  case Keys.SPACE: 
+			  shielding = true; 
+			  stun(100);
+			  stopMove();
+			  break;
+		/* 
+		 * case Keys.SHIFT_RIGHT: dodging = true; break;
+		 */
 
-			break;
-			
 		case Keys.P:
 			World.world.togglePause();
 			World.world.menu.setPlayer(this);
@@ -738,9 +749,13 @@ public class ManipulatableObject extends AbstractGameObject {
 
 			break;
 
-		case Keys.SPACE:
-
-			break;
+		 case Keys.SPACE: 
+			 shielding = false; 
+			 this.stunTimer = -1;
+			 break;
+		/* 
+		 * case Keys.SHIFT_RIGHT: dodging = false; break;
+		 */
 		}
 
 	}// End of actOnInput methods
@@ -756,19 +771,27 @@ public class ManipulatableObject extends AbstractGameObject {
 		case Xbox360.BUTTON_B:
 			primaryWeapon.activateAbility2(facing);
 			break;
-			
+
 		case Xbox360.BUTTON_X:
 			primaryWeapon.activateAbility3(facing);
 			break;
-			
+
 		case Xbox360.BUTTON_Y:
 			primaryWeapon.activateAbility4(facing);
 			break;
-			
+
 		case Xbox360.BUTTON_START:
 			World.world.togglePause();
 			World.world.menu.setPlayer(this);
 			break;
+
+		case Xbox360.BUTTON_RB:
+			shielding = true;
+			break;
+
+		/*
+		 * case Xbox360.BUTTON_LB: dodging = true; break;
+		 */
 
 		}
 	}
@@ -783,6 +806,14 @@ public class ManipulatableObject extends AbstractGameObject {
 		case Xbox360.BUTTON_B:
 
 			break;
+
+		case Xbox360.BUTTON_RB:
+			shielding = false;
+			break;
+
+		/*
+		 * case Xbox360.BUTTON_LB: dodging = false; break;
+		 */
 
 		}
 	}
@@ -802,45 +833,64 @@ public class ManipulatableObject extends AbstractGameObject {
 		bounds.setPosition(position);
 
 	}
-	public void takeKnockback(float velocity, float knockbackAngle, float knockbackTime){
-		System.out.println("Knocked back  by " + velocity * knockbackAngle + " units");
-		
-		if(knockbackTime <= 0)
+
+	public void takeKnockback(float velocity, float knockbackAngle,
+			float knockbackTime) {
+		System.out.println("Knocked back  by " + velocity * knockbackAngle
+				+ " units");
+
+		if (knockbackTime <= 0)
 			return;
-		
+
 		state = STATE.KNOCKED;
 		stun(knockbackTime);
-		
-		this.velocity.set((float)(velocity * Math.cos(knockbackAngle * Math.PI / 180)), (float)(velocity * Math.sin(knockbackAngle * Math.PI  / 180)));
-		
-		
+
+		this.velocity.set(
+				(float) (velocity * Math.cos(knockbackAngle * Math.PI / 180)),
+				(float) (velocity * Math.sin(knockbackAngle * Math.PI / 180)));
+
 	}
+
 	public void takeHitFor(float damage, AbstractAbility attack) {
-		if(invulnerable)
+		if (invulnerable)
 			return;
-		
+		if (shielding) {
+			this.shieldDamage(damage);
+			return;
+		}
+
 		this.hp -= damage;
 
 		if (attack != null) {
-			
-			takeKnockback(attack.knockbackSpeed, attack.knockbackAngle, attack.knockbackTime);
-			
-			/*	Vector2 attCenter = attack.getCenter();
-				Vector2 thisCenter = getCenter();
-				double angle = MathUtils.atan2(attCenter.y - thisCenter.y,
-						attCenter.x - thisCenter.x);
-				angle = Math.toDegrees(angle);
 
-				velocity.set((float) Math.cos(angle) * attack.knockBackSpeed,
-						(float) Math.sin(angle) * attack.knockBackSpeed);
-			
-*/
+			takeKnockback(attack.knockbackSpeed, attack.knockbackAngle,
+					attack.knockbackTime);
+
+			/*
+			 * Vector2 attCenter = attack.getCenter(); Vector2 thisCenter =
+			 * getCenter(); double angle = MathUtils.atan2(attCenter.y -
+			 * thisCenter.y, attCenter.x - thisCenter.x); angle =
+			 * Math.toDegrees(angle);
+			 * 
+			 * velocity.set((float) Math.cos(angle) * attack.knockBackSpeed,
+			 * (float) Math.sin(angle) * attack.knockBackSpeed);
+			 */
 		}
 
 		if (hp <= 0)
 			removeThyself();
 	}
-	
+
+	private void shieldDamage(float damage) {
+		primaryWeapon.shield -= damage;
+
+		if (primaryWeapon.shield < 0) {
+			this.stun(5);
+			System.out.println("ManObj shield break");
+			shielding = false;
+		}
+	}
+
 	public void attack() {
 		primaryWeapon.defaultAttackCheck(facing);
 	}
@@ -848,7 +898,6 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void stun(float lifeTimer) {
 		stunned = true;
 		stunTimer = lifeTimer;
-		
 	}
 
 	public String getCurrentWeaponName() {
@@ -865,18 +914,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		this.passiveAbilities.removeValue(ability, false);
 
 	}
-	
-	public boolean checkPassive(Effect effect){
+
+	public boolean checkPassive(Effect effect) {
 		boolean exists = false;
-		
-		for(int i = 0; i < passiveAbilities.size; i++){
-			if(passiveAbilities.get(i).getClass() == effect.getClass()){
+
+		for (int i = 0; i < passiveAbilities.size; i++) {
+			if (passiveAbilities.get(i).getClass() == effect.getClass()) {
 				exists = true;
-				
-				System.out.println("NOPE EFFECT EXISTS");
 			}
 		}
-		
+
 		return exists;
 	}
 

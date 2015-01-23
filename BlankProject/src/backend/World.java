@@ -132,6 +132,19 @@ public class World {
 
 		return false;
 	}
+	
+	public boolean handleKeyInputUp(int keycode){
+		System.out.println("got here");
+		if (!paused) {
+			for (ManipulatableObject obj : LevelStage.playerControlledObjects) {
+				obj.actOnInputKeyUp(keycode);
+			}
+		}else{
+			menu.handleMenuInput(keycode);
+		}
+		
+		return false;
+	}
 
 	public void togglePause() {
 		if (paused)

@@ -4,6 +4,7 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.AbstractAbility;
+import backend.Calc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -13,12 +14,14 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	ManipulatableObject parent;
 	private Vector2 positionOffset;
-	
+
 	// protected Array<AbstractAbility> abilities;
 	protected float[] abilityCooldowns;
 
 	// ATTACKS
-	protected float defaultAttackTimer, defaultAttackCooldown;
+	protected float defaultAttackTimer, defaultAttackCooldown, dodgeTimer;
+	protected float shieldMax = 10, dodgeCooldown = .1f, dodgeSpeed = 6;
+	public float shield = 10;
 	protected AbstractAbility defaultAttack;
 	protected int ability1CoolDown;
 	protected int ability2CoolDown;
@@ -34,13 +37,17 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		defaultAttackCooldown = 2;
 		defaultAttackTimer = 1;
 		abilityCooldowns = new float[4];
-		
+
+		// set terminalVelocity to be dodgeSpeed in children, attacks dont use
+		// weapon terminalVelocity anyways
+		// this.terminalVelocity.set(dodgeSpeed, dodgeSpeed);
+
 	}
 
 	private boolean checkAttack(int index) {
 		if (abilityCooldowns[index] < 0)
 			return true;
-		
+
 		return false;
 	}
 
@@ -48,12 +55,11 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		if (checkAttack(0)) {
 			ability1(direction);
 			abilityCooldowns[0] = ability1CoolDown;
-			
-		}else{
-			System.out.println(abilityCooldowns[0]);
-	}
-	}
 
+		} else {
+			System.out.println(abilityCooldowns[0]);
+		}
+	}
 
 	// override methods
 	public void ability1(DIRECTION direction) {
@@ -78,7 +84,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 			abilityCooldowns[1] = ability2CoolDown;
 		}
 
-
 	}
 
 	public void activateAbility3(DIRECTION direction) {
@@ -94,8 +99,25 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 			ability4(direction);
 			abilityCooldowns[3] = ability4CoolDown;
 
+		}
 	}
+
+
+	public void activateDodge(Vector2 rightJoyStick) {
+		if (dodgeCooldown < 0) {
+			terminalVelocity.set(parent.terminalVelocity);
+			parent.terminalVelocity.set(dodgeSpeed, dodgeSpeed);
+			float angle = (float) Math.atan2(rightJoyStick.y, rightJoyStick.x);
+			parent.velocity.x = Calc.cos(angle) * dodgeSpeed;
+			parent.velocity.y = Calc.sin(angle) * dodgeSpeed;
+			dodgeCooldown = this.dodgeTimer;
+		}
 	}
+
+	public void activateDodge(DIRECTION direction) {
+
+	}
+
 
 	public void moveRight() {
 		rotation = 0;
@@ -133,8 +155,12 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	private void updateCooldowns(float deltaTime) {
 		defaultAttackTimer -= deltaTime;
+		this.dodgeCooldown -= deltaTime;
 		
-		for(int i = 0; i < this.abilityCooldowns.length; i++){
+		if(!parent.shielding)
+			shield += deltaTime;
+
+		for (int i = 0; i < this.abilityCooldowns.length; i++) {
 			abilityCooldowns[i] -= deltaTime;
 		}
 	}
@@ -172,14 +198,14 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
-		if(defaultAttackTimer < 0){
+		if (defaultAttackTimer < 0) {
 			defaultAttackInit(rightJoyStick);
 			defaultAttackTimer = defaultAttackCooldown;
 		}
 	}
 
 	protected void defaultAttackInit(Vector2 rightJoyStick) {
-		
+
 	}
 
 }

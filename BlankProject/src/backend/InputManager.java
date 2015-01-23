@@ -49,7 +49,8 @@ public class InputManager extends InputAdapter {
 	@Override
 	public boolean keyUp(int keycode) {
 		
-		
+		GameMain.currentScreen.handleKeyInputUp(keycode);
+
 		
 		return false;
 	}

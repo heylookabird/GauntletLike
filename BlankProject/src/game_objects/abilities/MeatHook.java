@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 public class MeatHook extends Arrow {
 	Array<ChainNode> chains;
 	int maxChains = 6, currentNumOfChains = 0;
-	boolean hit = false;
+	boolean hit = false, ally = false;
 	ManipulatableObject grabbed;
 
 	public class ChainNode {
@@ -40,8 +40,9 @@ public class MeatHook extends Arrow {
 		super(parent, damage, xVelocity, yVelocity);
 		chains = new Array<ChainNode>();
 		chains.add(new ChainNode(position.x, position.y, 1, 1));
+		currentNumOfChains++;
 		this.damage = 0;
-		this.lifeTimer = .9f;
+		this.lifeTimer = .6f;
 		this.knockbackSpeed = 0;
 		removesItself = false;
 
@@ -50,14 +51,15 @@ public class MeatHook extends Arrow {
 	public MeatHook(ManipulatableObject parent, int damage,
 			DIRECTION direction, float speed) {
 		super(parent, damage, 0, 0);
-		
+
 		chains = new Array<ChainNode>();
 		chains.add(new ChainNode(position.x, position.y, 1, 1));
+		currentNumOfChains++;
 		this.damage = 0;
 		this.lifeTimer = .9f;
 		this.knockbackSpeed = 0;
 		removesItself = false;
-		
+
 		switch (direction) {
 
 		case UP:
@@ -97,22 +99,40 @@ public class MeatHook extends Arrow {
 	}
 
 	private void retract() {
-		if (stateTime > .1f) {
-			if (chains.size > 1) {
-				ChainNode last = chains.pop();
-				grabbed.position.set(last.bounds.x, last.bounds.y);
-				stateTime = 0;
-			} else {
-				removeThyself();
-				grabbed.stun(.3f);
+		if (!ally) {
+			if (stateTime > .1f) {
+				if (currentNumOfChains > 1) {
+					ChainNode last = chains.pop();
+					currentNumOfChains--;
+					grabbed.position.set(last.bounds.x, last.bounds.y);
+					stateTime = 0;
+				} else {
+					removeThyself();
+					grabbed.stun(.3f);
+					chains.clear();
+				}
+			}
+		}else{
+			if(stateTime > .1f){
+				if(currentNumOfChains > 1){
+					ChainNode first = chains.first();
+					parent.position.set(first.bounds.x, first.bounds.y);
+					chains.removeIndex(0);
+					currentNumOfChains--;
+					stateTime = 0;
+				}else{
+					removeThyself();
+					chains.clear();
+				}
 			}
 		}
 	}
 
 	private void extend() {
 		if (stateTime > .2f) {
-			if (chains.size <= maxChains) {
+			if (currentNumOfChains <= maxChains) {
 				chains.add(new ChainNode(bounds.x, bounds.y, 1, 1));
+				currentNumOfChains++;
 				stateTime = 0;
 			} else {
 				removeThyself();
@@ -143,6 +163,10 @@ public class MeatHook extends Arrow {
 					stateTime = 0;
 					poison(grabbed, .01f, 5);
 					// grabbed.stun(1f);
+				} else if (obj != parent){
+					hit = true;
+					grabbed = obj;
+					stateTime = 0;
 				}
 			}
 		}
