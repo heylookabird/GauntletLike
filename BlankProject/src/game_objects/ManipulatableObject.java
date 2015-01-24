@@ -75,6 +75,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	public int MAX_SHIELD_RATING;
 
 	public float DODGE_RATING;
+	
+	private TextureRegion shieldImg = Assets.instance.effects.iceExplosionImgs.peek();
+
+	private boolean dodging = false;
 
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
@@ -564,10 +568,20 @@ public class ManipulatableObject extends AbstractGameObject {
 			AbstractAbility passive = passiveAbilities.get(i);
 			passive.render(batch);
 		}
+		
+		if(shielding)
+			renderShield(batch);
 
 		if (debug)
 			batch.draw(debugTex, bounds.x, bounds.y, bounds.width,
 					bounds.height);
+	}
+
+	private void renderShield(SpriteBatch batch) {
+		float shieldpercent = primaryWeapon.getShieldRatio();
+		float invshieldpercent = 1 - shieldpercent; //inverting it so i can have a position to render based on size
+		
+		batch.draw(shieldImg, position.x + invshieldpercent, position.y + invshieldpercent, bounds.width * shieldpercent, bounds.height * shieldpercent);
 	}
 
 	private void renderHp(SpriteBatch batch) {
@@ -645,8 +659,14 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 		// SEND
-		if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
-			primaryWeapon.defaultAttackCheck(rightJoyStick);
+		if(!dodging){
+			if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
+				primaryWeapon.defaultAttackCheck(rightJoyStick);
+			}
+		}else{
+			if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
+				primaryWeapon.activateDodge(rightJoyStick);
+			}
 		}
 
 	}
@@ -682,17 +702,28 @@ public class ManipulatableObject extends AbstractGameObject {
 		// ABILITIES
 		// ARROW KEYS
 		case Keys.LEFT:
+			if(!dodging)
 			primaryWeapon.defaultAttackCheck(DIRECTION.LEFT);
+			else
+				primaryWeapon.activateDodge(DIRECTION.LEFT);
 			break;
 		case Keys.RIGHT:
-			primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
-
+			if(!dodging)
+				primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
+				else
+					primaryWeapon.activateDodge(DIRECTION.RIGHT);
 			break;
 		case Keys.UP:
-			primaryWeapon.defaultAttackCheck(DIRECTION.UP);
+			if(!dodging)
+				primaryWeapon.defaultAttackCheck(DIRECTION.UP);
+				else
+					primaryWeapon.activateDodge(DIRECTION.UP);			
 			break;
 		case Keys.DOWN:
-			primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
+			if(!dodging)
+				primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
+				else
+					primaryWeapon.activateDodge(DIRECTION.DOWN);
 			break;
 
 		case Keys.NUM_1:
@@ -717,9 +748,11 @@ public class ManipulatableObject extends AbstractGameObject {
 			  stun(100);
 			  stopMove();
 			  break;
-		/* 
-		 * case Keys.SHIFT_RIGHT: dodging = true; break;
-		 */
+		 
+		  case Keys.SHIFT_RIGHT: 
+			  dodging  = true; 
+			  break;
+		 
 
 		case Keys.P:
 			World.world.togglePause();
@@ -758,9 +791,13 @@ public class ManipulatableObject extends AbstractGameObject {
 			 shielding = false; 
 			 this.stunTimer = -1;
 			 break;
-		/* 
-		 * case Keys.SHIFT_RIGHT: dodging = false; break;
-		 */
+ 
+		  case Keys.SHIFT_RIGHT: 
+			  dodging = false;
+			  terminalVelocity.set(primaryWeapon.terminalVelocity);
+
+			  break;
+		 
 		}
 
 	}// End of actOnInput methods

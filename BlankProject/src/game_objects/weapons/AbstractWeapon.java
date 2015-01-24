@@ -7,6 +7,7 @@ import game_objects.abilities.AbstractAbility;
 import backend.Calc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -19,9 +20,9 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected float[] abilityCooldowns;
 
 	// ATTACKS
-	protected float defaultAttackTimer, defaultAttackCooldown, dodgeTimer;
-	protected float shieldMax = 10, dodgeCooldown = .1f, dodgeSpeed = 6;
-	public float shield = 10;
+	protected float defaultAttackTimer, defaultAttackCooldown, dodgeTimer = .1f;
+	protected float shieldMax = 50, dodgeCooldown, dodgeSpeed = 6, shieldRecharge = 5;
+	public float shield = 50;
 	protected AbstractAbility defaultAttack;
 	protected int ability1CoolDown;
 	protected int ability2CoolDown;
@@ -44,6 +45,9 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	}
 
+	public float getShieldRatio(){
+		return shield/shieldMax;
+	}
 	private boolean checkAttack(int index) {
 		if (abilityCooldowns[index] < 0)
 			return true;
@@ -110,12 +114,38 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 			float angle = (float) Math.atan2(rightJoyStick.y, rightJoyStick.x);
 			parent.velocity.x = Calc.cos(angle) * dodgeSpeed;
 			parent.velocity.y = Calc.sin(angle) * dodgeSpeed;
+/*			parent.deltax = Calc.cos(angle) * dodgeSpeed;
+			parent.deltay = Calc.sin(angle) * dodgeSpeed;*/
 			dodgeCooldown = this.dodgeTimer;
 		}
 	}
 
 	public void activateDodge(DIRECTION direction) {
-
+		if (dodgeCooldown < 0) {
+			terminalVelocity.set(parent.terminalVelocity);
+			parent.terminalVelocity.set(dodgeSpeed, dodgeSpeed);
+			
+			switch(direction){
+			
+			case UP:
+				parent.velocity.set(0, dodgeSpeed);
+				break;
+				
+			case DOWN:
+				parent.velocity.set(0, -dodgeSpeed);
+				break;
+				
+			case LEFT:
+				parent.velocity.set(-dodgeSpeed, 0);
+				break;
+				
+			case RIGHT:
+				parent.velocity.set(dodgeSpeed, 0);
+				break;
+			}
+			dodgeCooldown = this.dodgeTimer;
+		}else
+			parent.terminalVelocity.set(terminalVelocity);
 	}
 
 
@@ -158,11 +188,14 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		this.dodgeCooldown -= deltaTime;
 		
 		if(!parent.shielding)
-			shield += deltaTime;
+			shield += shieldRecharge;
+		
+		shield = MathUtils.clamp(shield, -2, shieldMax);
 
 		for (int i = 0; i < this.abilityCooldowns.length; i++) {
 			abilityCooldowns[i] -= deltaTime;
 		}
+		
 	}
 
 	public void setPosition() {
