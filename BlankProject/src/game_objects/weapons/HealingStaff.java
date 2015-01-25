@@ -2,6 +2,7 @@ package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
+import game_objects.abilities.Beam;
 import game_objects.abilities.Heal;
 import game_objects.abilities.IceShard;
 import game_objects.abilities.MeatHook;
@@ -19,7 +20,7 @@ public class HealingStaff extends AbstractWeapon {
 			Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
-		defaultAttackCooldown = 5f;
+		defaultAttackCooldown = 1f;
 		image = Assets.instance.weapons.sword;
 		moveUp();
 
@@ -28,24 +29,25 @@ public class HealingStaff extends AbstractWeapon {
 
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
+		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, 1);
 
-		if(direction == DIRECTION.LEFT)
-			defaultAttack = new Heal(parent, healRate, -speed, 0);
+		/*if(direction == DIRECTION.LEFT)
+			defaultAttack = new Heal(parent, healRate, -speed, 0, true);
 
 			else if(direction == DIRECTION.RIGHT)
-			defaultAttack = new Heal(parent, healRate, speed, 0);
+			defaultAttack = new Heal(parent, healRate, speed, 0, true);
 			
 			else if(direction == DIRECTION.DOWN)
-				defaultAttack = new Heal(parent, healRate, 0, -speed);
+				defaultAttack = new Heal(parent, healRate, 0, -speed, true);
 			else if(direction == DIRECTION.UP)
-				defaultAttack = new Heal(parent, healRate, 0, speed);
-		
+				defaultAttack = new Heal(parent, healRate, 0, speed, true);
+		*/
 		LevelStage.interactables.add(defaultAttack);
 	}
 
 	@Override
 	public void ability1(DIRECTION direction) {
-		Heal attack = new Heal(parent, healRate);
+		Heal attack = new Heal(parent, healRate, true);
 		
 		LevelStage.interactables.add(attack);
 	}
