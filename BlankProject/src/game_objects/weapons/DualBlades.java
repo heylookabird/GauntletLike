@@ -22,7 +22,7 @@ public class DualBlades extends AbstractWeapon {
 			Vector2 positionOffset) {
 		super(parent, width, height, positionOffset);
 		origin.set(0, dimension.y / 2);
-		defaultAttackCooldown = .3f;
+		defaultAttackCooldown = 1f;
 		image = Assets.instance.weapons.sword;
 		sword2 = Assets.instance.weapons.sword;
 		moveUp();
@@ -32,11 +32,7 @@ public class DualBlades extends AbstractWeapon {
 		ability4CoolDown = 3;
 		dualBlade = true;
 		name = "Dual Blades";
-		this.dodgeCooldown = .2f;
-		this.dodgeSpeed = 6;
 				
-		this.terminalVelocity.set(dodgeSpeed, dodgeSpeed);
-
 
 	}
 
