@@ -70,15 +70,12 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	protected boolean stunned;
 	public boolean invulnerable;
-	public boolean shielding = false;
+	public boolean shielding = false, counter = false;
 
 	public int MAX_SHIELD_RATING;
 
-	public float DODGE_RATING;
-	
-	private TextureRegion shieldImg = Assets.instance.effects.iceExplosionImgs.peek();
-
-	private boolean dodging = false;
+	private TextureRegion shieldImg = Assets.instance.effects.iceExplosionImgs
+			.peek();
 
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
@@ -161,8 +158,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	protected void removeThyself() {
 
 		if (isPlayerObject) {
-			//World.world.togglePause();
-			//World.world.menu.setPlayer(this);
+			// World.world.togglePause();
+			// World.world.menu.setPlayer(this);
 			hp = this.MAX_HEALTH;
 		} else
 			teamObjects.removeValue(this, true);
@@ -402,13 +399,17 @@ public class ManipulatableObject extends AbstractGameObject {
 				handleAllPollingInput();
 			}
 
-			if (primaryWeapon != null) {
-				primaryWeapon.update(deltaTime);
-			}
 			if (state != STATE.ATTACKING)
 				checkStopMove();
 		} else
 			handleStunUpdate(deltaTime);
+
+		if (primaryWeapon != null) {
+			primaryWeapon.update(deltaTime);
+	/*		if (counter) {
+				counter = primaryWeapon.handleCounter(deltaTime);
+			}*/
+		}
 
 		moveX(deltaTime);
 		moveY(deltaTime);
@@ -416,7 +417,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		for (int i = 0; i < passiveAbilities.size; i++) {
 			AbstractAbility passive = passiveAbilities.get(i);
 			passive.update(deltaTime);
-			
+
 		}
 
 		primaryWeapon.setPosition();
@@ -568,8 +569,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			AbstractAbility passive = passiveAbilities.get(i);
 			passive.render(batch);
 		}
-		
-		if(shielding)
+
+		if (shielding)
 			renderShield(batch);
 
 		if (debug)
@@ -579,9 +580,11 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	private void renderShield(SpriteBatch batch) {
 		float shieldpercent = primaryWeapon.getShieldRatio();
-		float invshieldpercent = 1 - shieldpercent; //inverting it so i can have a position to render based on size
-		
-		batch.draw(shieldImg, position.x + invshieldpercent, position.y + invshieldpercent, bounds.width * shieldpercent, bounds.height * shieldpercent);
+		Vector2 center = getCenter();
+		float width = bounds.width * shieldpercent;
+		float height = bounds.height * shieldpercent;
+		batch.draw(shieldImg, center.x - width / 2f, center.y - height / 2f,
+				width, height);
 	}
 
 	private void renderHp(SpriteBatch batch) {
@@ -659,14 +662,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 		// SEND
-		if(!dodging){
-			if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
-				primaryWeapon.defaultAttackCheck(rightJoyStick);
-			}
-		}else{
-			if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
-				primaryWeapon.activateDodge(rightJoyStick);
-			}
+		if (Math.abs(rightJoyStick.x) > .35 || Math.abs(rightJoyStick.y) > .35) {
+			primaryWeapon.defaultAttackCheck(rightJoyStick);
 		}
 
 	}
@@ -702,28 +699,16 @@ public class ManipulatableObject extends AbstractGameObject {
 		// ABILITIES
 		// ARROW KEYS
 		case Keys.LEFT:
-			if(!dodging)
 			primaryWeapon.defaultAttackCheck(DIRECTION.LEFT);
-			else
-				primaryWeapon.activateDodge(DIRECTION.LEFT);
 			break;
 		case Keys.RIGHT:
-			if(!dodging)
-				primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
-				else
-					primaryWeapon.activateDodge(DIRECTION.RIGHT);
+			primaryWeapon.defaultAttackCheck(DIRECTION.RIGHT);
 			break;
 		case Keys.UP:
-			if(!dodging)
-				primaryWeapon.defaultAttackCheck(DIRECTION.UP);
-				else
-					primaryWeapon.activateDodge(DIRECTION.UP);			
+			primaryWeapon.defaultAttackCheck(DIRECTION.UP);
 			break;
 		case Keys.DOWN:
-			if(!dodging)
-				primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
-				else
-					primaryWeapon.activateDodge(DIRECTION.DOWN);
+			primaryWeapon.defaultAttackCheck(DIRECTION.DOWN);
 			break;
 
 		case Keys.NUM_1:
@@ -742,17 +727,11 @@ public class ManipulatableObject extends AbstractGameObject {
 			primaryWeapon.activateAbility4(facing);
 			break;
 
-		
-		  case Keys.SPACE: 
-			  shielding = true; 
-			  stun(100);
-			  stopMove();
-			  break;
-		 
-		  case Keys.SHIFT_RIGHT: 
-			  dodging  = true; 
-			  break;
-		 
+		case Keys.SPACE:
+			shielding = true;
+			stun(100);
+			stopMove();
+			break;
 
 		case Keys.P:
 			World.world.togglePause();
@@ -787,17 +766,11 @@ public class ManipulatableObject extends AbstractGameObject {
 
 			break;
 
-		 case Keys.SPACE: 
-			 shielding = false; 
-			 this.stunTimer = -1;
-			 break;
- 
-		  case Keys.SHIFT_RIGHT: 
-			  dodging = false;
-			  terminalVelocity.set(primaryWeapon.terminalVelocity);
+		case Keys.SPACE:
+			shielding = false;
+			this.stunTimer = -1;
+			break;
 
-			  break;
-		 
 		}
 
 	}// End of actOnInput methods
@@ -831,10 +804,6 @@ public class ManipulatableObject extends AbstractGameObject {
 			shielding = true;
 			break;
 
-		/*
-		 * case Xbox360.BUTTON_LB: dodging = true; break;
-		 */
-
 		}
 	}
 
@@ -852,10 +821,6 @@ public class ManipulatableObject extends AbstractGameObject {
 		case Xbox360.BUTTON_RB:
 			shielding = false;
 			break;
-
-		/*
-		 * case Xbox360.BUTTON_LB: dodging = false; break;
-		 */
 
 		}
 	}
@@ -898,6 +863,8 @@ public class ManipulatableObject extends AbstractGameObject {
 			return;
 		if (shielding) {
 			this.shieldDamage(damage);
+			//counter = true;
+			primaryWeapon.openCounterWindow();
 			return;
 		}
 
@@ -970,20 +937,20 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void setTarget(ManipulatableObject target) {
-		if(Ai != null){
+		if (Ai != null) {
 			Ai.taunt(target);
-			
+
 		}
 	}
 
 	public void setTarget(AbstractAbility taunt) {
-		if(Ai != null){
+		if (Ai != null) {
 			Ai.targetPosition(taunt.getCenter());
 		}
 	}
 
 	public void resetTarget() {
-		if(Ai != null)
+		if (Ai != null)
 			Ai.target = null;
 	}
 
