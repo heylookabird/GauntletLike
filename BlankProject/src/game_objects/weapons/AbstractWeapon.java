@@ -20,7 +20,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected float[] abilityCooldowns;
 
 	// ATTACKS
-	protected float defaultAttackTimer, defaultAttackCooldown;
+	protected float /*defaultAttackTimer,*/ defaultAttackCooldown;
 	protected float shieldMax = 20, shieldRecharge = 5, shieldDrain = .2f, counterwindow = .5f, countertime = 0;
 	public float shield = 20;
 	protected AbstractAbility defaultAttack;
@@ -28,6 +28,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected int ability2CoolDown;
 	protected int ability3CoolDown;
 	protected int ability4CoolDown;
+	public int swing = 0;
 	public String name;
 	private boolean countering = false;
 
@@ -37,8 +38,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		this.parent = parent;
 		this.positionOffset = positionOffset;
 		defaultAttackCooldown = 2;
-		defaultAttackTimer = 1;
-		abilityCooldowns = new float[4];
+		abilityCooldowns = new float[5];
 
 		// set terminalVelocity to be dodgeSpeed in children, attacks dont use
 		// weapon terminalVelocity anyways
@@ -57,12 +57,10 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void activateAbility1(DIRECTION direction) {
-		if (checkAttack(0)) {
+		if (checkAttack(1)) {
 			ability1(direction);
-			abilityCooldowns[0] = ability1CoolDown;
+			abilityCooldowns[1] = ability1CoolDown;
 
-		} else {
-			System.out.println(abilityCooldowns[0]);
 		}
 	}
 
@@ -84,9 +82,9 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void activateAbility2(DIRECTION direction) {
-		if (checkAttack(1)) {
+		if (checkAttack(2)) {
 			ability2(direction);
-			abilityCooldowns[1] = ability2CoolDown;
+			abilityCooldowns[2] = ability2CoolDown;
 		}
 
 	}
@@ -150,7 +148,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	private void updateCooldowns(float deltaTime) {
-		defaultAttackTimer -= deltaTime;
 		
 		if(!parent.shielding)
 			shield += shieldRecharge;
@@ -176,17 +173,19 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	// CHECK IF POSSIBLE TO DO THE DEFAULT ATTACK
 	public void defaultAttackCheck() {
-		if (defaultAttackTimer < 0) {
+		if (checkAttack(0) || countering) {
 			defaultAttackInit();
-			defaultAttackTimer = defaultAttackCooldown;
+			countering = false;
+			this.abilityCooldowns[0] = defaultAttackCooldown;
 		}
 	}
 
 	// OVERLOADING THE DEFAULT CHECK
 	public void defaultAttackCheck(DIRECTION direction) {
-		if (defaultAttackTimer < 0 || countering) {
+		if (checkAttack(0) || countering) {
 			defaultAttackInit(direction);
-			defaultAttackTimer = defaultAttackCooldown;
+			countering = false;
+			this.abilityCooldowns[0] = defaultAttackCooldown;
 		}
 	}
 
@@ -201,9 +200,10 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
-		if (defaultAttackTimer < 0 || countering) {
+		if (checkAttack(0) || countering) {
 			defaultAttackInit(rightJoyStick);
-			defaultAttackTimer = defaultAttackCooldown;
+			countering = false;
+			this.abilityCooldowns[0] = defaultAttackCooldown;
 		}
 	}
 
@@ -216,6 +216,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		
 		if(countertime < 0){
 			countering = false;
+			swing = 0;
 		}
 	}
 
