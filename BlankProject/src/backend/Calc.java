@@ -2,6 +2,7 @@ package backend;
 
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import game_objects.ManipulatableObject.DIRECTION;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +12,11 @@ public class Calc {
 	public static float atan2(Vector2 origin, Vector2 target){
 		
 		return (float)(Math.toDegrees(Math.atan2(target.y - origin.y, target.x - origin.x)));
+	}
+	
+	public static float atan2(Vector2 origin){
+		
+		return (float)(Math.toDegrees(Math.atan2(origin.y, origin.x)));
 	}
 
 	public static ManipulatableObject findClosestEnemy(AbstractGameObject origin, Array<ManipulatableObject> targetArray){
@@ -81,5 +87,18 @@ public class Calc {
 		
 		return target;
 		
+	}
+
+	public static float directionToDegrees(DIRECTION direction) {
+		if(direction == DIRECTION.RIGHT)
+			return 0;
+		else if(direction == DIRECTION.LEFT)
+			return 180;
+		else if(direction == DIRECTION.UP)
+			return 90;
+		else if(direction == DIRECTION.DOWN)
+			return 270;
+		
+		return 0;
 	}
 }

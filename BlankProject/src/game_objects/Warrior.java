@@ -32,7 +32,6 @@ public class Warrior extends ManipulatableObject{
 		this.equipWeapon(joes);
 
 		
-		this.
 	}
 
 }

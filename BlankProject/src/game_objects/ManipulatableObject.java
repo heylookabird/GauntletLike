@@ -950,8 +950,10 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void resetTarget() {
-		if (Ai != null)
+		if (Ai != null){
 			Ai.target = null;
+			Ai.targetSpot = null;
+		}
 	}
 
 }

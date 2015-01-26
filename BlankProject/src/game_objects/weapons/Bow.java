@@ -4,7 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Arrow;
 import game_objects.abilities.ExplodingArrow;
-import game_objects.abilities.MeatHook;
+import game_objects.abilities.Hook;
 import game_objects.abilities.ProxyArrow;
 import game_objects.abilities.TrapArrow;
 import backend.Assets;
@@ -198,11 +198,16 @@ public class Bow extends AbstractWeapon {
 	@Override
 	public void ability4(DIRECTION direction) {
 		float speed = arrowSpeed/4f;
-		Arrow attack = new MeatHook(parent, 3, direction, speed);
+		float angle = 0;
+		
+		angle = Calc.directionToDegrees(direction);
+		Hook attack = new Hook(parent, angle);
 
 		// to shoot the arrow in correct spot
 		
 
 		LevelStage.interactables.add(attack);
 	}
+	
+	
 }

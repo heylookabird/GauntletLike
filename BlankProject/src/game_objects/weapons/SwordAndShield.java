@@ -71,7 +71,7 @@ public class SwordAndShield extends AbstractWeapon {
 	@Override
 	public void ability2(DIRECTION direction) {
 		shield = new ShieldThrow(parent, parent.position.x , parent.position.y,
-				parent.dimension.x, parent.dimension.y, .3f, 5, 7, this);
+				parent.dimension.x, parent.dimension.y, .3f, 7, 7, this);
 		shieldOn = false;
 		LevelStage.interactables.add(shield);
 		

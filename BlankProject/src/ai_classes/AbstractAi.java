@@ -12,7 +12,7 @@ public class AbstractAi {
 	public HEALTH_STATE healthstate;
 	protected AbstractAbility nextAbility;
 	public float range = 10, thinkingTime = .5f, currTime = 0;
-	private Vector2 targetSpot;
+	public Vector2 targetSpot;
 	public enum HEALTH_STATE{
 		DANGER, LOW, MEDIUM, HIGH;
 	}
