@@ -3,6 +3,48 @@ bg.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+floortile
+  rotate: false
+  xy: 1, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_cornerConcave
+  rotate: false
+  xy: 35, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_cornerConvex
+  rotate: false
+  xy: 69, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_doorOpen
+  rotate: false
+  xy: 103, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_pillar
+  rotate: false
+  xy: 137, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wall_window
+  rotate: false
+  xy: 171, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 grass3
   rotate: false
   xy: 1, 1
@@ -12,70 +54,70 @@ grass3
   index: -1
 grass0
   rotate: false
-  xy: 30, 7
+  xy: 205, 41
   size: 21, 20
   orig: 21, 20
   offset: 0, 0
   index: -1
 grass4
   rotate: false
-  xy: 53, 6
+  xy: 30, 6
   size: 20, 21
   orig: 20, 21
   offset: 0, 0
   index: -1
 body1
   rotate: false
-  xy: 75, 8
+  xy: 228, 42
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 body2
   rotate: false
-  xy: 97, 8
+  xy: 52, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 body3
   rotate: false
-  xy: 119, 8
+  xy: 74, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 body4
   rotate: false
-  xy: 141, 8
+  xy: 96, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 body5
   rotate: false
-  xy: 163, 8
+  xy: 118, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 body6
   rotate: false
-  xy: 185, 8
+  xy: 140, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 grass2
   rotate: false
-  xy: 207, 8
+  xy: 162, 8
   size: 20, 19
   orig: 20, 19
   offset: 0, 0
   index: -1
 grass1
   rotate: false
-  xy: 229, 9
+  xy: 184, 9
   size: 18, 18
   orig: 18, 18
   offset: 0, 0

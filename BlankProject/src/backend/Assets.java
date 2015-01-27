@@ -103,6 +103,9 @@ public class Assets implements AssetErrorListener {
 		public final Array<AtlasRegion> walls;
 		public final Array<AtlasRegion> grass;
 		
+		public final AtlasRegion floor;
+		public final AtlasRegion wallCorner1, wallCorner2, wallPillar;
+		
 		public Background(TextureAtlas atlas) {
 			walls = new Array<AtlasRegion>();
 			grass = new Array<AtlasRegion>();
@@ -112,6 +115,10 @@ public class Assets implements AssetErrorListener {
 			for(int i = 0; i < 5; i++){
 				grass.add(atlas.findRegion("grass" + i));
 			}
+			floor = atlas.findRegion("floortile");
+			wallCorner1 = atlas.findRegion("wall_cornerConcave");
+			wallCorner2 = atlas.findRegion("wall_cornerConvex");
+			wallPillar = atlas.findRegion("wall_pillar");
 		}
 	}
 	public class Planes{
