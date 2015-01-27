@@ -4,6 +4,7 @@ import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import backend.Assets;
 import backend.Calc;
+import backend.LevelStage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,10 +12,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class Hook extends AbstractAbility {
-	private ManipulatableObject parent;
 	private Array<Link> links;
 	private int numLinks;
-	private float timeBetweenChains, maxTime = .02f, deChainTime = .025f;
+	private float timeBetweenChains, maxTime = .02f, deChainTime = .1f;
 	public static float hookCD;
 	public boolean chaining, deChaining;
 	boolean hit;
@@ -22,6 +22,8 @@ public class Hook extends AbstractAbility {
 	public boolean swungThisHook;
 	private Vector2 hookPull;
 	Vector2 target, currentVector;
+	
+	private ManipulatableObject pulled, puller;
 	public Hook(ManipulatableObject parent, float joyStick){
 		super();
 		hit= false;
@@ -35,6 +37,7 @@ public class Hook extends AbstractAbility {
 		hookPull = new Vector2();
 		numLinks = 0;
 		hookCD = 0;
+		removesItself = false;
 		
 		startHook(joyStick);
 		initDebug();
@@ -59,6 +62,29 @@ public class Hook extends AbstractAbility {
 		timeBetweenChains = 0;
 		
 	}
+	public void stopHookAndPull(AbstractGameObject puller, ManipulatableObject pulled){
+		chaining = false;
+		deChaining = true;
+		timeBetweenChains = 0;
+		
+	}
+	public void stopHookAndPull(ManipulatableObject puller, ManipulatableObject pulled){
+		chaining = false;
+		deChaining = true;
+		timeBetweenChains = 0;
+		
+		this.pulled = pulled;
+		this.puller = puller;
+		float time = (links.size - 1) * deChainTime;
+		float angle = Calc.atan2(pulled.getCenter(), puller.getCenter());
+		float distance = puller.getCenter().dst(pulled.getCenter());
+		
+		pulled.velocity.set(distance * Calc.cos(angle) / time, distance * Calc.sin(angle) / time);
+		pulled.terminalVelocity.set(100, 100);
+		System.out.println(distance);
+
+		
+	}
 	public Vector2 getRockVector(){
 		return target;
 	}
@@ -78,43 +104,102 @@ public class Hook extends AbstractAbility {
 		hit = true;
 	}
 	
+	@Override
+	protected boolean collision(float deltaX, float deltaY) {
+		if(!chaining)
+			return false;
+		//bounds.setPosition(position.x + deltaX, position.y + deltaY);
+		
+		if(links.size < 2)
+			return false;
+		
+		Link link = links.get(links.size - 1);
+		AbstractGameObject temp = null;
+		/*for(int i = 0; i < parent.teamObjects.size; i++){
+			temp = parent.teamObjects.get(i);
+			if(link.bounds.overlaps(temp.bounds)){
+				interact(temp);
+			}
+			
+		}*/
+		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
+			temp = parent.enemyTeamObjects.get(i);
+			if(link.bounds.overlaps(temp.bounds)){
+				interact(temp);
+			}
+		}
+		/*
+		for(int i = 0; i < LevelStage.solidObjects.size; i++){
+			temp = LevelStage.solidObjects.get(i);
+			if(link.bounds.overlaps(temp.bounds)){
+				interact(temp);
+			}
+		}*/
+		
+		return true;
+		
+		
+	}
+	
 	private void makeNewLink(float angle){
 		links.add(new Link(parent, links.size, angle));
 		numLinks++;
 		if(numLinks > 10)
 			stopHook();
 		
+		
+		
 	}
 	private void removeLastLink(){
-		
-		if(links.size > 0){
+		if(links.size > 2){
 			links.pop();
 			numLinks--;
 			
-			//If hook hit a ledge, reel the player in
-			if(hit){
-				//Should pull in last link, I think. lazy thought
-		
-			}
-			
 		}else{
-			if(hit){
-				//NEEDS TO PULL IN
-				
-				hookCD = 4;
+			//NEEDS TO PULL IN
+			
+			hookCD = 4;
 
+			if(puller != null && pulled != null){
+				puller.stunTimer = 0;
+				pulled.stunTimer = 0;
+				pulled.invulnerable = false;
+				puller.invulnerable = false;
+				pulled.stopMove();
+				puller.stopMove();
+				pulled.terminalVelocity.set(pulled.walkingTerminalV);
 			}
 			//Reset variables for the next grapple
 			deChaining = false;
 			hit = false;
+			links.clear();
+			//System.out.println("Done with last link");
 		}
 		
 	}
+	
+	@Override
+	public void interact(AbstractGameObject couple) {
+
+		if (couple instanceof ManipulatableObject) {
+			ManipulatableObject obj = (ManipulatableObject) couple;
+			if (!this.isSameTeam(obj)) {
+				//cold(obj, .25f, .5f);
+				stopHookAndPull(parent, obj);
+
+				parent.stun(100);
+				parent.invulnerable = true;
+
+				obj.stun(100);
+				parent.invulnerable = true;
+			}
+		}
+		//super.interact(couple);
+	}
 	@Override
 	public void update(float deltaTime){
+		super.update(deltaTime);
 		if(chaining){
-			
-			//angle = (float) Math.atan2((double)(target.y - (bunny.position.y + bunny.bounds.height / 2)), (double)(target.x - (bunny.position.x + bunny.bounds.width)));
 			timeBetweenChains += deltaTime;
 			while(timeBetweenChains  > maxTime){
 				makeNewLink(angle);
@@ -125,8 +210,6 @@ public class Hook extends AbstractAbility {
 			}
 			
 		}else if(deChaining){
-
-			//angle = (float) Math.atan2((double)(target.y - (bunny.position.y + bunny.bounds.height / 2)), (double)(target.x - (bunny.position.x + bunny.bounds.width)));
 
 			timeBetweenChains += deltaTime;
 			while(timeBetweenChains > deChainTime){
@@ -164,9 +247,11 @@ public class Hook extends AbstractAbility {
 			super(parent.getCenter().x / 2 - width / 2, parent.getCenter().y / 2 - height / 2, width, height);
 			image = Assets.instance.weapons.sword;
 			origin.set(0, height / 2);
+			bounds.setSize(width / 2,  width / 2);
 
 			this.spotNumber = spotNumber;
 			rotation = angle;
+			initDebug(); 
 		}
 		
 		@Override
@@ -177,8 +262,9 @@ public class Hook extends AbstractAbility {
 			float y = Calc.sin(rotation);
 			Vector2 center = parent.getCenter();
 			
-			this.position.set(center.x + spotNumber * x * bounds.width,
-					center.y + spotNumber * y * bounds.width);
+			this.position.set(center.x + spotNumber * x * dimension.x,
+					center.y + spotNumber * y * dimension.x);
+			bounds.setPosition(position);
 		}
 		
 	}
