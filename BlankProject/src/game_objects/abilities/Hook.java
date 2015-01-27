@@ -115,13 +115,14 @@ public class Hook extends AbstractAbility {
 		
 		Link link = links.get(links.size - 1);
 		AbstractGameObject temp = null;
-		/*for(int i = 0; i < parent.teamObjects.size; i++){
+		for(int i = 0; i < parent.teamObjects.size; i++){
 			temp = parent.teamObjects.get(i);
 			if(link.bounds.overlaps(temp.bounds)){
 				interact(temp);
+				return false;
 			}
 			
-		}*/
+		}
 		for(int i = 0; i < parent.enemyTeamObjects.size; i++){
 			temp = parent.enemyTeamObjects.get(i);
 			if(link.bounds.overlaps(temp.bounds)){
@@ -184,15 +185,16 @@ public class Hook extends AbstractAbility {
 		if (couple instanceof ManipulatableObject) {
 			ManipulatableObject obj = (ManipulatableObject) couple;
 			if (!this.isSameTeam(obj)) {
-				//cold(obj, .25f, .5f);
-				stopHookAndPull(parent, obj);
-
-				parent.stun(100);
-				parent.invulnerable = true;
-
-				obj.stun(100);
-				parent.invulnerable = true;
+				stopHookAndPull(parent, obj);				
+			}else{
+				stopHookAndPull(obj, parent);
 			}
+			
+			parent.stun(100);
+			parent.invulnerable = true;
+
+			obj.stun(100);
+			parent.invulnerable = true;
 		}
 		//super.interact(couple);
 	}

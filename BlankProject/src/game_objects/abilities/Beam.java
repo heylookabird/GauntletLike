@@ -10,15 +10,18 @@ public class Beam extends AbstractAbility{
 	private float endTime, currentTime, length;
 	private boolean alsoDamagesEnemies;
 	public Beam(ManipulatableObject parent, DIRECTION direction, int dmg, boolean alsoDamagesEnemies, float width, float height, float length, float time) {
-		super(parent, parent.position.x + parent.dimension.x / 2, parent.position.y + parent.dimension.y / 2, width, height);
+		super(parent, parent.position.x + parent.dimension.x / 2 - width / 2, parent.position.y + parent.dimension.y / 2 - height / 2, width, height);
 		this.direction = direction;
 		this.endTime = time;
 		this.damage = dmg;
 		this.alsoDamagesEnemies = alsoDamagesEnemies;
-		this.deletionTime = 2f;
+		this.deletionTime = .25f;
+		lifeTimer = time;
 		currentTime = 0;
 		this.length = length;
 		initDebug();
+		priority = 3;
+		parent.stun(time);
 		
 	}
 	@Override
@@ -31,19 +34,23 @@ public class Beam extends AbstractAbility{
 		if(direction == DIRECTION.RIGHT){
 			dimension.x = length * percent;
 			bounds.width = length * percent;
+			knockbackAngle = 0;
 		}else if(direction == DIRECTION.LEFT){
 			dimension.x = length * percent;
 			position.x = parent.getCenter().x - dimension.x;
 			bounds.x = position.x;
 			bounds.width = dimension.x;
+			knockbackAngle = 180;
 		}else if(direction == DIRECTION.UP){
 			dimension.y = length * percent;
 			bounds.height = length * percent;
+			knockbackAngle = 90;
 		}else if(direction == DIRECTION.DOWN){
 			dimension.y = length * percent;
 			position.y = parent.getCenter().y - dimension.y;
 			bounds.y = position.y;
 			bounds.height = dimension.y;
+			knockbackAngle = 270;
 		}
 		super.update(deltaTime);
 	}

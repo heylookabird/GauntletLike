@@ -29,7 +29,7 @@ public class HealingStaff extends AbstractWeapon {
 
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
-		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, 1);
+		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, .3f);
 
 		/*if(direction == DIRECTION.LEFT)
 			defaultAttack = new Heal(parent, healRate, -speed, 0, true);
