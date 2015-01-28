@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Constants {
 
 	public static final float defaultZoom = 1f;
-	public static final float viewportWidth = 16.0f * 1.9f, viewportHeight = 9.0f * 1.9f;
+	public static final float viewportWidth = 16.0f * 2.9f, viewportHeight = 9.0f * 2.9f;
 	public static final float sceneCamX = viewportWidth / 2;
 	public static final float sceneCamY = viewportHeight / 2;
 	public static final float cameraPanVal = 200;

@@ -1,5 +1,6 @@
 package backend;
 
+import game_map_classes.CornerConcave;
 import game_objects.GroundTile;
 import game_objects.Rogue;
 import game_objects.Wall;
@@ -18,7 +19,12 @@ public class LevelLoader {
 
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), PLAYER_SPAWNPOINT(255, 255, 255), ENEMY_SPAWNPOINT(255,
-				0, 0), EXIT_BOUNDS(255, 255, 0);
+				0, 0), EXIT_BOUNDS(255, 255, 0), 
+				CORNER_TOP_RIGHT(50, 0, 50), CORNER_TOP_LEFT(50, 50, 0), 
+				CORNER_BOT_RIGHT(75, 75, 0), CORNER_BOT_LEFT(75, 0, 75),
+				PILLAR_UP(45, 0, 0), PILLAR_RIGHT(85, 0, 0),
+				PILLAR_LEFT(125, 0, 0), PILLAR_DOWN(165, 0, 0),
+				TILE(0, 125, 0);
 
 		private int color;
 
@@ -110,9 +116,44 @@ public class LevelLoader {
 				//START LOOKING FOR SPECIFIC COLORS THAT MAP TO THE OBJECTS		
 				if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) {
 					continue;
+				}else if(BLOCK_TYPE.CORNER_TOP_RIGHT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner1, pixelX, baseHeight, 2, 2, false, false);
+					LevelStage.solidObjects.add(corner);
+				}else if(BLOCK_TYPE.CORNER_TOP_LEFT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner1, pixelX, baseHeight, 2, 2, true, false);
+					LevelStage.solidObjects.add(corner);
+				}
+				else if(BLOCK_TYPE.CORNER_BOT_LEFT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner1, pixelX, baseHeight, 2, 2, false, true);
+					LevelStage.solidObjects.add(corner);
+
+				}else if(BLOCK_TYPE.CORNER_BOT_RIGHT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner1, pixelX, baseHeight, 2, 2, true, true);
+					LevelStage.solidObjects.add(corner);
+
+				}else if(BLOCK_TYPE.TILE.sameColor(currentPixel) && itIsStartOfNewObject(pixelX, pixelY, currentPixel)){
+					Vector2 dimension = extendPlatformDownRight(pixelX, pixelY, currentPixel);
+					System.out.println(dimension);
+					LevelStage.uncollidableObjects.add(new GroundTile(Assets.instance.background.floor, pixelX, baseHeight, dimension.x - pixelX, dimension.y - pixelY));
+				}else if(BLOCK_TYPE.PILLAR_LEFT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallPillar, pixelX, baseHeight, 2, 2, 90);
+					LevelStage.solidObjects.add(corner);
+				
+				}else if(BLOCK_TYPE.PILLAR_UP.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallPillar, pixelX, baseHeight, 2, 2, 180);
+					LevelStage.solidObjects.add(corner);
+				
+				}else if(BLOCK_TYPE.PILLAR_RIGHT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallPillar, pixelX, baseHeight, 2, 2, 270);
+					LevelStage.solidObjects.add(corner);
+				
+				}else if(BLOCK_TYPE.PILLAR_DOWN.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallPillar, pixelX, baseHeight, 2, 2, 0);
+					LevelStage.solidObjects.add(corner);
 				}
 				
-				if(BLOCK_TYPE.EXIT_BOUNDS.sameColor(currentPixel)){
+				
+				else if(BLOCK_TYPE.EXIT_BOUNDS.sameColor(currentPixel)){
 					
 				}
 				
@@ -126,7 +167,7 @@ public class LevelLoader {
 			}// inner for loop
 		}// outer for loop
 		
-		makeBoundaries(pixmap);
+		//makeBoundaries(pixmap);
 	}// end of method
 
 	private void makeBoundaries(Pixmap map){
@@ -164,6 +205,7 @@ public class LevelLoader {
 	}
 
 	private Vector2 extendPlatformDownRight(int i, int j, int color) {
+		
 		while (nextIsSameColor(i, j + 1, color)) {
 			j++;
 

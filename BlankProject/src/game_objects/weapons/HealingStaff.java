@@ -7,6 +7,7 @@ import game_objects.abilities.Heal;
 import game_objects.abilities.IceShard;
 import game_objects.abilities.MeatHook;
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 
 import com.badlogic.gdx.math.Vector2;
@@ -44,7 +45,13 @@ public class HealingStaff extends AbstractWeapon {
 		*/
 		LevelStage.interactables.add(defaultAttack);
 	}
+	@Override
+	protected void defaultAttackInit(Vector2 rightJoyStick) {
+		Vector2 x = new Vector2(rightJoyStick);
+		x.y *= -1;
+		defaultAttack = new Beam(parent, Calc.atan2(x), 4, true, 1, 1, 7, .3f);
 
+	}
 	@Override
 	public void ability1(float direction) {
 		Heal attack = new Heal(parent, healRate, true);

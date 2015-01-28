@@ -40,7 +40,7 @@ public class Hook extends AbstractAbility {
 		removesItself = false;
 		
 		startHook(joyStick);
-		initDebug();
+		//initDebug();
 	}
 	public Hook() {
 		// TODO Auto-generated constructor stub
@@ -119,6 +119,7 @@ public class Hook extends AbstractAbility {
 			temp = parent.teamObjects.get(i);
 			if(link.bounds.overlaps(temp.bounds)){
 				interact(temp);
+				links.pop();
 				return false;
 			}
 			
@@ -259,7 +260,6 @@ public class Hook extends AbstractAbility {
 
 			this.spotNumber = spotNumber;
 			rotation = angle;
-			initDebug(); 
 		}
 		
 		@Override

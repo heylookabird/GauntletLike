@@ -205,7 +205,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	public void defaultAttackCheck(Vector2 rightJoyStick) {
 		if (checkAttack(0) || countering) {
 			defaultAttackInit(rightJoyStick);
-			countering = false;
 			this.abilityCooldowns[0] = defaultAttackCooldown;
 		}
 	}

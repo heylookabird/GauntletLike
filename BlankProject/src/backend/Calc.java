@@ -109,15 +109,18 @@ public class Calc {
 	}
 
 	public static DIRECTION degreesToDirection(float direction) {
+		if(direction < 0){
+			direction = 360 + direction;
+		}
 		System.out.println(direction);
-		if(direction < 45 && direction > -45){
-			return DIRECTION.RIGHT;
-		}else if(direction > 45 && direction < 135){
+		if(direction > 45 && direction < 135){
 			return DIRECTION.UP;
 		}else if(direction > 135 && direction < 225){
 			return DIRECTION.LEFT;
 		}else if(direction > 225 && direction < 315){
 			return DIRECTION.DOWN;
+		}else if(direction < 45 || direction > 315){
+			return DIRECTION.RIGHT;
 		}
 		return null;
 	}

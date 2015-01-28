@@ -24,6 +24,12 @@ public class Beam extends AbstractAbility{
 		parent.stun(time);
 		
 	}
+	public Beam(ManipulatableObject parent, float angle, int dmg,
+			boolean alsoDamagesEnemies2, int width, int height, int length2,
+			float time) {
+
+	
+	}
 	@Override
 	public void update(float deltaTime) {
 		currentTime += deltaTime;
