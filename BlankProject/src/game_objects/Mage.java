@@ -1,6 +1,6 @@
 package game_objects;
 
-import game_objects.weapons.SwordAndShield;
+import game_objects.weapons.HealingStaff;
 import backend.Assets;
 
 import com.badlogic.gdx.math.Vector2;
@@ -20,11 +20,11 @@ public class Mage extends ManipulatableObject {
 		walkingRight = Assets.instance.mage.east;
 		walkingLeft = Assets.instance.mage.west;
 		
-		terminalVelocity.set(4, 4);
+		terminalVelocity.set(3, 3);
 		walkingTerminalV.set(terminalVelocity);
 		
 
-		primaryWeapon = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
+		primaryWeapon = new HealingStaff(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
 		this.equipableWeapons.add(primaryWeapon);
 
 		this.currentDirImg = upImg;

@@ -21,7 +21,8 @@ public class Warrior extends ManipulatableObject{
 		walkingRight = Assets.instance.mage.east;
 		walkingLeft = Assets.instance.mage.west;
 		
-		terminalVelocity.set(4, 4);
+		
+		terminalVelocity.set(2.5f, 2.5f);
 		walkingTerminalV.set(terminalVelocity);
 		
 		DualBlades blades = new DualBlades(this, 1, .25f, new Vector2(dimension.x /2, dimension.y / 2));
@@ -30,6 +31,9 @@ public class Warrior extends ManipulatableObject{
 		SwordAndShield joes = new SwordAndShield(this, 1, .25f, new Vector2(dimension.x/2, dimension.y/2));
 		this.equipableWeapons.add(joes);
 		this.equipWeapon(joes);
+
+		this.currentDirImg = upImg;
+		this.setAnimation(walkingUp);
 
 		
 	}

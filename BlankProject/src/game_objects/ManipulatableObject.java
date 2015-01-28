@@ -106,6 +106,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	private void init() {
 		leftJoyStick = new Vector2();
+		
+		terminalVelocity.set(movementSpeed, movementSpeed);
+		//walkingTerminalV.set(terminalVelocity);
 
 		rightJoyStick = new Vector2();
 		walkingTerminalV = new Vector2(terminalVelocity);
@@ -423,6 +426,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 		primaryWeapon.setPosition();
+		
+		if(isPlayerObject)
+		System.out.println(terminalVelocity);
 
 	}
 
