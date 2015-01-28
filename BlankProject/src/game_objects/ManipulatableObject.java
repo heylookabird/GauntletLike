@@ -77,6 +77,8 @@ public class ManipulatableObject extends AbstractGameObject {
 	private TextureRegion shieldImg = Assets.instance.effects.iceExplosionImgs
 			.peek();
 
+	private boolean aiming;
+
 	public enum STATE {
 		NOT_MOVING, MOVING, ATTACKING, KNOCKED;
 
@@ -367,7 +369,9 @@ public class ManipulatableObject extends AbstractGameObject {
 		// Collision Check this object once for x only
 		if (!collision(deltax, 0)) {
 
-			position.x += deltax;
+			if(!aiming)
+				position.x += deltax;
+			
 		}
 
 	}
@@ -383,7 +387,8 @@ public class ManipulatableObject extends AbstractGameObject {
 		// If you didn't collide in y axis,
 		// add deltaY to the position.y
 		if (!collision(0, deltay)) {
-			position.y += deltay;
+			if(!aiming)
+				position.y += deltay;
 		}
 
 	}
@@ -406,9 +411,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		if (primaryWeapon != null) {
 			primaryWeapon.update(deltaTime);
-	/*		if (counter) {
-				counter = primaryWeapon.handleCounter(deltaTime);
-			}*/
 		}
 
 		moveX(deltaTime);
@@ -600,6 +602,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	private void pollKeyInput() {
 		if (!isPlayerObject)
 			return;
+		
 
 		if (!(right && left)) {
 
@@ -671,19 +674,19 @@ public class ManipulatableObject extends AbstractGameObject {
 	public void activatePlayerAbility(int ability) {
 		switch (ability) {
 		case 1:
-			this.primaryWeapon.activateAbility1(facing);
+			this.primaryWeapon.activateAbility1(Calc.directionToDegrees(facing));
 			break;
 
 		case 2:
-			this.primaryWeapon.activateAbility2(facing);
+			this.primaryWeapon.activateAbility2(Calc.directionToDegrees(facing));
 			break;
 
 		case 3:
-			this.primaryWeapon.activateAbility3(facing);
+			this.primaryWeapon.activateAbility3(Calc.directionToDegrees(facing));
 			break;
 
 		case 4:
-			this.primaryWeapon.activateAbility4(facing);
+			this.primaryWeapon.activateAbility4(Calc.directionToDegrees(facing));
 			break;
 		}
 
@@ -712,19 +715,19 @@ public class ManipulatableObject extends AbstractGameObject {
 			break;
 
 		case Keys.NUM_1:
-			primaryWeapon.activateAbility1(facing);
+			primaryWeapon.activateAbility1(Calc.directionToDegrees(facing));
 			break;
 
 		case Keys.NUM_2:
-			primaryWeapon.activateAbility2(facing);
+			primaryWeapon.activateAbility2(Calc.directionToDegrees(facing));
 			break;
 
 		case Keys.NUM_3:
-			primaryWeapon.activateAbility3(facing);
+			primaryWeapon.activateAbility3(Calc.directionToDegrees(facing));
 			break;
 
 		case Keys.NUM_4:
-			primaryWeapon.activateAbility4(facing);
+			primaryWeapon.activateAbility4(Calc.directionToDegrees(facing));
 			break;
 
 		case Keys.SPACE:
@@ -777,22 +780,28 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	// CONTROLLER FUNCTIONALITY
 	public void buttonDown(int buttonIndex) {
+		Vector2 leftJoyStick = new Vector2(this.leftJoyStick);
+		leftJoyStick.y *= -1;
 		switch (buttonIndex) {
 
 		case Xbox360.BUTTON_A:
-			primaryWeapon.activateAbility1(facing);
+			primaryWeapon.activateAbility1(Calc.atan2(leftJoyStick));
 			break;
 
 		case Xbox360.BUTTON_B:
-			primaryWeapon.activateAbility2(facing);
+			primaryWeapon.activateAbility2(Calc.atan2(leftJoyStick));
 			break;
 
 		case Xbox360.BUTTON_X:
-			primaryWeapon.activateAbility3(facing);
+			primaryWeapon.activateAbility3(Calc.atan2(leftJoyStick));
+			
 			break;
 
 		case Xbox360.BUTTON_Y:
-			primaryWeapon.activateAbility4(facing);
+			primaryWeapon.activateAbility4(Calc.atan2(leftJoyStick));
+			break;
+		case Xbox360.AXIS_RIGHT_TRIGGER:
+			aiming = true;
 			break;
 
 		case Xbox360.BUTTON_START:
@@ -808,6 +817,7 @@ public class ManipulatableObject extends AbstractGameObject {
 	}
 
 	public void buttonUp(int buttonIndex) {
+		System.out.println(buttonIndex);
 		switch (buttonIndex) {
 
 		case Xbox360.BUTTON_A:
@@ -816,6 +826,9 @@ public class ManipulatableObject extends AbstractGameObject {
 
 		case Xbox360.BUTTON_B:
 
+			break;
+		case Xbox360.BUTTON_LB:
+			aiming = false;
 			break;
 
 		case Xbox360.BUTTON_RB:
@@ -843,7 +856,7 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void takeKnockback(float velocity, float knockbackAngle,
 			float knockbackTime) {
-		System.out.println("Knocked back  by " + velocity * knockbackAngle
+		System.out.println("Knocked back  by " + velocity * knockbackTime
 				+ " units");
 
 		if (knockbackTime <= 0)
@@ -921,7 +934,6 @@ public class ManipulatableObject extends AbstractGameObject {
 
 	public void removePassive(AbstractAbility ability) {
 		this.passiveAbilities.removeValue(ability, false);
-		System.out.println("ManObj remove");
 	}
 
 	public boolean checkPassive(Effect effect) {

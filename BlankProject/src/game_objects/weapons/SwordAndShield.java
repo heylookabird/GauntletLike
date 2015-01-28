@@ -62,14 +62,14 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	
 	@Override
-	public void ability1(DIRECTION direction) {
+	public void ability1(float direction) {
 		Charge charge = new Charge(parent, parent.position.x , parent.position.y,
 				parent.dimension.x, parent.dimension.y, .25f, .25f);
 		LevelStage.interactables.add(charge);
 		
 	}
 	@Override
-	public void ability2(DIRECTION direction) {
+	public void ability2(float direction) {
 		shield = new ShieldThrow(parent, parent.position.x , parent.position.y,
 				parent.dimension.x, parent.dimension.y, .3f, 7, 7, this);
 		shieldOn = false;
@@ -78,7 +78,7 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	
 	@Override
-	public void ability3(DIRECTION direction) {
+	public void ability3(float direction) {
 		Counter counter = new Counter(parent, parent.position.x , parent.position.y,
 				parent.dimension.x, parent.dimension.y);
 		
@@ -87,7 +87,7 @@ public class SwordAndShield extends AbstractWeapon {
 	}
 	
 	@Override
-	public void ability4(DIRECTION direction) {
+	public void ability4(float direction) {
 		System.out.println(shieldOn + " sword and sheild");
 		Taunt taunt = new Taunt(parent, shieldOn ? parent.getCenter().x - 4 : shield.getCenter().x - 4, shieldOn ? parent.getCenter().y - 4 : shield.getCenter().y - 4, 8, 8, shieldOn);
 		LevelStage.interactables.add(taunt);

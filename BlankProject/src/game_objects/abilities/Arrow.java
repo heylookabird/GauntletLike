@@ -1,6 +1,7 @@
 package game_objects.abilities;
 
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
@@ -19,7 +20,18 @@ public class Arrow extends AbstractAbility {
 
 		double angle = Math.atan2(velocity.y, velocity.x);
 		rotation = (float) Math.toDegrees(angle);
-		this.knockbackTime = .05f;
+		this.knockbackTime = .8f;
+		this.knockbackSpeed = 7;
+	}
+	public Arrow(ManipulatableObject parent, int damage, float x, float y, float width, float height, float speed, float angle) {
+		super(parent, x, y, width, height, angle, speed);
+		this.damage = damage;
+		removesItself = true;
+		this.lifeTimer = .5f;
+		this.setImage(Assets.instance.weapons.sword);
+
+		this.knockbackTime = .8f;
+		this.knockbackSpeed = 7;
 	}
 
 	@Override

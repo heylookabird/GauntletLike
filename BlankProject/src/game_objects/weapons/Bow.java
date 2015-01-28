@@ -107,11 +107,12 @@ public class Bow extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability1(DIRECTION direction) {
+	public void ability1(float direction) {
 		Arrow attack = new ExplodingArrow(parent, 1, 0, 0);
+		DIRECTION dir = Calc.degreesToDirection(direction);
 
 		// to shoot the arrow in correct spot
-		switch (direction) {
+		switch (dir) {
 
 		case UP:
 			attack.velocity.set(0, arrowSpeed);
@@ -134,11 +135,12 @@ public class Bow extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability2(DIRECTION direction) {
+	public void ability2(float direction) {
 		float speed = arrowSpeed/2f;
+		DIRECTION dir = Calc.degreesToDirection(direction);
 		if (!trapOut) {
 			exploding = new TrapArrow(parent, 3, 0, 0);
-			switch (direction) {
+			switch (dir) {
 
 			case UP:
 				exploding.velocity.set(0, speed);
@@ -169,11 +171,13 @@ public class Bow extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability3(DIRECTION direction) {
+	public void ability3(float direction) {
 		Arrow attack = new ProxyArrow(parent, 3, 0, 0);
 		float speed = arrowSpeed/3f;
+		DIRECTION dir = Calc.degreesToDirection(direction);
+		System.out.println(dir);
 		// to shoot the arrow in correct spot
-		switch (direction) {
+		switch (dir) {
 
 		case UP:
 			attack.velocity.set(0, speed);
@@ -196,11 +200,9 @@ public class Bow extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability4(DIRECTION direction) {
-		float speed = arrowSpeed/4f;
-		float angle = 0;
+	public void ability4(float direction) {
+		float angle = direction;
 		
-		angle = Calc.directionToDegrees(direction);
 		Hook attack = new Hook(parent, angle);
 
 		// to shoot the arrow in correct spot

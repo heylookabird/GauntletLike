@@ -15,8 +15,14 @@ public class Calc {
 	}
 	
 	public static float atan2(Vector2 origin){
-		
-		return (float)(Math.toDegrees(Math.atan2(origin.y, origin.x)));
+		System.out.println(origin);
+		float x = (float)(Math.toDegrees(Math.atan2(origin.y, origin.x)));
+		if(x < 0){
+			x = 360 + x;
+		}
+		System.out.println(x);
+
+		return x;
 	}
 
 	public static ManipulatableObject findClosestEnemy(AbstractGameObject origin, Array<ManipulatableObject> targetArray){
@@ -100,5 +106,19 @@ public class Calc {
 			return 270;
 		
 		return 0;
+	}
+
+	public static DIRECTION degreesToDirection(float direction) {
+		System.out.println(direction);
+		if(direction < 45 && direction > -45){
+			return DIRECTION.RIGHT;
+		}else if(direction > 45 && direction < 135){
+			return DIRECTION.UP;
+		}else if(direction > 135 && direction < 225){
+			return DIRECTION.LEFT;
+		}else if(direction > 225 && direction < 315){
+			return DIRECTION.DOWN;
+		}
+		return null;
 	}
 }

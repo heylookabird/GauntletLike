@@ -56,7 +56,25 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		return false;
 	}
 
-	public void activateAbility1(DIRECTION direction) {
+
+	// override methods
+	public void ability1(float direction) {
+
+	}
+
+	public void ability2(float direction) {
+
+	}
+
+	public void ability3(float direction) {
+
+	}
+
+	public void ability4(float direction) {
+
+	}
+	
+	public void activateAbility1(float direction) {
 		if (checkAttack(1)) {
 			ability1(direction);
 			abilityCooldowns[1] = ability1CoolDown;
@@ -64,24 +82,8 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 		}
 	}
 
-	// override methods
-	public void ability1(DIRECTION direction) {
 
-	}
-
-	public void ability2(DIRECTION direction) {
-
-	}
-
-	public void ability3(DIRECTION direction) {
-
-	}
-
-	public void ability4(DIRECTION direction) {
-
-	}
-
-	public void activateAbility2(DIRECTION direction) {
+	public void activateAbility2(float direction) {
 		if (checkAttack(2)) {
 			ability2(direction);
 			abilityCooldowns[2] = ability2CoolDown;
@@ -89,7 +91,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	}
 
-	public void activateAbility3(DIRECTION direction) {
+	public void activateAbility3(float direction) {
 		if (checkAttack(2)) {
 			ability3(direction);
 			abilityCooldowns[2] = ability3CoolDown;
@@ -97,14 +99,15 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	}
 
-	public void activateAbility4(DIRECTION direction) {
+	public void activateAbility4(float direction) {
 		if (checkAttack(3)) {
 			ability4(direction);
 			abilityCooldowns[3] = ability4CoolDown;
 
 		}
 	}
-
+	
+	
 
 	public void activateDodge(Vector2 rightJoyStick) {
 

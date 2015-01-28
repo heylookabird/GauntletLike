@@ -23,7 +23,6 @@ public class BasicMelee extends AbstractAbility {
 		super(parent, parent.position.x, parent.position.y, 1, 1);
 		this.damage = damage;
 		removesItself = true;
-		parent.stopMove();
 		//initDebug();
 		
 		this.setAnimation(Assets.instance.effects.iceExplosion);
@@ -62,7 +61,6 @@ public class BasicMelee extends AbstractAbility {
 
 
 		}
-		parent.stopMove();
 		parent.state = STATE.ATTACKING;
 		
 	}
@@ -72,7 +70,6 @@ public class BasicMelee extends AbstractAbility {
 		super(parent, parent.position.x, parent.position.y, size, size);
 		this.damage = damage;
 		removesItself = true;
-		parent.stopMove();
 		//initDebug();
 		this.setAnimation(Assets.instance.effects.iceExplosion);
 
@@ -101,7 +98,6 @@ public class BasicMelee extends AbstractAbility {
 		}
 		
 		this.defaultKnockBackAngle(direction);
-		parent.stopMove();
 		parent.state = STATE.ATTACKING;
 	}
 
@@ -116,7 +112,6 @@ public class BasicMelee extends AbstractAbility {
 	@Override
 	protected void removeThyself() {
 		parent.checkStopMove();
-		parent.stopMove();
 		super.removeThyself();
 	}
 
@@ -133,9 +128,6 @@ public class BasicMelee extends AbstractAbility {
 					obj.takeHitFor(damage, this);
 				} 
 					
-
-
-
 			}
 
 		}

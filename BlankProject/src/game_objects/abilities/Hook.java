@@ -161,22 +161,27 @@ public class Hook extends AbstractAbility {
 			
 			hookCD = 4;
 
-			if(puller != null && pulled != null){
+			if(puller != null){
 				puller.stunTimer = 0;
+				puller.invulnerable = false;
+				puller.stopMove();
+
+			}
+			if(pulled != null){
+			
+			
 				pulled.stunTimer = 0;
 				pulled.invulnerable = false;
-				puller.invulnerable = false;
 				pulled.stopMove();
-				puller.stopMove();
 				pulled.terminalVelocity.set(pulled.walkingTerminalV);
 			}
+			parent.stunTimer = 0;
 			//Reset variables for the next grapple
 			deChaining = false;
 			hit = false;
 			links.clear();
 			//System.out.println("Done with last link");
 		}
-		
 	}
 	
 	@Override
@@ -186,7 +191,7 @@ public class Hook extends AbstractAbility {
 			ManipulatableObject obj = (ManipulatableObject) couple;
 			if (!this.isSameTeam(obj)) {
 				stopHookAndPull(parent, obj);				
-			}else{
+			}else if(obj != parent){
 				stopHookAndPull(obj, parent);
 			}
 			
@@ -194,12 +199,13 @@ public class Hook extends AbstractAbility {
 			parent.invulnerable = true;
 
 			obj.stun(100);
-			parent.invulnerable = true;
+			obj.invulnerable = true;
 		}
-		//super.interact(couple);
+		super.interact(couple);
 	}
 	@Override
 	public void update(float deltaTime){
+		//System.out.println(parent.stunTimer);
 		super.update(deltaTime);
 		if(chaining){
 			timeBetweenChains += deltaTime;
@@ -223,7 +229,7 @@ public class Hook extends AbstractAbility {
 			}
 		}
 		
-		if(hookCD > 0){
+		if(hookCD > 2){
 			hookCD -= deltaTime;
 		}
 		
@@ -264,9 +270,9 @@ public class Hook extends AbstractAbility {
 			float y = Calc.sin(rotation);
 			Vector2 center = parent.getCenter();
 			
-			this.position.set(center.x + spotNumber * x * dimension.x,
+			this.position.set(center.x  + spotNumber * x * dimension.x,
 					center.y + spotNumber * y * dimension.x);
-			bounds.setPosition(position);
+			bounds.setPosition(position.x + dimension.x * x, position.y + dimension.x * y);
 		}
 		
 	}

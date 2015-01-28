@@ -7,6 +7,7 @@ import game_objects.abilities.Slash;
 import game_objects.abilities.Teleport;
 import game_objects.abilities.ThrowSword;
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -45,42 +46,47 @@ public class DualBlades extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability1(DIRECTION direction) {
-		BasicMelee attack = new BasicMelee(parent, 4, 1, direction, 2);
+	public void ability1(float direction) {
+		DIRECTION dir = Calc.degreesToDirection(direction);
+
+		BasicMelee attack = new BasicMelee(parent, 4, 1, dir, 2);
 
 		LevelStage.interactables.add(attack);
 	}
 
 	@Override
-	public void ability2(DIRECTION direction) {
+	public void ability2(float direction) {
 		Slash attack;
+		DIRECTION dir = Calc.degreesToDirection(direction);
 
 		if (dualBlade)
-			attack = new Slash(parent, direction, 3, true);
+			attack = new Slash(parent, dir, 3, true);
 		else
-			attack = new Slash(parent, direction, 3, false);
+			attack = new Slash(parent, dir, 3, false);
 
 		LevelStage.interactables.add(attack);
 
 	}
 
 	@Override
-	public void ability3(DIRECTION direction) {
+	public void ability3(float direction) {
+		DIRECTION dir = Calc.degreesToDirection(direction);
+
 		if (this.dualBlade) {
 
 			int arrowDamage = 2;
-			if (direction == DIRECTION.LEFT) {
+			if (dir == DIRECTION.LEFT) {
 				secondary = new ThrowSword(parent, arrowDamage, -throwSpeed, 0, 1);
 				secondary.setKnockBackAngle(180);
-			} else if (direction == DIRECTION.RIGHT) {
+			} else if (dir == DIRECTION.RIGHT) {
 				secondary = new ThrowSword(parent, arrowDamage, throwSpeed, 0, 1);
 				secondary.setKnockBackAngle(0);
 
-			} else if (direction == DIRECTION.DOWN) {
+			} else if (dir == DIRECTION.DOWN) {
 				secondary = new ThrowSword(parent, arrowDamage, 0, -throwSpeed, 1);
 				secondary.setKnockBackAngle(270);
 
-			} else if (direction == DIRECTION.UP) {
+			} else if (dir == DIRECTION.UP) {
 				secondary = new ThrowSword(parent, arrowDamage, 0, throwSpeed, 1);
 				secondary.setKnockBackAngle(90);
 
@@ -98,7 +104,7 @@ public class DualBlades extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability4(DIRECTION direction) {
+	public void ability4(float direction) {
 		if (dualBlade) {
 
 			dualBlade = false;

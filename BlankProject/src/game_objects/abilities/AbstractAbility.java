@@ -10,6 +10,7 @@ import game_objects.abilities.effects.Poison;
 import java.util.Vector;
 
 import backend.Assets;
+import backend.Calc;
 import backend.LevelStage;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -40,7 +41,12 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		timers = new Vector<Float>();
 		deletionTime = 2f;
 	}
+	public AbstractAbility(ManipulatableObject parent, float x, float y, float width, float height, float angle, float speed){
+		super(x, y, width, height);
+		this.rotation = angle;
+		this.velocity.set(speed * Calc.cos(angle), speed * Calc.sin(angle));
 
+	}
 	public AbstractAbility(ManipulatableObject parent, float x, float y,
 			float width, float height) {
 		super(x, y, width, height);

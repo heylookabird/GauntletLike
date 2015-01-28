@@ -11,6 +11,7 @@ public class ExplodingArrow extends Arrow {
 			float xVelocity, float yVelocity) {
 		super(parent, damage, xVelocity, yVelocity);
 		priority = 2;
+		
 	}
 
 	@Override
