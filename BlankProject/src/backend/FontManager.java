@@ -13,8 +13,13 @@ public class FontManager {
 	public FontManager(SpriteBatch batch) {
 		this.batch = batch;
 		strings = new Array<GameString>();
+		try{
 		blackFont = new BitmapFont(Gdx.files.internal("font/font.fnt"),
 				Gdx.files.internal("font/font.png"), false);
+		}catch(Exception e){
+			blackFont = new BitmapFont(Gdx.files.internal("font\font.fnt"),
+					Gdx.files.internal("font\font.png"), false);
+		}
 	}
 	
 	public BitmapFont getFont(){

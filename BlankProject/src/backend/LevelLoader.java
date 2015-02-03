@@ -2,8 +2,8 @@ package backend;
 
 import game_map_classes.CornerConcave;
 import game_objects.GroundTile;
+import game_objects.Rogue;
 import game_objects.Wall;
-import game_objects.Warrior;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
@@ -57,7 +57,7 @@ public class LevelLoader {
 		if(!players){
 			int x = 0;
 			do{
-				Warrior player = new Warrior(Controllers.getControllers().size > 0);
+				Rogue player = new Rogue(Controllers.getControllers().size > 0);
 				player.position.set(Constants.viewportWidth / 2 + x * 2, Constants.viewportHeight /2);
 				
 				
