@@ -251,9 +251,9 @@ public abstract class AbstractGameObject {
 					flipY);
 		}
 			
-			if(debug){
-				batch.draw(debugTex, bounds.x, bounds.y, bounds.width, bounds.height);
-			}
+		if(debug){
+			batch.draw(debugTex, bounds.x, bounds.y, bounds.width, bounds.height);
+		}
 
 	}
 	

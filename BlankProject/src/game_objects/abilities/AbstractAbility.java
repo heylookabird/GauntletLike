@@ -34,6 +34,8 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	boolean removesItself = true;
 	protected Vector<Float> timers;
 	protected Float deletionTime;
+	protected boolean willHandleCollision = true;
+	
 
 	public AbstractAbility() {
 		super();
@@ -101,6 +103,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	public void update(float deltaTime) {
 
 		super.update(deltaTime);
+		System.out.println("Percent" );
 
 		manageObjectsHit(deltaTime);
 
@@ -113,19 +116,25 @@ public abstract class AbstractAbility extends AbstractGameObject {
 			}
 		}
 
-		deltax = velocity.x;
-
-		if (!collision(deltax, 0)) {
-			position.x += deltax;
-		}
-
-		deltay = velocity.y;
-		if (!collision(0, deltay)) {
-			position.y += deltay;
+		if(willHandleCollision){
+			deltax = velocity.x;
+			if (!collision(deltax, 0)) {
+				position.x += deltax;
+			}
+	
+			deltay = velocity.y;
+			if (!collision(0, deltay)) {
+				position.y += deltay;
+			}
+		}else{
+			handleCollision();
 		}
 
 	}
 
+	protected void handleCollision() {
+		
+	}
 	private void manageObjectsHit(float deltaTime) {
 		for (int i = 0; i < timers.size(); i++) {
 			Float temp = timers.get(i);
@@ -200,10 +209,6 @@ public abstract class AbstractAbility extends AbstractGameObject {
 
 	}
 
-	@Override
-	public void render(SpriteBatch batch) {
-
-		super.render(batch);
-	}
+	
 
 }

@@ -35,14 +35,19 @@ public class HealingStaff extends AbstractWeapon {
 
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
-		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, .3f);
+		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, 1f);
 		LevelStage.interactables.add(defaultAttack);
 	}
+	
+	
 	@Override
 	protected void defaultAttackInit(Vector2 rightJoyStick) {
 		Vector2 x = new Vector2(rightJoyStick);
 		x.y *= -1;
-		defaultAttack = new Beam(parent, Calc.atan2(x), 4, true, 1, 1, 7, .3f);
+		System.out.println("working");
+		defaultAttack = new Beam(parent, Calc.atan2(x), 4, true, 1, 1, 7, 1f);
+		LevelStage.interactables.add(defaultAttack);
+
 
 	}
 	@Override
