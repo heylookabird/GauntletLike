@@ -20,8 +20,9 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	protected float[] abilityCooldowns;
 
 	// ATTACKS
-	protected float /*defaultAttackTimer,*/ defaultAttackCooldown;
-	protected float shieldMax = 20, shieldRecharge = 5, shieldDrain = .2f, counterwindow = .5f, countertime = 0;
+	protected float /* defaultAttackTimer, */defaultAttackCooldown;
+	protected float shieldMax = 20, shieldRecharge = 5, shieldDrain = .2f,
+			counterwindow = .5f, countertime = 0;
 	public float shield = 20;
 	protected AbstractAbility defaultAttack;
 	protected int ability1CoolDown;
@@ -31,6 +32,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	public int swing = 0;
 	public String name;
 	private boolean countering = false;
+	private float coolDownSpeed = .05f;
 
 	public AbstractWeapon(ManipulatableObject parent, float width,
 			float height, Vector2 positionOffset) {
@@ -46,16 +48,16 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	}
 
-	public float getShieldRatio(){
-		return shield/shieldMax;
+	public float getShieldRatio() {
+		return shield / shieldMax;
 	}
+
 	private boolean checkAttack(int index) {
 		if (abilityCooldowns[index] < 0)
 			return true;
 
 		return false;
 	}
-
 
 	// override methods
 	public void ability1(float direction) {
@@ -73,7 +75,7 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	public void ability4(float direction) {
 
 	}
-	
+
 	public void activateAbility1(float direction) {
 		if (checkAttack(1)) {
 			ability1(direction);
@@ -81,7 +83,6 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 		}
 	}
-
 
 	public void activateAbility2(float direction) {
 		if (checkAttack(2)) {
@@ -106,15 +107,10 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 		}
 	}
-	
-	
 
 	public void activateDodge(Vector2 rightJoyStick) {
 
 	}
-
-
-
 
 	public void moveRight() {
 		rotation = 0;
@@ -151,21 +147,35 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 	}
 
 	private void updateCooldowns(float deltaTime) {
-		
-		if(!parent.shielding)
+
+		if (!parent.shielding)
 			shield += shieldRecharge;
 		else
 			shield -= shieldDrain;
-		
+
 		shield = MathUtils.clamp(shield, -2, shieldMax);
 
 		for (int i = 0; i < this.abilityCooldowns.length; i++) {
-			abilityCooldowns[i] -= deltaTime;
+			abilityCooldowns[i] -= coolDownSpeed;
 		}
-		
+
 		handleCounter(deltaTime);
 
-		
+	}
+
+	public void changeCoolDownSpeed(float speed) {
+		this.coolDownSpeed = speed;
+	}
+
+	public void setDefaultCooldown() {
+		this.coolDownSpeed = .05f;
+	}
+
+	public String getCooldowns() {
+		return "default " + abilityCooldowns[0] + ", ab1 "
+				+ abilityCooldowns[1] + ", ab2 " + abilityCooldowns[2]
+				+ ", ab3 " + abilityCooldowns[3] + ", ab4 "
+				+ abilityCooldowns[4];
 	}
 
 	public void setPosition() {
@@ -215,8 +225,8 @@ public abstract class AbstractWeapon extends AbstractGameObject {
 
 	public void handleCounter(float deltaTime) {
 		this.countertime -= deltaTime;
-		
-		if(countertime < 0){
+
+		if (countertime < 0) {
 			countering = false;
 			swing = 0;
 		}

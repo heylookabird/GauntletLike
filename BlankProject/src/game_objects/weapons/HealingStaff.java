@@ -3,9 +3,9 @@ package game_objects.weapons;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Beam;
+import game_objects.abilities.CooldownAccelerate;
 import game_objects.abilities.Heal;
-import game_objects.abilities.IceShard;
-import game_objects.abilities.MeatHook;
+import game_objects.abilities.HolyShield;
 import backend.Assets;
 import backend.Calc;
 import backend.LevelStage;
@@ -24,6 +24,11 @@ public class HealingStaff extends AbstractWeapon {
 		defaultAttackCooldown = 1f;
 		image = Assets.instance.weapons.sword;
 		moveUp();
+		
+		this.ability1CoolDown = 1;
+		this.ability2CoolDown = 20;
+		this.ability3CoolDown = 30;
+		this.ability4CoolDown = 40;
 
 		name = "Healing Staff";
 	}
@@ -31,18 +36,6 @@ public class HealingStaff extends AbstractWeapon {
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
 		defaultAttack = new Beam(parent, direction, 4, true, 1, 1, 7, .3f);
-
-		/*if(direction == DIRECTION.LEFT)
-			defaultAttack = new Heal(parent, healRate, -speed, 0, true);
-
-			else if(direction == DIRECTION.RIGHT)
-			defaultAttack = new Heal(parent, healRate, speed, 0, true);
-			
-			else if(direction == DIRECTION.DOWN)
-				defaultAttack = new Heal(parent, healRate, 0, -speed, true);
-			else if(direction == DIRECTION.UP)
-				defaultAttack = new Heal(parent, healRate, 0, speed, true);
-		*/
 		LevelStage.interactables.add(defaultAttack);
 	}
 	@Override
@@ -54,7 +47,7 @@ public class HealingStaff extends AbstractWeapon {
 	}
 	@Override
 	public void ability1(float direction) {
-		Heal attack = new Heal(parent, healRate, true);
+		Heal attack = new Heal(parent, healRate, 1, false);
 		
 		LevelStage.interactables.add(attack);
 	}
@@ -62,21 +55,22 @@ public class HealingStaff extends AbstractWeapon {
 	@Override
 	public void ability2(float direction) {
 
-		IceShard attack = new IceShard(parent, 1, parent.position.x, parent.position.y, 1, 0, parent.facing);
+		Heal attack = new Heal(parent, healRate, 3, true);
 		LevelStage.interactables.add(attack);
 	}
 
 	@Override
 	public void ability3(float direction) {
-		MeatHook attack = new MeatHook(parent, 0, direction, .125f);
+		HolyShield attack = new HolyShield(parent, 20, 3, true);
 		LevelStage.interactables.add(attack);
 
 	}
 
 	@Override
 	public void ability4(float direction) {
-
-			//LevelStage.interactables.add(attack);
+		System.out.println("ab4");
+		CooldownAccelerate attack = new CooldownAccelerate(parent, 5f);
+		LevelStage.interactables.add(attack);
 		
 	}
 

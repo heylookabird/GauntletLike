@@ -20,8 +20,8 @@ public class Heal extends AbstractAbility{
 		this.velocity.set(xVelocity, yVelocity);
 	}
 	
-	public Heal(ManipulatableObject parent, int heal, boolean alsoDamagesEnemies){
-		super(parent, parent.position.x, parent.position.y, 1, 1);
+	public Heal(ManipulatableObject parent, int heal, float size, boolean alsoDamagesEnemies){
+		super(parent, parent.position.x, parent.position.y, size, size);
 		this.damage = heal;
 		removesItself = true;
 		this.lifeTimer = 1f;
@@ -29,6 +29,8 @@ public class Heal extends AbstractAbility{
 		this.setImage(Assets.instance.weapons.sword);
 		this.velocity.set(0, 0);
 		self = true;
+		
+		this.position.set(parent.position.x - size/2f, parent.position.y - size/2f);
 	}
 	
 	@Override

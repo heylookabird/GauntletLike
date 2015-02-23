@@ -378,6 +378,10 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 	}
+	
+	public AbstractWeapon getWeapon(){
+		return primaryWeapon;
+	}
 
 	public void activateAI(AbstractAi ai) {
 		this.Ai = ai;
@@ -426,9 +430,7 @@ public class ManipulatableObject extends AbstractGameObject {
 		}
 
 		primaryWeapon.setPosition();
-		
-		if(isPlayerObject)
-		System.out.println(terminalVelocity);
+	
 
 	}
 
@@ -972,6 +974,64 @@ public class ManipulatableObject extends AbstractGameObject {
 			Ai.target = null;
 			Ai.targetSpot = null;
 		}
+	}
+	
+	public ManipulatableObject findClosestEnemy(){
+		ManipulatableObject target = enemyTeamObjects.first();
+		float closestDistance = 100;
+		for(int i = 0; i < enemyTeamObjects.size; i++){
+			ManipulatableObject obj = enemyTeamObjects.get(i);
+			
+			float distance = getCenter().dst2(obj.getCenter());
+			
+			
+			if(distance < closestDistance){
+				target = obj;
+				closestDistance = distance;
+			}
+			
+		}
+		
+		return target;
+	}
+	
+	
+
+	
+	public ManipulatableObject findWeakestEnemy(){
+		ManipulatableObject target = enemyTeamObjects.first();
+		float lowestHealth = 10000000f;
+		for(int i = 0; i < enemyTeamObjects.size; i++){
+			ManipulatableObject enemy = enemyTeamObjects.get(i);
+			float originX = position.x + origin.x, originY = position.y + origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
+			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
+				
+			if(enemy.hp < lowestHealth)
+					target = enemy;
+			
+		}
+		
+		return target;
+	}
+	
+
+	
+	public ManipulatableObject findClosestAlly(){
+		ManipulatableObject target = null;
+		float closestDistance = 100000;
+		//same code as enemy
+		for(int i = 0; i < teamObjects.size; i++){
+			ManipulatableObject enemy = teamObjects.get(i);
+			float originX = position.x + origin.x, originY = position.y + origin.y, enOriginX = enemy.position.x + enemy.origin.x, enOriginY = enemy.position.y + enemy.origin.y;
+			float distance = (originX - enOriginX) * (originX - enOriginX) + (originY - enOriginY)* (originY - enOriginY);
+			if(distance < closestDistance){
+				enemy = target;
+				closestDistance = distance;
+			}
+			
+		}
+		
+		return target;
 	}
 
 }
