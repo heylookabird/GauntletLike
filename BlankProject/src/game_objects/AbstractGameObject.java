@@ -145,6 +145,7 @@ public abstract class AbstractGameObject {
 					deltay = 0;
 				}
 				temp = true;
+				interact(platform);
 			}
 		}
 	
@@ -162,13 +163,14 @@ public abstract class AbstractGameObject {
 					deltay = 0;
 				}
 				temp = true;
+				interact(platform);
 			}
 		}
 
 		// Collide with objects that have an effect on collision
 		for (AbstractGameObject interactable : LevelStage.interactables) {
 			if (bounds.overlaps(interactable.bounds)) {
-				interactable.interact(this);
+				interact(interactable);
 			}
 		}
 		return temp;

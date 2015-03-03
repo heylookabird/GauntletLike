@@ -21,11 +21,11 @@ public class Wall extends AbstractGameObject {
 				wallImages.add(reference.get((int) (Math.random() * reference.size)));
 			}
 		}
+		
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
-
 		int count = 0;
 		for (int j = 0; j < bounds.height; j++) {
 			for (int i = 0; i < bounds.width; i++) {

@@ -61,7 +61,7 @@ public class Arrow extends AbstractAbility {
 			ManipulatableObject obj = (ManipulatableObject) couple;
 			if (!this.isSameTeam(obj)) {
 				obj.takeHitFor(damage, this);
-				lifeTimer = 0;
+				lifeTimer = -1;
 			}
 		}
 	}

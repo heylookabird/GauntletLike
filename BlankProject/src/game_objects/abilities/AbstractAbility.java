@@ -1,9 +1,9 @@
 package game_objects.abilities;
 
+import game_map_classes.CornerConcave;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
-import game_objects.Wall;
 import game_objects.abilities.effects.Cold;
 import game_objects.abilities.effects.Poison;
 
@@ -13,7 +13,6 @@ import backend.Assets;
 import backend.Calc;
 import backend.LevelStage;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public abstract class AbstractAbility extends AbstractGameObject {
@@ -103,8 +102,6 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	public void update(float deltaTime) {
 
 		super.update(deltaTime);
-		System.out.println("Percent" );
-
 		manageObjectsHit(deltaTime);
 
 		// REMOVES ITSELF
@@ -156,9 +153,10 @@ public abstract class AbstractAbility extends AbstractGameObject {
 
 	@Override
 	public void interact(AbstractGameObject couple) {
-		if (couple instanceof Wall) {
-			lifeTimer = 0;
+		if (couple instanceof CornerConcave) {
+			lifeTimer = -1;
 			cancelled = true;
+			System.out.println("hit wall");
 		}
 
 		if (couple instanceof AbstractAbility) {
