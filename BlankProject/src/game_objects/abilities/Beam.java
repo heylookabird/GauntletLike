@@ -66,7 +66,7 @@ public class Beam extends AbstractAbility {
 	public void render(SpriteBatch batch) {
 
 		Vector2 origin = parent.getCenter();
-
+		origin.set(origin.x - bounds.width / 2, origin.y - bounds.width / 2);
 		for(int i = 0; i < numCubes; i++){
 			if(debug){
 				bounds.setPosition(origin.x + Calc.cos(angle) * i,

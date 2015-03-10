@@ -33,6 +33,16 @@ public class Arrow extends AbstractAbility {
 		this.knockbackTime = .8f;
 		this.knockbackSpeed = 7;
 	}
+	public Arrow(ManipulatableObject parent, int damage, float x, float y, float width, float height, float speed, float angle, float lifeTimer) {
+		super(parent, x, y, width, height, angle, speed);
+		this.damage = damage;
+		removesItself = true;
+		this.lifeTimer = lifeTimer;
+		this.setImage(Assets.instance.weapons.sword);
+
+		this.knockbackTime = .8f;
+		this.knockbackSpeed = 7;
+	}
 
 	@Override
 	public void postDeathEffects() {

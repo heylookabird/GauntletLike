@@ -29,7 +29,7 @@ public abstract class AbstractAbility extends AbstractGameObject {
 	boolean projectile, melee;
 
 	// HOW LONG BEFORE IT DELETES ITSELF.... FOREVER?
-	public float lifeTimer;
+	public float constantLifeTimer, lifeTimer;
 	boolean removesItself = true;
 	protected Vector<Float> timers;
 	protected Float deletionTime;
@@ -70,6 +70,9 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		this.knockbackAngle = angle;
 	}
 
+	public void reposition(DIRECTION direction){
+		
+	}
 	public void defaultKnockBackAngle(DIRECTION direction) {
 		if (direction == DIRECTION.LEFT) {
 			setKnockBackAngle(180);
@@ -156,7 +159,6 @@ public abstract class AbstractAbility extends AbstractGameObject {
 		if (couple instanceof CornerConcave) {
 			lifeTimer = -1;
 			cancelled = true;
-			System.out.println("hit wall");
 		}
 
 		if (couple instanceof AbstractAbility) {

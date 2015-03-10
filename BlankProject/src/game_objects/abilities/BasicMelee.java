@@ -30,40 +30,13 @@ public class BasicMelee extends AbstractAbility {
 		
 		knockbackSpeed = 4;
 		knockbackTime = .2f;
-		deletionTime = hitBoxTimer;
-		if (direction == DIRECTION.LEFT) {
-			// position.set(parent.position.x - dimension.x, position.y);
-			// parent.moveLeft();
-			position.set(position.x - parent.dimension.x,
-					(position.y + parent.dimension.y / 2) - dimension.y / 2);
-			knockbackAngle = 180;
-
-		} else if (direction == DIRECTION.RIGHT) {
-			// position.set(parent.position.x + dimension.x, position.y);
-			// parent.moveRight();
-			position.set(parent.position.x + parent.dimension.x,
-					(position.y + parent.dimension.y / 2) - dimension.y / 2);
-			knockbackAngle = 0;
-
-		} else if (direction == DIRECTION.UP) {
-			// position.set(parent.position.x, position.y + dimension.y);
-			// parent.moveUp();
-			position.set(position.x + parent.dimension.x / 2 - dimension.x / 2,
-					position.y + parent.dimension.y);
-			knockbackAngle = 90;
-
-		} else if (direction == DIRECTION.DOWN) {
-			// position.set(parent.position.x, position.y - dimension.y);
-			// parent.moveDown();
-			position.set(position.x + parent.dimension.x / 2 - dimension.x / 2,
-					position.y - parent.dimension.y);
-			knockbackAngle = 270;
-
-
-		}
+		constantLifeTimer = deletionTime = hitBoxTimer;
+		reposition(direction);
 		parent.state = STATE.ATTACKING;
 		
 	}
+	
+	
 
 	public BasicMelee(ManipulatableObject parent, int damage,
 			float hitBoxTimer, DIRECTION direction, float size) {
@@ -73,39 +46,42 @@ public class BasicMelee extends AbstractAbility {
 		//initDebug();
 		this.setAnimation(Assets.instance.effects.iceExplosion);
 
-		lifeTimer = hitBoxTimer;
-		if (direction == DIRECTION.LEFT) {
-			// position.set(parent.position.x - dimension.x, position.y);
-			// parent.moveLeft();
-			position.set(position.x - dimension.x,
-					(position.y + parent.dimension.y / 2) - dimension.y / 2);
-		} else if (direction == DIRECTION.RIGHT) {
-			// position.set(parent.position.x + dimension.x, position.y);
-			// parent.moveRight();
-			position.set(parent.position.x + parent.dimension.x,
-					(position.y + parent.dimension.y / 2) - dimension.y / 2);
-		} else if (direction == DIRECTION.UP) {
-			// position.set(parent.position.x, position.y + dimension.y);
-			// parent.moveUp();
-			position.set(position.x + parent.dimension.x / 2 - dimension.x / 2,
-					position.y + parent.dimension.y);
-		} else if (direction == DIRECTION.DOWN) {
-			// position.set(parent.position.x, position.y - dimension.y);
-			// parent.moveDown();
-			position.set(position.x + parent.dimension.x / 2 - dimension.x / 2,
-					position.y - dimension.y);
-
-		}
+		constantLifeTimer = lifeTimer = hitBoxTimer;
+		reposition(direction);
 		
 		this.defaultKnockBackAngle(direction);
 		parent.state = STATE.ATTACKING;
 	}
+	@Override
+	public void reposition(DIRECTION direction){
+		if (direction == DIRECTION.LEFT) {
+			// position.set(parent.position.x - dimension.x, position.y);
+			// parent.moveLeft();
+			position.set(parent.position.x - dimension.x,
+					(parent.position.y + parent.dimension.y / 2) - dimension.y / 2);
+		} else if (direction == DIRECTION.RIGHT) {
+			// position.set(parent.position.x + dimension.x, position.y);
+			// parent.moveRight();
+			position.set(parent.position.x + parent.dimension.x,
+					(parent.position.y + parent.dimension.y / 2) - dimension.y / 2);
+		} else if (direction == DIRECTION.UP) {
+			// position.set(parent.position.x, position.y + dimension.y);
+			// parent.moveUp();
+			position.set(parent.position.x + parent.dimension.x / 2 - dimension.x / 2,
+					parent.position.y + parent.dimension.y);
+		} else if (direction == DIRECTION.DOWN) {
+			// position.set(parent.position.x, position.y - dimension.y);
+			// parent.moveDown();
+			position.set(parent.position.x + parent.dimension.x / 2 - dimension.x / 2,
+					parent.position.y - dimension.y);
 
+		}
+	}
 	@Override
 	public void update(float deltaTime) {
 		position.x += parent.deltax;
 		position.y += parent.deltay;
-		Calc.sin(Calc.atan2(position, getCenter()));
+		//Calc.sin(Calc.atan2(position, getCenter()));
 		super.update(deltaTime);
 	}
 

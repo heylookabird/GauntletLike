@@ -22,6 +22,8 @@ public class LevelLoader {
 				0, 0), EXIT_BOUNDS(255, 255, 0), 
 				CORNER_TOP_RIGHT(50, 0, 50), CORNER_TOP_LEFT(50, 50, 0), 
 				CORNER_BOT_RIGHT(75, 75, 0), CORNER_BOT_LEFT(75, 0, 75),
+				CORNER2_TOP_RIGHT(40, 0, 0), CORNER2_TOP_LEFT(0, 40, 0), 
+				CORNER2_BOT_RIGHT(100, 0, 0), CORNER2_BOT_LEFT(0, 10, 0),
 				PILLAR_UP(45, 0, 0), PILLAR_RIGHT(85, 0, 0),
 				PILLAR_LEFT(125, 0, 0), PILLAR_DOWN(165, 0, 0),
 				TILE(0, 125, 0);
@@ -129,6 +131,21 @@ public class LevelLoader {
 
 				}else if(BLOCK_TYPE.CORNER_BOT_RIGHT.sameColor(currentPixel)){
 					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner1, pixelX, baseHeight, 2, 2, true, true);
+					LevelStage.solidObjects.add(corner);
+
+				}else if(BLOCK_TYPE.CORNER2_TOP_RIGHT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner2, pixelX, baseHeight, 2, 2, true, true);
+					LevelStage.solidObjects.add(corner);
+				}else if(BLOCK_TYPE.CORNER2_TOP_LEFT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner2, pixelX, baseHeight, 2, 2, false, true);
+					LevelStage.solidObjects.add(corner);
+				}
+				else if(BLOCK_TYPE.CORNER2_BOT_LEFT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner2, pixelX, baseHeight, 2, 2, true, false);
+					LevelStage.solidObjects.add(corner);
+
+				}else if(BLOCK_TYPE.CORNER2_BOT_RIGHT.sameColor(currentPixel)){
+					CornerConcave corner = new CornerConcave(Assets.instance.background.wallCorner2, pixelX, baseHeight, 2, 2, false, false);
 					LevelStage.solidObjects.add(corner);
 
 				}else if(BLOCK_TYPE.TILE.sameColor(currentPixel) && itIsStartOfNewObject(pixelX, pixelY, currentPixel)){
