@@ -1,10 +1,11 @@
 package game_objects.abilities;
 
-import backend.Assets;
-import backend.Calc;
-import backend.LevelStage;
 import game_objects.AbstractGameObject;
 import game_objects.ManipulatableObject;
+import backend.Assets;
+import backend.Calc;
+
+import com.badlogic.gdx.math.Vector2;
 
 public class Arrow extends AbstractAbility {
 	protected boolean attackFinished = false;
@@ -22,6 +23,8 @@ public class Arrow extends AbstractAbility {
 		rotation = (float) Math.toDegrees(angle);
 		this.knockbackTime = .8f;
 		this.knockbackSpeed = 7;
+		
+		this.knockbackAngle = Calc.atan2(new Vector2(xVelocity, yVelocity));
 	}
 	public Arrow(ManipulatableObject parent, int damage, float x, float y, float width, float height, float speed, float angle) {
 		super(parent, x, y, width, height, angle, speed);

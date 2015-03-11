@@ -4,7 +4,7 @@ import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
 import game_objects.abilities.Arrow;
 import game_objects.abilities.ExplodingArrow;
-import game_objects.abilities.Hook;
+import game_objects.abilities.PowerArrow;
 import game_objects.abilities.ProxyArrow;
 import game_objects.abilities.TrapArrow;
 import backend.Assets;
@@ -30,6 +30,11 @@ public class Bow extends AbstractWeapon {
 		arrowSpeed = .5f;
 		arrowDamage = 3;
 		this.name = "Bow";
+		
+		this.ability1CoolDown = 3;
+		this.ability2CoolDown = 6;
+		this.ability3CoolDown = 4;
+		this.ability4CoolDown = 10;
 	}
 
 	public void setPlayerBow() {
@@ -108,26 +113,26 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability1(float direction) {
-		Arrow attack = new ExplodingArrow(parent, 1, 0, 0);
+		Arrow attack = null;
 		DIRECTION dir = Calc.degreesToDirection(direction);
 
 		// to shoot the arrow in correct spot
 		switch (dir) {
 
 		case UP:
-			attack.velocity.set(0, arrowSpeed);
+			attack = new ExplodingArrow(parent, 1, 0, arrowSpeed);
 			break;
 
 		case DOWN:
-			attack.velocity.set(0, -arrowSpeed);
+			attack = new ExplodingArrow(parent, 1, 0, -arrowSpeed);
 			break;
 
 		case RIGHT:
-			attack.velocity.set(arrowSpeed, 0);
+			attack = new ExplodingArrow(parent, 1, arrowSpeed, 0);
 			break;
 
 		case LEFT:
-			attack.velocity.set(-arrowSpeed, 0);
+			attack = new ExplodingArrow(parent, 1, -arrowSpeed, 0);
 			break;
 		}
 
@@ -143,19 +148,19 @@ public class Bow extends AbstractWeapon {
 			switch (dir) {
 
 			case UP:
-				exploding.velocity.set(0, speed);
+				exploding = new TrapArrow(parent, 3, 0, speed);
 				break;
 
 			case DOWN:
-				exploding.velocity.set(0, -speed);
+				exploding = new TrapArrow(parent, 3, 0, -speed);
 				break;
 
 			case RIGHT:
-				exploding.velocity.set(speed, 0);
+				exploding = new TrapArrow(parent, 3, speed, 0);
 				break;
 
 			case LEFT:
-				exploding.velocity.set(-speed, 0);
+				exploding = new TrapArrow(parent, 3, -speed, 0);
 				break;
 			}
 			
@@ -172,27 +177,26 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability3(float direction) {
-		Arrow attack = new ProxyArrow(parent, 3, 0, 0);
+		Arrow attack = null;
 		float speed = arrowSpeed/3f;
 		DIRECTION dir = Calc.degreesToDirection(direction);
-		System.out.println(dir);
 		// to shoot the arrow in correct spot
 		switch (dir) {
 
 		case UP:
-			attack.velocity.set(0, speed);
+			attack = new ProxyArrow(parent, 1, 0, speed);
 			break;
 
 		case DOWN:
-			attack.velocity.set(0, -speed);
+			attack = new ProxyArrow(parent, 1, 0, -speed);
 			break;
 
 		case RIGHT:
-			attack.velocity.set(speed, 0);
+			attack = new ProxyArrow(parent, 1, speed, 0);
 			break;
 
 		case LEFT:
-			attack.velocity.set(-speed, 0);
+			attack = new ProxyArrow(parent, 1, -speed, 0);
 			break;
 		}
 
@@ -200,16 +204,32 @@ public class Bow extends AbstractWeapon {
 	}
 
 	@Override
-	public void ability4(float direction) {
-		float angle = direction;
-		
-		Hook attack = new Hook(parent, angle);
-
+	public void ability4(float direction) {		
+		PowerArrow attack = null;
+		DIRECTION dir = Calc.degreesToDirection(direction);
+		float arrowSpeed = this.arrowSpeed * 4;
+		int damage = 5;
 		// to shoot the arrow in correct spot
-		
+		switch (dir) {
+
+		case UP:
+			attack = new PowerArrow(parent, damage, 0, arrowSpeed);
+			break;
+
+		case DOWN:
+			attack = new PowerArrow(parent, damage, 0, -arrowSpeed);
+			break;
+
+		case RIGHT:
+			attack = new PowerArrow(parent, damage, arrowSpeed, 0);
+			break;
+
+		case LEFT:
+			attack = new PowerArrow(parent, damage, -arrowSpeed, 0);
+			break;
+		}
 
 		LevelStage.interactables.add(attack);
 	}
-	
 	
 }

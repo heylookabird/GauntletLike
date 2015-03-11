@@ -12,7 +12,7 @@ public class ComboStrike  {
 	//CD1 is how long you have to wait to do the next one.
 	Array<Float> attackCds1, attackCds2;
 	float cdTimer;
-	
+	ManipulatableObject parent;
 	Array<AbstractAbility> attacksInCombo;
 	int cdIndex;
 	
@@ -33,6 +33,7 @@ public class ComboStrike  {
 		this.attackCds1 = attackCds1;
 		this.attackCds2 = attackCds2;
 		this.attacksInCombo = attacksInCombo;
+		this.parent = parent;
 		init();
 		
 
@@ -70,18 +71,19 @@ public class ComboStrike  {
 
 	}
 
-	public void trigger() {
+	public void trigger(DIRECTION direction) {
 
 		if(coolingDown || (cdTimer < attackCds1.get(cdIndex).floatValue())){
 			System.out.println(coolingDown + "  cdtimer: " + cdTimer  + " attackCds1: " + attackCds1.get(cdIndex).floatValue());
 			return;
 		}
 		AbstractAbility temp = attacksInCombo.get(cdIndex);
-		LevelStage.interactables.add(temp);
-		
-		temp.reposition(DIRECTION.UP);
+		temp.reposition(direction);
 		temp.lifeTimer = temp.constantLifeTimer;
 
+		LevelStage.interactables.add(temp);
+		
+		
 		//Increment cdIndex
 		cdIndex++;
 		System.out.println(cdIndex);

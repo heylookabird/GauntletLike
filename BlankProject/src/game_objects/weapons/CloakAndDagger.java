@@ -36,8 +36,7 @@ public class CloakAndDagger extends AbstractWeapon{
 	@Override
 	protected void defaultAttackInit(DIRECTION direction) {
 		
-		
-		comboAttack.trigger();
+		comboAttack.trigger(direction);
 		
 	}
 	@Override
