@@ -2,8 +2,11 @@ package game_objects.weapons;
 
 import game_objects.ManipulatableObject;
 import game_objects.ManipulatableObject.DIRECTION;
+import game_objects.abilities.AOE;
 import game_objects.abilities.Arrow;
 import game_objects.abilities.ExplodingArrow;
+import game_objects.abilities.Hook;
+import game_objects.abilities.Net;
 import game_objects.abilities.PowerArrow;
 import game_objects.abilities.ProxyArrow;
 import game_objects.abilities.TrapArrow;
@@ -113,14 +116,13 @@ public class Bow extends AbstractWeapon {
 
 	@Override
 	public void ability1(float direction) {
-		Arrow attack = null;
-		DIRECTION dir = Calc.degreesToDirection(direction);
 
+		Hook attack = new Hook(parent, direction, 10);
 		// to shoot the arrow in correct spot
-		switch (dir) {
+		/*switch (dir) {
 
 		case UP:
-			attack = new ExplodingArrow(parent, 1, 0, arrowSpeed);
+			attack = new Hook(parent, 1, 0, arrowSpeed);
 			break;
 
 		case DOWN:
@@ -134,44 +136,74 @@ public class Bow extends AbstractWeapon {
 		case LEFT:
 			attack = new ExplodingArrow(parent, 1, -arrowSpeed, 0);
 			break;
-		}
+		}*/
+		
 
 		LevelStage.interactables.add(attack);
 	}
 
 	@Override
 	public void ability2(float direction) {
+		ExplodingArrow attack = null;
 		float speed = arrowSpeed/2f;
 		DIRECTION dir = Calc.degreesToDirection(direction);
-		if (!trapOut) {
-			exploding = new TrapArrow(parent, 3, 0, 0);
-			switch (dir) {
+		switch (dir) {
 
-			case UP:
-				exploding = new TrapArrow(parent, 3, 0, speed);
-				break;
+		case UP:
+			attack = new ExplodingArrow(parent, 1, 0, arrowSpeed){
+				@Override
+				public void removeThyself() {
+					super.removeThyself();
+					Net deathAttack = new Net(Assets.instance.effects.iceExplosion, parent, 1, .3f, .5f,
+							position.x, position.y, 1, 1, false);
 
-			case DOWN:
-				exploding = new TrapArrow(parent, 3, 0, -speed);
-				break;
+					LevelStage.interactables.add(deathAttack);
+				}
+			};
+			break;
 
-			case RIGHT:
-				exploding = new TrapArrow(parent, 3, speed, 0);
-				break;
+		case DOWN:
+			attack = new ExplodingArrow(parent, 1, 0, -arrowSpeed){
+				@Override
+				public void removeThyself() {
+					super.removeThyself();
+					Net deathAttack = new Net(Assets.instance.effects.iceExplosion, parent, 1, .3f, .5f,
+							position.x, position.y, 1, 1, false);
 
-			case LEFT:
-				exploding = new TrapArrow(parent, 3, -speed, 0);
-				break;
-			}
-			
-			LevelStage.interactables.add(exploding);
-			trapOut = true;
-		}else{
-			exploding.activate();
-			trapOut = false;
+					LevelStage.interactables.add(deathAttack);
+				}
+			};
+			break;
+
+		case RIGHT:
+			attack = new ExplodingArrow(parent, 1, arrowSpeed, 0){
+				@Override
+				public void removeThyself() {
+					super.removeThyself();
+					Net deathAttack = new Net(Assets.instance.effects.iceExplosion, parent, 1, .3f, .5f,
+							position.x, position.y, 1, 1, false);
+
+					LevelStage.interactables.add(deathAttack);
+				}
+			};
+			break;
+
+		case LEFT:
+			attack = new ExplodingArrow(parent, 1, -arrowSpeed, 0){
+				@Override
+				public void removeThyself() {
+					super.removeThyself();
+					Net deathAttack = new Net(Assets.instance.effects.iceExplosion, parent, 1, .3f, .5f,
+							position.x, position.y, 1, 1, false);
+
+					LevelStage.interactables.add(deathAttack);
+				}
+			};
+			break;
 		}
 		
-		
+		LevelStage.interactables.add(attack);
+
 
 	}
 
